@@ -1,4 +1,23 @@
-# Salix - Linux for the lazy Slacker
+````ASCII art: the word "Salix" in a large font
+   SSSSSSSSSSSSSSS                   lllllll   iiii
+ SS:::::::::::::::S                  l:::::l  i::::i
+S:::::SSSSSS::::::S                  l:::::l   iiii
+S:::::S     SSSSSSS                  l:::::l
+S:::::S              aaaaaaaaaaaaa    l::::l iiiiiii xxxxxxx      xxxxxxx
+S:::::S              a::::::::::::a   l::::l i:::::i  x:::::x    x:::::x
+ S::::SSSS           aaaaaaaaa:::::a  l::::l  i::::i   x:::::x  x:::::x
+  SS::::::SSSSS               a::::a  l::::l  i::::i    x:::::xx:::::x
+    SSS::::::::SS      aaaaaaa:::::a  l::::l  i::::i     x::::::::::x
+       SSSSSS::::S   aa::::::::::::a  l::::l  i::::i      x::::::::x
+            S:::::S a::::aaaa::::::a  l::::l  i::::i      x::::::::x
+            S:::::Sa::::a    a:::::a  l::::l  i::::i     x::::::::::x
+SSSSSSS     S:::::Sa::::a    a:::::a l::::::li::::::i   x:::::xx:::::x
+S::::::SSSSSS:::::Sa:::::aaaa::::::a l::::::li::::::i  x:::::x  x:::::x
+S:::::::::::::::SS  a::::::::::aa:::al::::::li::::::i x:::::x    x:::::x
+ SSSSSSSSSSSSSSS     aaaaaaaaaa  aaaalllllllliiiiiiiixxxxxxx      xxxxxxx
+```
+
+# Linux for the lazy Slacker
 
 ## About Salix
 
@@ -16,13 +35,13 @@ Salix is a GNU/Linux distribution based on Slackware that is simple, fast and ea
 
 ## Installation
 
-The installation is text dialog based, but easy to navigate and complete. It is also very fast; a "full" mode installation will take less than 5 minutes on any modern PC. 
+The installation is text dialog based, but easy to navigate and complete. It is also very fast; a "full" mode installation will take less than 5 minutes on any modern PC.
 
 Salix has three different modes of installation:
 
 * Full: Everything that is included in the iso is installed. That includes a complete desktop environment and a complete selection of applications that matches the respective environment, always following the "one application per task" rationale.
 * Basic: This installs only a basic desktop environment, with very few extra applications installed on top, such as a web browser and the gslapt package manager. Ideal for advanced users that would like to install a lightweight desktop environment and add their own choice of applications.
-* Core: Only the minimum essentials for a console system to start are included. A graphical environment is not provided. This is ideal if you are an experienced user and want to customize your installation for any specific purpose, such as a web server, file server etc. 
+* Core: Only the minimum essentials for a console system to start are included. A graphical environment is not provided. This is ideal if you are an experienced user and want to customize your installation for any specific purpose, such as a web server, file server etc.
 
 All three installation modes come with a complete development environment, so users don't need to add anything to start developing and compiling applications.
 
