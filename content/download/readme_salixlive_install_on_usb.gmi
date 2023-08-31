@@ -1,0 +1,95 @@
+# Installing The Salix Live Iso Image to a USB Key
+
+The install_on_usb.sh script is used to install the SalixLive iso image
+to a usb key using the iso image itself.
+
+You can mount the iso image to a directory e.g.: /tmp/iso and enter
+the boot directory within the mountpoint, e.g.: cd /tmp/iso/boot
+and execute the script from there:
+
+```
+sudo mkdir /tmp/iso
+sudo mount -o loop path_to_iso_image /tmp/iso
+cd /tmp/iso/boot
+sudo sh install_on_usb.sh --usb path_to_iso_image device
+cd ~/
+sudo umount /tmp/iso
+```
+
+Note: If this script is started from a different distro then be sure
+that gdisk is installed and also maybe have to type
+
+```
+sudo bash install_on_usb.sh --usb path_to_iso_image device
+```
+
+device can be something like /dev/sdb or /dev/sdc according to how many
+usb keys are plugged in your system.
+
+It is not possible to install to your hard disk (/dev/sda). The script
+will just exit in such a case.
+
+So, you have to specify the path to the iso image and device. The script
+will ask the user to confirm the device specified, to choose vfat or
+ext3 filesystem for formatting the device and it will also optionally
+create a persistent ext3 file.
+
+If the user did not do so on first installation, then he can create a
+persistent file using the --persistent option. There is now no need to
+specify the path to the iso because Salix Live is already installed to
+the usb key. However, you do need to specify the architecture, because
+this affects the location of the persistent file:
+
+```
+sudo sh install_on_usb.sh --persistent 32|64 device
+```
+
+For example, for a 64-bit iso installed on /dev/sdc, you should
+run the following command to create persistence:
+
+```
+sudo sh install_on_usb.sh --persistent 64 /dev/sdc
+```
+
+If you choose vfat filesystem then to use persistence features you have
+to create a persistent file. Persistent directory does not supported in
+vfat.
+
+If you choose ext3 filesystem then you can either create a persistent
+file or just boot with persistent option from menus. Then a directory
+named "persistent" (default) will be created where you can keep your
+changes between reboots. Attention: Never create the folder by hand
+(persistence will not work).
+
+Persistent home directory is also supported but it is not useful since
+only keep /home/$user changes. You can use this feature by changing the
+parameter changes=persistent to home=home
+
+Typing:
+
+```
+sh install_on_usb.sh --help
+```
+
+will output the following help message:
+
+```
+install_on_usb.sh [-h/--help] [-v/--version]
+-h, --help: this usage message
+-v, --version: the version author and licence
+
+install_on_usb.sh --usb isoname device
+install_on_usb.sh --persistent 32|64 device
+
+-> --usb option installs syslinux on a USB key using an ISO (specify
+   path to image and device)
+-> The script will ask user to confirm the device specified
+-> It will also optionally create a persistent ext3 file.
+
+-> --persistent option creates a persistent ext3 file after
+ installation, if user did not do so then
+-> specify architecture and device
+-> No need to specify path to iso because Salix Live is already
+ installed
+```
+

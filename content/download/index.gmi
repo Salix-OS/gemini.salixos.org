@@ -1,0 +1,54 @@
+# Download Salix
+
+The latest Salix release is built around and focused on the Xfce Desktop Environment.
+
+Older releases are available through the Salix project page at Sourceforge.
+
+If instead of the iso images, you are looking for the packages that are included in the Salix repositories, you can download them through one of our repository mirrors. The state of these mirrors can be seen in our mirror monitor page.
+
+Live images are clearly marked as SalixLive in this list. All other iso images are not Live images. They boot into the standard Salix installer, which is a text-mode dialog-based installer. 
+
+## Xfce
+
+### Salix64 Xfce 15.0 (x86_64, 64-bit)
+
+(size: 1.4GB, md5: 46121e56e3e5621d6b905ab53ed9ce8d)
+
+=> https://sourceforge.net/projects/salix/files/15.0/salix64-xfce-15.0.iso/download download from Sourceforge
+=> ./salix64-xfce-15.0.torrent torrent download
+
+### SalixLive64 Xfce 15.0 (x86_64, 64-bit)
+
+(size: 1.7GB, md5: 5400d0833f56e5abcb2fb7999795ef87)
+
+=> https://sourceforge.net/projects/salix/files/15.0/salixlive64-xfce-15.0.iso/download download from Sourceforge
+=> ./salixlive64-xfce-15.0.torrent torrent download
+
+If you want to transfer the live iso to a USB stick, make sure you read the instructions in the following README.
+
+=> ./readme_salixlive_install_on_usb.gmi README
+
+### Salix Xfce 15.0 (i586/i686, 32-bit)
+
+(size: 1.4GB, md5: bbb839c08938f72e547fd3fa9ef121b0)
+
+=> https://sourceforge.net/projects/salix/files/15.0/salix-xfce-15.0.iso/download download from Sourceforge
+=> ./salix-xfce-15.0.torrent torrent download
+
+### SalixLive Xfce 15.0 (i586/i686, 32-bit)
+
+(size: 1.7GB, md5: a21d9eb701a166313b5967dc4728d681)
+
+=> https://sourceforge.net/projects/salix/files/15.0/salixlive-xfce-15.0.iso/download download from Sourceforge
+=> ./salixlive-xfce-15.0.torrent torrent download
+
+If you want to transfer the live iso to a USB stick, make sure you read the instructions in the following README.
+
+=> ./readme_salixlive_install_on_usb.gmi README
+
+
+## Links
+
+=> https://sourceforge.net/projects/salix/ Salix project page at Sourceforge
+=> https://docs.salixos.org/wiki/Repository_mirrors Repository Mirrors
+=> https://salixos.org/mirmon.html Mirror Monitor Page

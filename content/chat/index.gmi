@@ -1,0 +1,10 @@
+# Salix IRC channel Get online support/chat about Salix
+
+You can reach us online using our IRC channel.
+
+Please be patient when asking a question, not everyone lives in the same timezone as you do and even if they do, they might not be available at that certain time. You might get instant answers or you might have to wait a few hours until someone is able to answer back to you.
+
+Our IRC channel is named #salix and is hosted at the irc.libera.chat IRC server. You can use your favourite IRC client to connect or you can connect by visiting the web interface that libera.chat provides with your web browser.
+
+=> https://web.libera.chat/#salix #salix IRC channel web interface
+

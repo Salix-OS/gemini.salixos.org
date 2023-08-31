@@ -1,0 +1,19 @@
+# Translating Salix
+
+A lot of software that is used in Salix is being developed in-house. Users from around the world can help us by translating the Salix software into their own language.
+
+The Salix translation project is being hosted by Transifex. There are many resources that are available for translation. Most of these resources are easily reachable by visiting the Salix project page at Transifex.
+
+=> https://www.transifex.com/projects/p/salix/ Salix project page at Transifex
+
+However, there are additional resources that are not included in the main Salix project page and that are available for translation as well. The reason these resources are not available in the main Salix project page at Transifex is mainly because some resources are large enough to warrant their own project pages. Also, there are some resources that were created as separate projects even before the main Salix project page existed in Transifex.
+
+So, here's a list of everything you can translate in Transifex, apart from what is listed in the Salix project page:
+
+=> https://www.transifex.com/projects/p/salix/ Salix project: several tools used in Salix, including the installer.
+=> https://www.transifex.com/projects/p/salixtools/ Salixtools: the Salix system tools (console version).
+=> https://www.transifex.com/projects/p/salixtools-gtk/ SalixtoolsGTK: The Salix system tools (GTK version).
+=> https://www.transifex.com/projects/p/slapt-get/ Slapt-get: The package management tools that Salix uses.
+=> https://www.transifex.com/projects/p/dotnew/ Dotnew: A utility to process .new configuration files.
+=> https://www.transifex.com/gapan/flatpak-tools/dashboard/ Flatpak-tools: Tools to manage flatpak and flatpak related files.
+
