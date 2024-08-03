@@ -49,7 +49,7 @@ All three installation modes come with a complete development environment, so us
 
 Salix is developed by an open community of volunteers and contributors all over the world. To learn more about the people behind Salix take a look at our team page.
 
-## Links
+## Find Out More
 
 => ./download Download
 => ./team Team
