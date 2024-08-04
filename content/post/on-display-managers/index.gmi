@@ -1,6 +1,6 @@
 # On Display Managers
 
-(2019-07-05)
+Published 2019-07-05
 
 A Display Manager is the application that provides a graphic user interface (GUI) that is displayed at the end of the boot process and lets the user authenticate themselves by providing their username and password, before entering their preferred X11 session, for example Xfce, KDE, fluxbox, etc.
 

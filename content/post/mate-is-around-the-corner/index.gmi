@@ -1,6 +1,6 @@
 # MATE is around the corner
 
-(2014-03-26)
+Published 2014-03-26
 
 MATE[1] 1.8 has been released in source code form by its developers about 3 weeks ago and I have been working on packages for Salix for about as long. The good news is that I think I'm almost done! So, expect MATE 1.8 packages to hit the repos sometime in the following days. We didn't have any MATE release for Salix 14.0, but it looks like we are going to have one for 14.1!
 

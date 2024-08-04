@@ -1,6 +1,6 @@
 # Our new extra repository
 
-(2016-10-09)
+Published 2016-10-09
 
 You might have noticed that just before the Salix Xfce 14.2RC1 release a new repository, named extra-14.2 has appeared in our servers. This has been enabled by default in the 14.2RC1 and 14.2RC2 releases and will be also available in the final 14.2 release.
 

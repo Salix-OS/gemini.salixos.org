@@ -1,6 +1,6 @@
 # Spam in the Forums
 
-(2019-03-13)
+Published 2019-03-13
 
 Unfortunately, we're having a huge problem with spammers in our forums. Most of the users that register are actually spammers. This has been going on for a while too.
 

@@ -1,6 +1,6 @@
 # Preparing for 15.0
 
-(2021-01-04)
+Published 2021-01-04
 
 It seems like, finally, the pieces are being put in place for the next Slackware release. It has been a long wait, it will be 5 years since the 14.2 release in a few months. Since Salix releases are tied to Slackware releases, there hasn't been a Salix release for a long while too. Major changes that the next Slackware release will introduce include a switch to PAM, Linux kernel 5.10.x, KDE Plasma 5 and, just last week, Xfce 4.16. I'm guessing there won't be any other major changes to Slackware current and it will go into beta soon. That's all just a guess though, as only Patrick Volkerding really knows what he has in mind.
 

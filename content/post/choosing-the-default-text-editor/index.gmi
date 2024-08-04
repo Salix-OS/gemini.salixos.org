@@ -1,6 +1,6 @@
 # Choosing the default text editor
 
-(2023-08-04)
+Published 2023-08-04
 
 Even during the development phase of Salix 15.0, more than a year ago, I was getting questions and comments about which the default (GUI) text editor would be. I still get those questions in my inbox. So, Salix 15.0 came with Xfce 4.16. And Xfce's default text editor is Mousepad, but we elected not to include it in the default app selection for our release. Instead, we included L3afpad[1], which is essentially a GTK3 port of Leafpad[2], the default editor in all our previous releases, including at least Salix 14.2, 14.1 and 14.0, going back more than 10 years now.
 

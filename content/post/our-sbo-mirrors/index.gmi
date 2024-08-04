@@ -1,6 +1,6 @@
 # Our SBo mirrors
 
-(2014-10-09)
+Published 2014-10-09
 
 We have been mirroring the slackbuilds.org[1] (SBo) repository and at the same time applying slight changes to it for some time now. These changes are essential to Salix, for a few reasons.
 

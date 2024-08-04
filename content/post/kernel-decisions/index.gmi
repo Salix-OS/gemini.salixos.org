@@ -1,6 +1,6 @@
 # Kernel decisions
 
-(2014-01-14)
+Published 2014-01-14
 
 I've had a few chats lately, either through email, in our forums and in IRC about the kernels that we're including with our 32-bit releases and I thought it would be best if I explained things a bit.
 

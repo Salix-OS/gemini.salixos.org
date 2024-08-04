@@ -1,6 +1,6 @@
 # The gksu problem
 
-(2013-11-13)
+Published 2013-11-13
 
 We had a real problem with ktsuss/gksu while developing for 14.1. It seems that newer versions of the shadow package, and certainly the one that is included in Slackware 14.1, don't allow su to be executed in any other way except directly from a terminal. That means that su cannot be executed as a subprocess from inside ktsuss or the original gksu anymore and these become effectively useless. This is a critical issue for us, because if we don't fix it, almost nothing in the System part of the menu would actually work.
 

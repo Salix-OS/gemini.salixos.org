@@ -1,6 +1,6 @@
 # How much of Slackware is in Salix
 
-(2013-10-30)
+Published 2013-10-30
 
 That is a question that I had in my mind for a while. At some point I had also done the actual counting, so I had an idea, but I never wrote anything down.
 
