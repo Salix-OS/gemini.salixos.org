@@ -56,6 +56,7 @@ Salix is developed by an open community of volunteers and contributors all over 
 => ./chat IRC Channel
 => ./mailinglists Mailing lists
 => ./translate Help Translate
+=> ./post Posts
 => https://forum.salixos.org/ Forum
 => https://docs.salixos.org/wiki/Main_Page Documentation
 => https://salixos.org Web Homepage
