@@ -1,0 +1,28 @@
+# Our SBo mirrors
+
+(2014-10-09)
+
+We have been mirroring the slackbuilds.org[1] (SBo) repository and at the same time applying slight changes to it for some time now. These changes are essential to Salix, for a few reasons.
+
+=> http://slackbuilds.org/ 1: http://slackbuilds.org/
+
+First of all, the SBo maintainers have decided that they will only list SlackBuild dependencies only if these are not part of a Slackware full installation. While this may be a decision that is fine for Slackware itself, since they don't offer any kind of support for users doing anything other than a full Slackware installation, it's generally not good for Salix, since a Salix installation of any edition, is slimmer than a full Slackware installation, by far. For example, in Slackware it is expected that everyone has the Qt libraries installed, but this is definitely not true for Salix (except from our KDE edition of course). So, a lot of the SlackBuilds at SBo end up having missing dependencies when it comes to a Salix installation.
+
+Then, there is a problem with package/SlackBuild naming. We have a lot of packages in the Salix package repositories that are also present in the SBo repository. While we try to keep the package naming consistent with the one they're using in SBo, that is not always possible. For example, at this moment, there is a package named "python-configobj" in our package repositories and another one named "configobj" in SBo, which are actually the exact same piece of software. Even if we made every effort and named everything at the time of release according to the SBo names, SBo is constantly changing and SlackBuilds may be renamed.
+
+Another problem (for lack of a better word) is that SlackBuild maintainers choose to update their SlackBuilds as soon as a new version of the software they are packaging is out. While this might not be bad in itself, it kind of conflicts with the way things work for the binary package repositories in Slackware and also in Salix, which generally follow the idea that upgrades should only be done for security reasons. And since there is a very wide overlap between packages offered in the Salix binary package repositories and the SlackBuilds provided by SBo, there are often newer versions available in SBo than in the Salix binary package repositories. This might confuse users, because by opening Gslapt, they find one version and by opening Sourcery, they find another, often newer, version. What's more, if they were to "upgrade" to the version available in SBo, they would find that Gslapt/slapt-get would want to "downgrade" that package to the version available in the Salix binary repositories and the only way to stop that would be to put the package in the EXCLUDE list in their slapt-getrc file.
+
+So, in Salix, we have to deal with these problems. Here's what we do...
+
+Our own copy of the SBo repository, the one that is available by default to Salix users through our package management tools is synced with the main SBo repository every few hours.
+
+For the first problem mentioned above, we have a mechanism for adding "missing" dependencies in our copy of the SBo repository. For example, the ardour SlackBuild requires cmake to build. Now, cmake is always thought to be present in a Slackware installation, otherwise it is not a full Slackware installation and it is not supported in any way. In Salix though, cmake is definitely not part of a standard installation and so we add it as an extra dependency for ardour.
+
+For the second problem, we have created a list of packages/SlackBuilds that are named in a different way between repositories. Every SlackBuild that is also present as a binary package in the Salix repositories with a different name, is removed from our own copy of the SBo repository and every reference to it in dependencies is replaced with the name that the package has in our own binary package repository. This way, the package in the Salix binary package repositories is always used, even if it is originally named otherwise in the original SBo repository.
+
+Finally, all software that is present in both the Salix binary package repositories and SBo, is removed from our own copy of the SBo repository, so there is no way users will be confused and go back and forth between versions. Actually, the SlackBuilds themselves are not removed from the repositories, rather the reference for them in the SLACKBUILDS.TXT file is removed, so it isn't used by our SlackBuild management tools, slapt-src, Sourcery or spi.
+
+With SBo being a moving target though, this process will always be ongoing and will never be 100% complete. If you find a SlackBuild that is missing some dependency, please report it, either in our mailing list[2] or in our forums[3]. Similarly, if you find the same SlackBuild present in both the Salix binary package repositories (hence available in Gslapt) and our own copy of SBo repositories (hence available in Sourcery), please report that too. Of course feel free to report any other problem you might find with our repositories.
+
+=> http://salixos.org/mailinglists.html 2: http://salixos.org/mailinglists.html
+=> http://forum.salixos.org/ 3: http://forum.salixos.org/

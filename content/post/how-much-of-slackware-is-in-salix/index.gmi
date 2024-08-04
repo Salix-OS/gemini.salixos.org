@@ -1,0 +1,90 @@
+# How much of Slackware is in Salix
+
+(2013-10-30)
+
+That is a question that I had in my mind for a while. At some point I had also done the actual counting, so I had an idea, but I never wrote anything down.
+
+There are many people that believe that a derivative distribution only just leeches their parent distribution, maybe changing the default wallpaper or a couple of settings here and there and making a release. I know for a fact that some people that have never tried Salix (or have tried Salix but never Slackware itself) even think the same for Salix. I don't doubt that there are a lot of derivative distributions that are like that, but well... Salix is definitely not like that.
+
+The numbers that are shown here are for Slackware/Salix 14 .0 and the 32-bit repositories. For previous, or more recent releases (when they will be released) the numbers would probably be very similar. The 64-bit repositories should be the same as the 32-bit repositories (give or take a package). These numbers may also change a little in the course of each release's lifetime as security related packages are added to the patches directories etc, but only just a little.
+
+## Repositories
+
+First of all, all of Slackware is in Salix. What I mean by that, is that every package that is included in the Slackware repositories, is available in Salix through the package manager (GSlapt from the GUI or slapt-get from the command line). There are a few exceptions[1], where we substitute Slackware packages for Salix-specific package, for several reasons that are very important to us, but that's it.
+
+=> http://docs.salixos.org/wiki/Packages,_that_are_different_from_Slackware 1: http://docs.salixos.org/wiki/Packages,_that_are_different_from_Slackware
+
+So, in terms of available pre-packaged software that you can find through the package manager in Salix, there is a total of 2145 packages. Of that, 1151 (53.7%) are original Slackware packages. The rest (994, 46.3%) are packages that were build for Salix and that you cannot find in Slackware repositories. Of course, Slackware users can install any of those packages if they like as every package is 100% compatible to Slackware. So, Salix almost doubles the amount of ready made software that a Slackware user can install.
+
+## Releases
+
+So, what happens with Salix releases and the system that you get right after a fresh installation? The answer here varies, as Salix has several releases, based on different Desktop Environments and there are also different installation modes for each of those releases, Core, Basic and Full, respectively.
+
+We'll take a look at our Xfce, KDE and our soon-to-be-released Ratpoison editions for version 14.0.
+
+Keep in mind that the numbers listed below are what happens right after a fresh installation. If people install the multimedia codecs using our salix-codecs-installer tool (and most people would), the number of Salix packages would increase by about 50.
+
+### Core Installation
+
+A Salix Core installation is exactly the same, no matter what iso image you used to make the installation.
+
+After a Core mode installation, you get a total of 250 installed packages. Of those packages, the vast majority (233, 93.2%) are Slackware packages. The rest (17, 6.8%) are Salix-specific packages. The Salix packages are mainly the package manager, the Salix command line system tools and their dependencies and nothing more.
+
+So, what you get with a Salix Core installation, is mainly a Slackware system that only works from the command line and only very few added packages by Salix. It's funny, because there are a lot of Slackware users that apparently look for a stripped down Slackware installation with no GUI, but never look at Salix.
+
+### Xfce Basic Installation
+
+OK, so what happens once we start adding a GUI and all related packages. A Salix Basic installation adds only the Desktop Environment and very few graphical applications on top of it, like a browser, a graphical package manager and the Salix GUI system tools.
+
+After an Xfce Basic installation, you get a total of 579 packages (including all the packages in the Core installation). 532 of those packages (91.9%) are pure Slackware packages. Still, only 47 (8.1%) are Salix specific packages. The number of Salix specific packages might still be small, but these few packages this time make a difference; among these packages there are packages that add important functionality, like the Salix GUI system tools or a login manager etc.
+
+### Xfce Full Installation
+
+An Xfce Full installation is what most people would use though.
+
+A total of 761 packages are installed (including all packages in the Core and Basic installations). Of those packages, 611 (80.3%) are Slackware packages and 150 (19.7%) are Salix packages. So, the Salix part becomes really significant here and among the Salix packages are some that are considered really important for a desktop distribution, like the LibreOffice suite, the media players, document/image viewers etc.
+
+### KDE Basic Installation
+
+After a KDE Basic installation, you get a total of 626 packages installed. The number of Slackware packages is 580 (92.7%) and the number of Salix packages is 46 (7.3%). The numbers are similar to the Xfce Basic installation.
+
+### KDE Full Installation
+
+A KDE Full installation includes a total of 760 packages. Of those, 661 (87.0%) are Slackware packages and 99 (13.0%) are Salix packages. The numbers are similar to the Xfce Full installation, only slightly skewed to the Slackware side, as KDE is a major part and the default DE for Slackware and a lot of KDE-related software is part of Slackware anyway.
+
+### Ratpoison Basic Installation
+
+In a Ratpoison Basic installation, there is a total of 561 packages. Of those, 514 (91.6%) are Slackware packages and 47 (8.4%) are Salix packages. So, numbers are similar across all Basic installations.
+
+### Ratpoison Full Installation
+
+A total of 672 packages are installed in a Ratpoison Full installation. The number of Slackware packages is 575 (85.6%) and the number of Salix packages is 97 (14.4%). The numbers are somewhere in between the Xfce and KDE Full installations.
+
+## Conclusions
+
+Here is a table that sums up all the numbers mentioned above:
+
+```table
+┌─────────────────┬───────┬──────────────┬─────────────┐
+│                 │ Total │  Slackware   │    Salix    │
+╞═════════════════╪═══════╪══════════════╪═════════════╡
+│ Repositories    │ 2145  │ 1151 (53.7%) │ 994 (46.3%) │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ Core            │  250  │ 233 (93.2%)  │  17 (6.8%)  │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ Xfce Basic      │  579  │ 532 (91.9%)  │  47 (8.1%)  │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ Xfce Full       │  761  │ 611 (80.3%)  │ 150 (19.7%) │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ KDE Basic       │  626  │ 580 (92.7%)  │  46 (7.3%)  │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ KDE Full        │  760  │  61 (87.0%)  │ 99 (13.0%)  │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ Ratpoison Basic │  561  │ 514 (91.6%)  │  47 (8.4%)  │
+├─────────────────┼───────┼──────────────┼─────────────┤
+│ Ratpoison Full  │  672  │ 575 (85.6%)  │ 97 (14.4%)  │
+└─────────────────┴───────┴──────────────┴─────────────┘
+```
+It is obvious that the contribution of Salix to the Slackware ecosystem is significant. With Salix almost doubling the amount of packages that Slackware offers, it is the largest third-part package repository for Slackware out there. What's most important is that these packages are of very high quality, tested and guaranteed to work in a pure Slackware installation.
+
+Moreover, the part that Slackware plays in every Salix release is apparent. What you get after a Salix installation, is really a stripped Slackware system, that includes all the extra parts that Salix provides to make it really usable.

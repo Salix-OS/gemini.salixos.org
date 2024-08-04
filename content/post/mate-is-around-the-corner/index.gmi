@@ -1,0 +1,33 @@
+# MATE is around the corner
+
+(2014-03-26)
+
+MATE[1] 1.8 has been released in source code form by its developers about 3 weeks ago and I have been working on packages for Salix for about as long. The good news is that I think I'm almost done! So, expect MATE 1.8 packages to hit the repos sometime in the following days. We didn't have any MATE release for Salix 14.0, but it looks like we are going to have one for 14.1!
+
+=> http://mate-desktop.org/ 1: http://mate-desktop.org/
+
+We have already included some MATE 1.6 packages in our repositories and we have used those for our Xfce release as well, but a complete MATE 1.6 desktop was not included. The packages that we already had included were mate-document-viewer (atril), mate-file-archiver (engrampa), mate-dialogs and their dependencies and that's about it. These are also the packages that were built first for 1.8. In total there are about 30 packages that will be pushed to the repositories, so any of these packages that you might have on your system will be upgraded to their 1.8 counterpart in the next days. The upgrade should be competely harmless, so nothing to worry about. In fact I had already patched the 1.6 packages with some fixes from the 1.8 branch, so the most important changes were already there.
+
+I had considered using packages from the MATE SlackBuilds[2] project, but only very briefly. While the guys there have done a good work on their packages, I realized that in most cases, we had to built our own packages.
+
+=> http://mateslackbuilds.github.io/ 2: http://mateslackbuilds.github.io/
+
+Some of the packages from the MATE SlackBuilds project were built using dependencies that we would never have in Salix, at least not by default. Several packages were built with support for NetworkManager, which we do not ship by default. There was even a case where one package was built using GTK+ (version 1, that is ancient!) which would definitely not work for us.
+
+One other thing that I didn't like at all about these packages, was that help wouldn't work at all (used from the Help menu or using the respective buttons in any application). It would just show an error message, because it needs yelp. The problem is that they haven't included yelp and what's worse, they have removed the actual help files from the packages. So, even if we built a package for yelp, help would still not work and there would still be an error message. And having an error message pop up doing something really normal, like selecting a menu option that is right there, everywhere, is something I don't like at all. Now, I also don't care about yelp though and mostly everything that comes from GNOME. So what I did was that I patched every single MATE application/plugin and pointed the help menu items/buttons to the MATE webpage. Works a lot better than any error message.
+
+And then there was the default settings issue. The packages we use, should include default configuration that will fit with Salix, including panel location, panel applets selection, icon theme used, window manager theme, stuff like that. The default menus that ship with MATE also include two separate "System" menus, one under the "Applications" submenu and one under the "System" menu, which is kind of confusing in my opinion. So, I edited the default menu specifications to keep only the latter and have all "System" applications in one place. Also, I "had" to change the default menu icon to the Salix icon.
+
+Once again, like we did with the MATE 1.2 packages that we offered with Salix 13.37 and the MATE 1.4 packages that we offered for Salix 14.0, we are not building the complete set of MATE packages. We are building all the "base" packages, that make up the actual MATE Desktop Environment, like mate-desktop, the Caja file manager, the panel, panel applets etc, but we are not including Pluma, the text editor, Eye of MATE, the graphics viewer etc. This is only just because I think we already have better alternatives for them and we wouldn't use them anyway. For example Geany, our default text editor/IDE that is also part of the default Xfce release is a much better editor than Pluma and Viewnior a better viewer than Eye of MATE.
+
+Once packages show up in the repositories, you should be able to install the MATE desktop using:
+
+```
+sudo slapt-get --install-set mate
+```
+
+and a beta release shouldn't be that far off.
+
+Here's a screenshot in case you're wondering what it looks like...
+
+=> ../../img/mate-14.1.png MATE Desktop for Salix 14.1 [IMG]

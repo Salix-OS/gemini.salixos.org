@@ -1,0 +1,28 @@
+# Our new extra repository
+
+(2016-10-09)
+
+You might have noticed that just before the Salix Xfce 14.2RC1 release a new repository, named extra-14.2 has appeared in our servers. This has been enabled by default in the 14.2RC1 and 14.2RC2 releases and will be also available in the final 14.2 release.
+
+This new repository is present for both i486 and x86_64 architectures and its purpose it to include packages built from SlackBuilds found at slackbuilds.org[1]. At this moment, it's not that full, only about 20 packages are included in it. These are mostly there as proof of concept and for initial testing. Eventually, the extra repository will be filled with packages for almost every SlackBuild present in SBo.
+
+=> https://slackbuilds.org/ 1: https://slackbuilds.org/
+
+For the purpose of automatically building the packages, a new tool, sbobuild[2], has been developed. This takes a list of SlackBuild names as input and continues to build the respective packages, create complete source code trees and keep a log of every build. It's not perfect (yet), it was written in a hurry, but it does the job it is supposed to do for now. Other similar tools exist, like slackrepo[3], but they are only meant to be used in Slackware. As such, they don't take into account the many packages that are already included in the Salix repositories and may introduce conflicts. What sbobuild does, is check if any given software available in SBo is already availabe in the Salix repositories and if it is, it just skips it. For building and uploading the packages that are created to our main repository, we now have a new server, which was only made possible due to user donations.
+
+=> https://github.com/gapan/sbobuild 2: https://github.com/gapan/sbobuild
+=> https://github.com/idlemoor/slackrepo 3: https://github.com/idlemoor/slackrepo
+
+Currently, the `libraries` directory of SBo is being processed and packages keep coming out. As soon as this batch is finished, they will all be uploaded to the main repository and the next batch will follow. The `libraries` directory alone consists of more than 800 packages and SBo holds more than 5000 SlackBuilds. Considering that most SlackBuilds do not take advantage of multiple processors/cores to spawn multiple build instances, this task is going to take some time.
+
+Now, SBo has a few known shortcomings. There are some SlackBuilds that are just unmaintained and have not been updated for a long time, in some cases for years. Then, there are others that have broken download links for their respective source tarballs, sometimes intermittently. And then there are cases of conflicts and incompatibilities that sometimes are known, but in other cases are not and nobody has noticed. Finally, there are a few SlackBuilds that are about software that is really meant to only be built from source. One such examples is ATLAS, which needs to be tuned for every single CPU it runs on. Due to this nature of SBo, not every SlackBuild is guaranteed to work and that is the reason why not everything will be finally built. Of course we're keeping logs with *everything* that fails and we will try to fix some of those builds that failed for any reason.
+
+Additionally, SBo has a policy of constantly updating its contents with new versions, which in my opinion is competely against Slackware's policy (as well as our own) for stability. For that reason, our extra repository will remain mostly static. That means that we will not update packages with newer versions just for the sake of having a newer version. However if we receive reports that something is terribly broken or severely compromised, we will definitely try to fix it. Newer versions, as they are updated in SBo, will be available through Sourcery/slapt-src for any users that want them, but users then will have to take care of any conflicts that might arise.
+
+Also, the packages in the extra repository have not been thoroughly tested, certainly not in the level that packages in the standard Salix repositories have. Think of it as an equivalent to the *Universe* repository in Ubuntu, if you're familiar with it.
+
+In some cases, mostly with Python and Perl libraries and software, not all dependencies will be listed. If you find such a case, please notify us (in the forums or the mailing list) and we'll try to fix it.
+
+Since the extra repository has a lower priority in the `slapt-getrc` settings than the standard Salix repositories, Salix specific packages will always override their counterparts in the extra repository and the users will have no problem updating their systems just by using `slapt-get` from the command line or gslapt from the GUI.
+
+I think this is very exciting news for Salix. The new 14.2 release is going to include more software than was ever available in the repositories for previous releases.

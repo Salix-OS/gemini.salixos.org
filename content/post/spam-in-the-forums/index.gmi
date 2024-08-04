@@ -1,0 +1,23 @@
+# Spam in the Forums
+
+(2019-03-13)
+
+Unfortunately, we're having a huge problem with spammers in our forums. Most of the users that register are actually spammers. This has been going on for a while too.
+
+About a year ago (or maybe more than that? I'm not sure), we moved to using Google's "I am not a robot" checkbox reCAPTCHA. This is supposed to be the best countermeasure against bots. Before doing that, spammers were also a big problem. After moving to the new reCAPTCHA, things improved noticeably. But lately, as it seems, spammers have pulled some tricks and have been able to register successfully with the forums anyway. I'm inclined to believe that the ones that are registering are not bots, but actual people that are being paid to do exactly that and then maybe hand the account over to a bot that will post the spam.
+
+By the way, the posts that spammers make are getting harder to tell apart from legitimate posts. Some are very easy to spot, as they blatantly post links to what they want to advertise (for some reason, usually that is shoes). But most of the times, what they do, is quite advanced; they go through older, legitimate posts, copy some, or all of the text in them, and use that to create a new post. Most of the times, it looks like a perfectly legitimate post and there is no way to tell that it's actually spam.
+
+You might ask, why do they do that and what do they want to achieve? Well, what they used to do, was that they could later edit that post with their spam links. At some point, we disabled post editing after some time, so they weren't able to do that. What they started doing though, was that they didn't touch their earlier, seemingly legitimate, posts at all, but instead edited their signature to include their spam links. And since nobody goes back a month to check for edits in old posts or signatures, that edit went mostly unnoticed.
+
+These, seemingly legitimate posts, are very hard to identify as spammers. The first time I noticed is because I remembered that I had replied to a very similar post in the past. I did a forum search in order to just provide a link to it as an answer, but what I found was that this older post had identical text! So, after that, for every newly registered user that made a seemingly legitimate post, I searched the forum for similar posts. That was indeed a good way to identify them. Some of those bots are even more advanced, instead of searching through the forum to copy text for their posts, they search through the Internet! Most of the times they use similar forums as source, so the posts seem legitimate, but are harder to identify. In most cases, these posts received replies, from users that couldn't identify them as spammers. Sometimes the questions were awkward, like "How do I install Firefox?", when Firefox comes preinstalled in Salix, or completely irrelevant to the forum, like questions about Windows.
+
+Trying to fight that is hard and requires commitment and time. And it drains energy away from development work, that has to be done. A huge thanks goes to our loyal users though, who are reporting obviously spam or "weird" posts as soon as they see them.
+
+So, we've changed our user registration policy in order to help with all that mess. Newly registered users, will need to have their first two posts approved by a moderator, before they become public. Also, until they have published at least two posts, they don't have the permissions to edit their profile information, so they are not able to edit their signatures. We understand that this might pose a slight inconvenience for legitimate users, but we'll try our best to approve posts as soon as we can. We encourage new users to make a new post on our Salix pub forum section[1] to introduce themselves. You don't have to think of anything profound to write, just say hi! That way you'll be able to increase your post count and when the time comes that you actual have a problem, you'll be able to post instantly.
+
+=> https://forum.salixos.org/viewforum.php?f=12 1: https://forum.salixos.org/viewforum.php?f=12
+
+For some reason, since we implemented these changes, no spammers have registered in the forums! I would have expected that they register as usual, but be unable to post anything. Let's see how it goes...
+
+I'm hoping these changes will drive away spammers from our forums and all users will have a better experience.

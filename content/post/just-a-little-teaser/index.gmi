@@ -1,0 +1,9 @@
+# Just a Little Teaser
+
+(2022-02-18)
+
+I've mentioned problems with the installer in my previous blog post[1]. Well, they're solved now. Here's a little something to get you mildly excited. It's the LightDM login screen:
+
+=> /post/are-we-there-yet 1: /post/are-we-there-yet
+
+=> lightdm_salix15.0.png LightDM login screen [IMG]

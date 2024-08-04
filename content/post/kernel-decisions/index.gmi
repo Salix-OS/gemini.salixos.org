@@ -1,0 +1,34 @@
+# Kernel decisions
+
+(2014-01-14)
+
+I've had a few chats lately, either through email, in our forums and in IRC about the kernels that we're including with our 32-bit releases and I thought it would be best if I explained things a bit.
+
+First of all, 32-bit Slackware ships with two different kernels. The first one, which is the most used of the two is an i686 optimized, PAE[1] enabled, SMP[2] capable kernel. The second one is an i486 optimized, non-PAE, non-SMP capable kernel. The options with which these kernels have been built is a decision made by Slackware and it is our policy that we don't change major things like that.
+
+=> https://en.wikipedia.org/wiki/Physical_Address_Extension 1: https://en.wikipedia.org/wiki/Physical_Address_Extension
+=> https://en.wikipedia.org/wiki/Symmetric_multiprocessor_system 2: https://en.wikipedia.org/wiki/Symmetric_multiprocessor_system
+
+While all previous 32-bit Salix releases included both kernels, since the Salix Xfce 14.0 release, we do not ship the i486 kernel anymore for our "big desktop" releases. That includes all Xfce, KDE and MATE releases (we skipped the last one for 14.0, but that's another subject). And that's the same thing that we're going to do for our 14.1 releases.
+
+The reason for this is a simple one: size. The nature of software is to grow and while the iso images for our first Salix Xfce 13.0 releases was no more than 550MB, since 14.0, we are struggling to keep the size within 700MB. And that's with keeping the software that is installed by default the same, more or less. The 700MB limit is a very important one, because it means that the iso image can be burned to a CD-ROM disc. If we exceed that limit, there are mainly two options, either burn and use a DVD-ROM or transfer the image to a USB flash drive and install using that.
+
+I'm only referring to our 32-bit releases, since anyone with a 64-bit capable PC probably has a DVD-ROM drive anyway and certainly can boot using a flash drive. So, I don't really care much if we exceed the limit in our 64-bit releases. But a big portion of older PCs do not support booting from USB and several of them do not have a DVD-ROM drive and our 32-bit releases need to cover for those.
+
+Right now, the latest Salix Xfce 14.1beta1 32-bit iso image is exactly 702MB. That still fits into a CD-ROM disc, the actual limit being a bit higher than that. But it only includes the i686 kernel. If we were to add the i486 kernel as well, that would mean that the iso size would increase by at least another 50MB. And that would definitely put it over the CD-ROM size limit (yes, I know that 800MB CD-ROM discs exist, but they were never that popular, mainly because there were never reliable).
+
+So, we had to make a choice. Either we include the i486 kernel too and require a DVD-ROM to burn and install the iso, or ditch it and keep it within the CD-ROM size limit. We went with the latter.
+
+Now, let's see which CPUs we are excluding exactly with that choice, because there is a lot of misunderstanding going on about that.
+
+A lot of people seem to think that since the i686 kernel is an SMP capable kernel, that immediately excludes all single core CPUs for some reason. But SMP capable just means that the kernel can support multiple cores (or motherboards with multiple CPUs) if it happens to find them and there is no problem at all running such a kernel with a single core CPU.
+
+Then of course there is the issue that the kernel is built for i686. All CPUs that were manufactured after and including the Pentium Pro though, support the i686 instruction set. And Pentium Pro was introduced in 1995. The only CPUs that are actually excluded by the architecture choice are Pentium 1 chips (max 200MHz), i486 chips and compatibles (AMD and Cyrix equivalents) from that era.
+
+The most important issue is actually that the i686 kernel is built with PAE support. Unfortunately that excludes all CPUs that do not support PAE. But still, every CPU that has been manufactured after and including the Pentium Pro supports PAE! The only exception being some Pentium M CPUs, but still not all of those, only the ones with a 400MHz bus, which were marketed using the term "Centrino". By the way, the Pentium M is a CPU that came out in 2003.
+
+So there you have it. The PCs that can't be used to install Salix Xfce, KDE or MATE to, are ones that have an i486, a Pentium 1 or a specific kind of Pentium M CPU, with the only really loss being those few Pentium M PCs. I don't think anyone in their right minds would want to use Xfce or KDE or MATE on an i486 or Pentium 1 PC. And really, nobody would probably want to use KDE on a Pentium M PC either. Xfce and MATE might work modestly, but for that CPU, faster and more spartan alternatives exist.
+
+If we had made a different choice and kept the i486 kernel, sure we would be also covering all PCs with those CPUs as well. But then we would be excluding most of them all over again, requiring a DVD-ROM drive. And in the process we would be excluding all PCs that have a better CPU but only a CD-ROM drive instead of a DVD-ROM drive and also the people that have a bunch of CD-writable media they would want to use. I'm fairly certain that this is a much more significant number of people.
+
+However, all is not lost even for those with those very old CPUs. As we did with our Salix Ratpoison 14.0, release, all our "lighter desktop" releases will also include the i486 kernel. That will certainly include a Ratpoison release and maybe we'll come back to a Fluxbox or LXDE release and I know someone is considering an Openbox release. We might even have a core-only iso, we'll see. These will include both i486 and i686 kernels simply because even if they do, the iso size stays well within the 700MB limit.

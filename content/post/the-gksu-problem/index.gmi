@@ -1,0 +1,46 @@
+# The gksu problem
+
+(2013-11-13)
+
+We had a real problem with ktsuss/gksu while developing for 14.1. It seems that newer versions of the shadow package, and certainly the one that is included in Slackware 14.1, don't allow su to be executed in any other way except directly from a terminal. That means that su cannot be executed as a subprocess from inside ktsuss or the original gksu anymore and these become effectively useless. This is a critical issue for us, because if we don't fix it, almost nothing in the System part of the menu would actually work.
+
+gksu-polkit[1] works around this problem by using policykit for getting superuser proviliges, but it doesn't seem to be developed and it has terrible bugs that cause the CPU to hit 100% and stay there. It would fry your PC.
+
+=> https://live.gnome.org/gksu 1: https://live.gnome.org/gksu
+
+So, one solution, was to patch ktsuss to actually open a terminal and execute su from inside a terminal. But that would mean a terminal popping on the screen and staying there for the duration that you had the application that you launched open. And if you actually closed the terminal, the app would close too. Ugly.
+
+The other solution would be to stick with the shadow version that came with 14.0. ktsuss works fine with that. But we can't rely on older versions of software like that. We can't keep the old version forever and this was no real solution.
+
+So, in the absense of anything else out there that fixes this problem, there was nothing else left but writing my own. Enter *gnsu* (Gnsu's Not SU). It's actually a couple of rather simple shell scripts that use yad[2] to display a window requesting the *user* password to get superuser rights using sudo as a backend.
+
+=> https://code.google.com/p/yad/ 2: https://code.google.com/p/yad/
+
+That means that you don't have to provide (or know) the *root* user password to launch an app with superuser priviliges. But you need to be included in the sudoers list. So you would have to run `visudo` from a root terminal and add something like the following somewhere in the file:
+
+```
+george ALL=(ALL) ALL
+```
+
+to allow user *george* to run apps with superuser priviliges, or something like:
+
+```
+%users ALL=(ALL) ALL
+```
+
+to allow anyone in the *users* group to do the same.
+
+I chose yad for displaying the password request window, for the reason that it has more features than other similar apps out there and would allow me to make the window a bit more beatiful, by displaying an icon in it. It would be trivial to patch gnsu to use zenity, matedialogs, xdialog or any other similar app out there.
+
+The code for gnsu is up on github[3]. It's in early stages, but it works. I still want to add some things, like support for translations and a Makefile, but these can come later. Oh, I could use the strings from our ktssuss translation project[4], so it would be already translated.
+
+=> https://github.com/gapan/gnsu 3: https://github.com/gapan/gnsu
+=> https://www.transifex.com/projects/p/salix/resource/ktsuss-l10n/ 4: https://www.transifex.com/projects/p/salix/resource/ktsuss-l10n/
+
+Now, just symlink gnsu to gksu (not necessary if you install the gnsu package) and everything should work.
+
+There is an added benefit by using sudo as the backend; if you launch something with gnsu from a terminal and then launch something else with gnsu again from the same terminal in a short time after the first one, you don't get a password request the second time (or third, or forth...). This behaviour can be tweaked by editing sudo settings.
+
+Can't get any more simple than that.
+
+Plus, I always wanted to name something with a recursive acronym. :D

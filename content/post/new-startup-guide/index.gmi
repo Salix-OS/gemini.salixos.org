@@ -1,0 +1,27 @@
+# New Startup Guide
+
+(2014-02-24)
+
+We've been working on this for a while and were hoping to have it ready by the time 14.1 is released and it seems that we managed to make it! You can now find the new guide linked from our main website[1].
+
+=> http://salixos.org/guide.html 1: http://salixos.org/guide.html
+
+The startup guide was left with no updates since the 13.37 release, so it was getting a bit old. It was still mostly OK, but there were things that were out of date.
+
+Another thing that was getting in the way was the format that the guide was written in. A tool called Publican was used to create the previous guide, but newer versions of it seemed to only work in Debian (or was it Fedora?). Anyway, it wouldn't work on Salix/Slackware anymore, so we had to switch and convert everything to the new format. Once again, the solution was to go with txt2tags[2].
+
+=> http://txt2tags.org/ 2: http://txt2tags.org/
+
+So, we converted everything to the txt2tags format. From the txt2tags format, we can acquire the equivalent in html output very easily. Then, in turn, the html output is processed through htmldoc[3] to split it in multiple pages and create a table of contents and a lot of sed magic is used to apply css formatting to the output so it looks nice.
+
+=> https://www.msweet.org/projects.php?Z1 3: https://www.msweet.org/projects.php?Z1
+
+The upside of using txt2tags is that it's not only html output that it can produce. Using the same source file, tex files can be created. These can be processed throught TexLive to create a pdf file. And since this is LaTeX we're talking about the result looks absolutely professional. Still, some sed magic was needed here too, in order to make fine changes, but after initial setup, pdf generation is completely automated.
+
+Producing ebooks is the next step. Creating epub and mobi files from the html output is almost ready and these will also be available for download soon. So, you could read the Salix Startup Guide in your favourite ebook reader.
+
+The only downside of using txt2tags like that, is that currently there is no provision for translations. There is simply no way to do it in a sane way. Truth is that translators put a lot of work in the previous versions of the guide, but it seems that we won't be able to provide localized versions of the guide anymore.
+
+The guide may not be 100% ready yet, there might still be small issues that need taking care of, but we think that it's ready for public release as it is. If you find anything that you may think needs fixing, please contact us through our mailing list[4].
+
+=> http://salixos.org/mailinglists.html 4: http://salixos.org/mailinglists.html

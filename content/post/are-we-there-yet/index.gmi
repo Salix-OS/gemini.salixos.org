@@ -1,0 +1,36 @@
+# Are We There Yet?
+
+(2022-02-15)
+
+*Short answer:* No.
+
+*Somewhat longer answer:* Not yet, but we're getting there. There's still lot's of things to do, but there will be an alpha release soon (hopefully).
+
+*Really long answer:*
+
+It has been almost two weeks now that Slackware 15.0 has been released (yay!) and there are now regular inquiries on IRC and in the forums concerning the release of Salix 15.0.
+
+So, no, Salix 15.0 is not ready yet. I thought I would be able to release an alpha until now, but I've hit some problems and didn't have the time to sort them out completely yet. The gap between 14.2 and 15.0 has just been too long and things that were previously working fine, now aren't, simply because some underlying tool/technology has changed. So, we'll need to adapt. And we will, but it just takes time.
+
+And why you may ask, we didn't prepare for this already? It certainly took a lot of time for Slackware 15.0 to be released, so we had lots of time to adapt, right? Well, not quite. Until the last couple of weeks before Slackware 15.0 was released, nobody really had any idea of when that would happen. Even then, it was only just a feeling of "it's getting close". We've had that feeling before. More than a year ago, it felt like Slackware current was stabilizing[1] and perhaps 15.0 was not that far off, but I was completely wrong. Slackware current had a few more breaking changes from that point, rendering most of our work on our repositories until then obsolete.
+
+=> /post/preparing-for-15.0 1: /post/preparing-for-15.0
+
+When that became apparent last year, I just stopped working on it and decided that I would recommence working when things were really started to settle down.
+
+So, what has been done so far? There are about 400 packages in our repositories now, adding to Slackware's own 1600 packages and we're still very far from being done. You can follow the progress by taking a look at the repository[2] changelogs[3] from time to time.  Most of the software that comes included by default with a Salix installation is there already. Libreoffice is now being built from source, instead of just repackaging the official binaries. This is a major change and was needed since there are no official binaries for 32 bit Linux systems anymore. As stated before, we are going to have a 32 bit release for Salix 15.0, at the same time as the 64 bit release. However, the alpha release will probably be 64 bit only. It just doesn't make much sense in duplicating effort at this stage. The 32 bit repositories are getting updated in sync with the 64 bit ones though, so they are not left back in any way.
+
+=> http://slackware.uk/salix/i486/15.0/ChangeLog.txt 2: http://slackware.uk/salix/i486/15.0/ChangeLog.txt
+=> http://slackware.uk/salix/x86_64/15.0/ChangeLog.txt 3: http://slackware.uk/salix/x86_64/15.0/ChangeLog.txt
+
+Most of our system tools have been updated by now. It is now possible to "salixify" a Slackware 15.0 system by adding the slapt-get and spkg packages from our repositories and using them to install all other system tools or additional applications with no problems. Our own mirrors of the Slackware repositories have also been updated with dependency information.
+
+Some changes to default applications are definitely going to happen. As discussed before, our old GDM packages are going to be finally retired. We're probably going to switch to LightDM instead. Packages for lightdm, lightdm-gtk-greeter and lightdm-gtk-greeter-settings are available in our repositories. Although some things were more easily configurable with our old GDM packages (like autologin), there is no missing functionality with LightDM.
+
+Of course, there are things that are still missing. Most notably, our slapt-src, spi and Sourcery system tools! That's not by accident and the upcoming 15.0alpha release will most probably not include them either. The reason is simple: these tools rely on the slackbuilds.org[4] script repositories to function and these are just not ready yet for Slackware 15.0! I'm sure the people there are working really hard to bring all those scripts up to date with 15.0 though.
+
+=> https://slackbuilds.org/ 4: https://slackbuilds.org/
+
+That said, even when SBo will be ready for 15.0, I'm not really sure we will include slapt-src, spi or Sourcery after all! There is this thought in the back of my mind that we will build almost everything in SBo and just offer them as binary packages for 15.0. I guess we'll see how it goes.
+
+So, what still needs to be done for an alpha release? There are a few more packages that need to be updated and uploaded to the repositories. The ones that have to do with default user settings and themes at least. So, we'll have to make some (not final) choices for those too. The most important things though is that the installer needs a lot of work. At its current state, it's not even functional. I was hoping to have it ready last week, but it really needs a lot more work.  With all the work it needs, it crossed my mind to completely switch to the live installer. djemos is kind enough to have updated that for 15.0 already! I found out I'm partial to our standard installer though. I'll really try to make it work.
