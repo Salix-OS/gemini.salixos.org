@@ -17,6 +17,7 @@ update-posts:
 				echo -e "# $$TITLE\n" > content/post/$$BASENAME/index.gmi; \
 				echo -e "Published $$DATE\n" >> content/post/$$BASENAME/index.gmi; \
 				md2gemini -f -l paragraph $(BLOG_DIR)/$$NAME >> content/post/$$BASENAME/index.gmi; \
+				dos2unix content/post/$$BASENAME/index.gmi; \
 				echo "$$DATE $$TITLE $$BASENAME" >> content/post/dates-and-titles.txt; \
 			else \
 				TITLE=$$( head -n 10 $(BLOG_DIR)/$$NAME/index.md | grep "^title:" | sed "s/^title: \"\(.*\)\"/\1/" ); \
@@ -24,6 +25,7 @@ update-posts:
 				echo -e "# $$TITLE\n" > content/post/$$BASENAME/index.gmi; \
 				echo -e "Published $$DATE\n" >> content/post/$$BASENAME/index.gmi; \
 				md2gemini -f -l paragraph $(BLOG_DIR)/$$NAME/index.md >> content/post/$$BASENAME/index.gmi; \
+				dos2unix content/post/$$BASENAME/index.gmi; \
 				echo "$$DATE $$TITLE $$BASENAME" >> content/post/dates-and-titles.txt; \
 				cp $(BLOG_DIR)/$$NAME/*.{png,jpg} content/post/$$BASENAME/; \
 			fi; \
