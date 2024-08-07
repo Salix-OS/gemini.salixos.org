@@ -1,0 +1,49 @@
+# Salix Screenshots
+
+## Salix Xfce 15.0
+
+=> ./Salix-Xfce-15.0-00.png LightDM Login Screen [IMG]
+=> ./Salix-Xfce-15.0-01.png Desktop [IMG]
+=> ./Salix-Xfce-15.0-02.png Appearance Options[IMG]
+=> ./Salix-Xfce-15.0-03.png Main Menu [IMG]
+=> ./Salix-Xfce-15.0-04.png Multimedia Codecs Installer [IMG]
+=> ./Salix-Xfce-15.0-05.png Libreoffice [IMG]
+=> ./Salix-Xfce-15.0-06.png Firefox/Claws Mail[IMG]
+=> ./Salix-Xfce-15.0-07.png Thunar File Manager/Terminal [IMG]
+=> ./Salix-Xfce-15.0-08.png Flathub [IMG]
+=> ./Salix-Xfce-15.0-09.png Gslapt Package Manager [IMG]
+=> ./Salix-Xfce-15.0-10.png Salixtools 1 [IMG]
+=> ./Salix-Xfce-15.0-11.png Salixtools 2 [IMG]
+=> ./Salix-Xfce-15.0-12.png Salixtools 3 [IMG]
+=> ./Salix-Xfce-15.0-13.png GTKMan Manual Page Viewer[IMG]
+=> ./Salix-Xfce-15.0-14.png Switching Apps [IMG]
+
+## Salix System Tools and Applications
+
+=> ./tools-gtkclocksetup.png System clock configuration [IMG]
+=> ./tools-gtkclocksetup-pt.png System clock configuration (Portuguese localization) [IMG]
+=> ./tools-gtkkeyboardsetup.png Systemwide keyboard settings [IMG]
+=> ./tools-gtklocalesetup.png System locale [IMG]
+=> ./tools-gtkreposetup.png Choosing a package repository [IMG]
+=> ./tools-gtkreposetup-el.png Choosing a package repository (Greek localization) [IMG]
+=> ./tools-gtkservicesetup.png System services [IMG]
+=> ./tools-gtkhostsetup.png Hostname configuration [IMG]
+=> ./tools-gtkusersetup.png User configuration [IMG]
+=> ./tools-gtkusersetup-fr.png User configuration (French localization) [IMG]
+=> ./tools-dotnew.png Dotnew configuration file management tool [IMG]
+=> ./tools-guefi.png GUEFI, a tool for managing UEFI options [IMG]
+=> ./tools-flatpak.png Installing software from Flathub [IMG]
+=> ./tools-gslapt.png Installing a package along with its dependencies with Gslapt [IMG]
+
+## User Screenshots
+
+=> ./user-salix-xfce-15.0-eeepc.png Salix Xfce 15.0 (Greek locale) on an Asus eeePC 901 [IMG]
+=> ./user-deniro-15.0.png Salix Xfce 15.0 with Dracula theme -- deniro [IMG]
+=> ./user-oblivion23-15.0.png Salix Xfce 15.0 with official Xfce 4.18 -- oblivion23 [IMG]
+=> ./user-missTell-verticalbar-15.0.png Salix Xfce 15.0, vertical toolbar  -- missTell [IMG]
+=> ./user-missTell-dark-15.0.png Salix Xfce 15.0, dark -- missTell [IMG]
+=> ./user-missTell-capuccino-15.0.png Salix Xfce 15.0, capuccino -- missTell [IMG]
+=> ./user-missTell-icewm-15.0.png Salix 15.0, IceWM, default Salix theme -- missTell [IMG]
+=> ./user-missTell-slim-pink-15.0.png Salix 15.0, Slim Login Manager, Pink theme -- missTell [IMG]
+=> ./user-missTell-icewm-pink-15.0.png Salix 15.0, IceWM, Pink theme -- missTell [IMG]
+

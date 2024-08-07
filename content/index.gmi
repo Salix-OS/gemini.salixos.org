@@ -54,6 +54,7 @@ Salix is developed by an open community of volunteers and contributors all over 
 => ./download Download
 => ./team Team
 => ./chat IRC Channel
+=> ./screenshots Screenshots
 => ./mailinglists Mailing lists
 => ./translate Help Translate
 => ./post Posts
