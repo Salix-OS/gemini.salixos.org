@@ -6,7 +6,7 @@ BLOG_DIR=../blog.salixos.org/content/post
 
 .PHONY: update-posts
 update-posts:
-	for i in $$( ls ../blog.salixos.org/content/post/ ); do \
+	for i in $$( ls $(BLOG_DIR) ); do \
 		NAME=$$( echo $$i ); \
 		BASENAME=$$( echo $$NAME | sed "s/\.md$$//" ); \
 		if [ ! -d content/post/$$BASENAME ]; then \
