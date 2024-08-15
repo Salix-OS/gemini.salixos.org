@@ -1,0 +1,23 @@
+# Bluetooth
+
+## Installing firmware
+
+Bluetooth should be working out-of-the-box if you selected the FULL installation set. But if you didn't choose FULL and you want to have your bluetooth hardware working you can install these packages:
+
+```
+bluez
+bluez-firmware
+bluez-hcidump
+```
+
+using the gslapt package manager
+
+## Bluetooth frontend
+
+Here it depends on the salix flavor you chose  ( eg : if you have chose KDE you should be able to find the frontend to deal with the bluetooth ) But if you don't have the program that deals with bluez or you dont see the bluetooth icon in the notification are then you should be installing :
+
+```
+blueman
+```
+
+a lightweight Bluetooth manager which can get the job done for you .

@@ -1,0 +1,101 @@
+# Install Kernel From Current
+
+If you have hardware that is not supported by the kernel that ships with Salix, you can always compile your own. In most cases though, it is sufficient to install the latest kernel from the repositories. This page contains instructions for this straightforward procedure, and also for installing the kernel manually. In some cases, if there is a regression, meaning hardware that used to be supported doesn't work any more, you might actually need to downgrade to an older kernel, but in most cases the solution will be a more recent one. This is probably the first thing to try before embarking on building the kernel yourself, which can be quite time-consuming, though it is not really that difficult.
+
+=> /docs/user/kernel-compilation compile your own
+
+It is very important to reinstall the bootloader before you reboot, unless your bootloader is controlled by a Linux installation in another partition.
+
+## Installing directly from the repositories
+
+As a general principle, you should stay with the same kernel series, for example, in Salix 14.2, the 4.4 series; it is preferable to install the latest one from the repositories, ensuring as described below that you include all needed packages, and update the bootloader (see Final steps section below).  This is also the most straightforward way of upgrading the kernel. For example:
+
+```
+sudo slapt-get -i kernel-huge kernel-modules kernel-headers kernel-firmware
+sudo eliloconfig  # or lilo -v if not booting with UEFI
+```
+
+This should be all you ever need to do unless you have a specific reason for needing a different kernel. In that case, the latest one from current may be a good choice as long as it is still within the same kernel series.
+
+## Manually installing newer packages
+
+You may download and install any newer packages manually. First, you need to determine which packages these would be:
+
+Run:
+
+```
+ ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed; these are the ones that need upgrading. For instance, if you don't have the kernel-source package installed, you don't need to download the one for your new kernel either. On an x86_64 system, the output might look something like this:
+
+```
+kernel-firmware-20131008git-noarch-1
+kernel-headers-3.10.17-x86-3
+kernel-huge-3.10.17-x86_64-3
+kernel-modules-3.10.17-x86_64-3
+```
+
+### Installing the new kernel packages manually
+
+If you need a different kernel from the one in the repositories, it needs to be installed manually. Assuming you are using the kernel from current, download the corresponding packages for your architecture from any Slackware current mirror, such as:
+
+* http://slackware.oregonstate.edu/slackware64-current/
+
+=> http://slackware.oregonstate.edu/slackware64-current/ http://slackware.oregonstate.edu/slackware64-current/
+
+In the case of that mirror, the packages for a 64-bit system are in the a directory:
+
+* http://slackware.oregonstate.edu/slackware64-current/slackware64/a/
+
+=> http://slackware.oregonstate.edu/slackware64-current/slackware64/a/ http://slackware.oregonstate.edu/slackware64-current/slackware64/a/
+
+Headers are respectively in the d direcotry and the kernel-source package, if needed is in the k directory.
+
+If you have a 32-bit system, change slackware64 to slackware:
+
+* http://slackware.oregonstate.edu/slackware-current/slackware/a/
+
+=> http://slackware.oregonstate.edu/slackware-current/slackware/a/ http://slackware.oregonstate.edu/slackware-current/slackware/a/
+
+Download the packages with a browser, or move to the directory where you will put them and fetch with wget:
+
+```
+wget -c http://slackware.oregonstate.edu/slackware64-current/slackware64/a/kernel-huge-3.10.30-x86_64-1.txz
+```
+
+... etc. In each case, the file you want is the one whose name ends in .txz. (The kernel version number will obviously be different.)
+
+Move to the directory where you downloaded the packages and install each one using spkg:
+
+```
+sudo spkg -u kernel-huge-3.10.30-x86_64-1.txz 
+```
+
+... etc.
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting your upgraded system. If you're still using the default kernel-huge package, an initrd is not needed.
+
+## Final steps - UEFI boot
+
+Run eliloconfig rather than lilo. This will copy the new kernel and if applicable the initrd.gz to the correct subdirectory in /boot/efi.
+
+```
+sudo eliloconfig
+```
+
+First it will ask if you wish to "Install ELILO on the EFI System Partition". This will ensure you boot the correct, new kernel.
+
+Then it asks if you want to "install a boot menu entry". If you just want to boot into Salix, it is ok to choose yes for this, but if you are using rEFInd or grub to multi-boot, select no; the existing configuration should continue to work, giving you the same options as before. For grub, it may be necessary to update grub to register the new kernel. rEFInd just needs it to be in the directory where eliloconfig put it.
+
+You can always use guefi to recover lost boot options, should you find they have disappeared.
+
+## Final steps before rebooting - legacy
+
+After upgrading the packages, and creating the new initrd if needed, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+sudo lilo -v
+```
+
+to inform the bootloader about the kernel upgrade; or use the tool of your choice to update and reinstall the bootloader.

@@ -1,0 +1,70 @@
+# How to Login with SSH Without a Password
+
+A user might need the ability of login to a remote machine without typing password each time. First you need to generate a public authentication key:
+
+## Generating authentication keys
+
+Use this command on a machine you want to login from:
+
+```
+ssh-keygen -t rsa
+```
+
+the output looks like this (empty passphrase was used):
+
+```
+user@host1 $ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/user/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/user/.ssh/id_rsa.
+Your public key has been saved in /home/user/.ssh/id_rsa.pub.
+```
+
+there will also be a hexadecimal key fingerprint and the key's randomart image. Anyway your public key is /home/user/.ssh/id_rsa.pub.
+
+## Copy the key to remote host
+
+Now you have to copy the public key to the remote host you want to be able to login without a password. You can do it manually: create the file ~/.ssh/authorized_keys (if it is not already there) and append the contents of the public key to it. The other way is to use the dedicated tool:
+
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote.host
+```
+
+Next login into the remote host, check if the file ~/.ssh/authorized_keys contains your key, then make sure the permissions are as follows:
+
+```
+chmod 700 ~/.ssh/
+chmod 640 ~/.ssh/authorized_keys
+```
+
+Then you should be able to login via ssh without pasword, like this:
+
+```
+ssh user@remote.host
+```
+
+## Using different keys for different servers
+
+You can use different keys for different servers to increase security and also specify your e-mail address:
+
+```
+user@host1 $ **ssh-keygen -t rsa -C "my@email.com"**
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/user/.ssh/id_rsa): **/home/user/.ssh/id_rsa.example.com**
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/user/.ssh/id_rsa.
+Your public key has been saved in /home/user/.ssh/id_rsa.pub.
+```
+
+To automatically chose the right key create the file ~/.ssh/config and add something like this:
+
+```
+Host example.com
+IdentityFile ~/.ssh/id_rsa.example.com
+
+Host github.com
+IdentityFile ~/.ssh/id_rsa.github.com
+```

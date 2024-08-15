@@ -1,0 +1,35 @@
+# How to Use Sbopkg with Salix
+
+Download the sbopkg package from its homepage The version available at the time of writing this guide is 0.33.2 so we'll use this for our examples. Adjust appropriately for newer versions.
+
+=> https://www.sbopkg.org/ homepage
+
+Open a root terminal and install the package:
+
+```
+# spkg -i sbopkg-0.33.2-noarch-1_cng.tgz
+```
+
+Open the /usr/sbin/sbopkg file with your favorite text editor as root, find the line that reads:
+
+```
+upgradepkg --reinstall --install-new $OLDPKG%"$PKG"
+```
+
+and change it to:
+
+```
+spkg -u --reinstall --install-new $PKG
+```
+
+Save the file after editing and exit. You can then run sbopkg from a root terminal:
+
+```
+# sbopkg
+```
+
+The first time sbopkg is run, some directories need to be created, just press the spacebar when sbopkg asks for their creation. As soon as the sbopkg menu comes up, you'll have to select the Sync option and then you can use sbopkg normally. This will take some time. It's a good idea to sync every now and then, in order to get all updates from the slackbuilds.org repository. Make sure you read the sbopkg documentation.
+
+=> https://www.sbopkg.org/docs.php sbopkg documentation
+
+WARNING: It should be noted that SlackBuilds at slackbuilds.org assume that you have a full Slackware installation, which is obviously not the case with Salix. As such, expect that some of the SlackBuilds available in slackbuilds.org will require you to install extra software in your Salix system in order for them to work properly. If you get build errors and the software doesn't compile right, the best thing you can do is view the build logs and see what is missing, install it and try again. 

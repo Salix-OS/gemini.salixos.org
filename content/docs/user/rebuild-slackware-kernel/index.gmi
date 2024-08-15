@@ -1,0 +1,126 @@
+# How to Rebuild the Slackware Kernel
+
+It should be noted that the default kernel that ships with Salix will work in the vast majority of cases, and no recompiling is necessary. You should only recompile if:
+
+* Your system's hardware (or other feature) is not supported by the default kernel
+* You believe the same kernel can be built with an option to support it
+* To get an extra fraction of a percent hardware performance
+* For fun
+
+Before going ahead, it may be easier (and will in many cases be sufficient to solve the problem) to install the kernel from slackware current, which will always be relatively recent. You can see the instructions on how to compile a different kernel release.
+
+=> /docs/user/install-kernel-from-current install the kernel from slackware current
+=> /docs/user/kernel-compilation how to compile a different kernel release
+
+The procedure is actually quite simple, as long as you remember to reinstall the bootloader before rebooting. However, it can take a long time. Note that the kernel should not be built with root privileges.
+
+## Preparation
+
+First, get the kernel source by installing the kernel-source package from Salix repositories, if needed. We will use the 3.2.25 kernel for this example, but substitute that for the kernel version you want.
+
+Move to the /usr/src/linux-3.2.25 directory (changing 3.2.25 to whichever kernel version applies), and run:
+
+```
+make mrproper
+```
+
+This is a cleaning procedure and will set everything to default. You can work from here, but it is highly recommended to use the working configuration (i.e. the one you've been running on). The default kernel config is found in /proc/config.gz, so copy this file:
+
+```
+zcat /proc/config.gz > .config
+```
+
+Next, you can configure your kernel. The advantage of using the working configuration as a starting-point is you can leave nearly all the options just as they are.
+
+To differentiate the two kernel builds, you need to set a suffix for the kernel version, such as 3.2.25-custom. This can be set in the configuration under General setup, by selecting the option Local version - append to kernel release.
+
+There is a choice of interfaces for the configuration. To use a graphical interface, run:
+
+```
+make gconfig
+```
+
+for the gtk-based config, or on a KDE system to get a qt interface:
+
+```
+make xconfig
+```
+
+or finally an ncursers based menu-driven configuration, which will work even if you're not running X, with::
+
+```
+make menuconfig
+```
+
+The number of different options may appear bewildering, but pretty much all of them can (indeed should) be left unchanged from the working configuration. If in doubt, as a rule of thumb, it is probably best to leave it as is.
+
+## Compiling
+
+Once you have configured the kernel to your liking, save and exit. Then run:
+
+```
+make
+```
+
+to build the kernel. This will take some a long time, depending on how fast your PC is. Average time is probably measured in hours...
+
+## Installing
+
+After compiling is done, run:
+
+```
+sudo make modules_install
+```
+
+to install all of the modules. All of the modules will be installed under /lib/modules/version-custom, where 'version-custom' corresponds to the version of the kernel compiled and the suffix you selected.
+
+Next, copy the created kernel image and system map to the boot directory.
+
+```
+sudo cp -v arch/x86/boot/bzImage /boot/vmlinuz-version-custom
+sudo cp -v System.map /boot/System.map-version-custom
+```
+
+where 'version-custom' corresponds to the version of the kernel compiled.
+
+Assuming the kernel in your working system is the standard one that came with Salix, the new one you just built will also be a 'huge' kernel that doesn't need an initrd, so you can omit the next step.
+
+## initrd
+
+However, if you know you do need to create an initrd.gz file:
+
+```
+sudo /usr/share/mkinitrd/mkinitrd_command_generator.sh -l /boot/vmlinux-version
+```
+
+will generate a mkinitrd command that you can then copy and paste. By default, it will output to /boot/initrd.gz. You may want to change this when cutting and pasting so that it will output to /boot/initrd-version-custom.gz. Note that a suggested lilo stanza is also created, but the initrd itself is only made when you run the 'mkinitrd' command itself.
+
+As a final step, edit /etc/lilo.conf so that it will see the newly created kernel, including the 'initrd' line only if you created one:
+
+```
+image = /boot/vmlinuz-version-custom
+root = /dev/sda6
+initrd = /boot/initrd-version-custom.gz
+label = "New Kernel"
+read-only
+```
+
+## Refresh LILO
+
+Don't forget to run
+
+```
+sudo lilo -v
+```
+
+to take effect of the new configuration; or use whichever tool you prefer to install the bootloader.
+
+That's it. When you reboot, you should see the new kernel in the lilo menu, and everything should work. As a check, after the system reboots itself:
+
+```
+uname -a
+```
+
+You should see that the kernel version (with your suffix) is indeed what was just made.
+
+The old kernel is still present, and your bootloader will still include an option to boot with it as a fallback. Once you are certain everything is working properly with the new one, you may wish to remove the old entry from the bootloader and (optionally, with care) delete the old kernel in /boot.

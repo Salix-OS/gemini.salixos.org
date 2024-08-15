@@ -1,0 +1,34 @@
+# Start Your Window Manager from the Login Screen Menu
+
+If you have installed another Window Manager for your system, like Fluxbox, you may find that it may not appear in your Login Screen Menu in LightDM, or any other Display Manager you may be using.
+
+This is because some window manager packages may not include the proper support for that. For example, Fluxbox is such a package. It is a package provided by Slackware and does not include what is needed to create a menu entry for your Display Manager. You can fix this issue and start your preferred Window Manager in two ways.
+
+## Use the configured xwmconfig WM
+
+You may select your preferred Window Manager by running:
+
+```
+xwmconfig
+```
+
+(you don't need to run this as root or with sudo)
+
+After that, at the login screen, just select the "Xsession default" option. Whichever Window Manager you have configured with xwmconfig will be started.
+
+## Add custom menu entry
+
+You can also add a custom menu entrty yourself by creating a file in /usr/share/xessions. For the Fluxbox example, this could be a/usr/share/xsessions/fluxbox.desktop file with the following contents:
+
+```
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Name=Fluxbox
+Exec=dbus-launch /etc/X11/xinit/xinitrc.fluxbox
+Icon=fluxbox
+```
+
+Next time you will get to the login screen, Fluxbox will be available as an option.
+
+The process should be the same for any other Window Manager that is missing a menu entry. Just look in the /etc/X11/xinint/ directory to find the respective xinitrc file to use.

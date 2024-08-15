@@ -1,0 +1,70 @@
+# How to Beta Test
+
+## Beta Testing and what's involved...
+
+### First Steps
+
+When the developers announce a new version of a distribution is available for testing, they really appreciate anyone who actually downloads and installs the beta version so that they can find any major bugs in the release.
+
+So there is the first thing that is involved - download and install the release.
+
+What should be done if it doesn't install properly, or has some sort of problem and won't reboot after the install?
+
+Report it - please post your comments to the release annoucement in the forum, so everything is in one place. Read through the thread to see what others have discovered. Your feedback should be as detailed as you can make it - where it failed/hiccupped, how it recovered (or if it didn't) and any information on what was happening on the screen. Some details of your setup could also be appropriate - whether it was a 32 or 64 bit version, if it was a virtual machine or a bare metal install, what type of install it was (core, basic or full), any workarounds you found and basically anything else you think might be important.
+
+Remember the aim is to give the developers information so that they can fix whatever is wrong for all the users (including you!).
+
+If you get the release to install without problems, testing basic functionality can be really helpful.
+
+### Second Step
+
+For a core install, where no GUI is available, start programs from their own terminal(s) - this not only keeps them contained, but usually an application will happily spit out information to the terminal window that may be of great help to the developers if there are any problems. Even just checking that what you are wanting to run or use on a regular basis is a help.
+
+For a basic or full install, note any GUI screen glitches (e.g. not having your maximum resolution available, any tearing or glitching of the graphics system, colours that you know are wrong etc.), any sub-systems that don't/won't start, any on-screen messages/windows from underlying software that are detailing problems, check networking is up and running, check internet connectivity - in short, check that the sub-systems are working as you would expect before running any applications, and note down anything that you think is wrong.
+
+If nothing appears to be amiss, then start testing your usual aplications - testing each installed application is a real pain, especially if you don't use them - but it all helps, even if you just check that they start from the menu(s). If you haven't got the time, then just checking the ones you regularly use is still helpful.
+
+### Third Step
+
+The single most important step in Beta Testing is...
+
+Report your results!
+
+If it works as you expect, then let the developers know - say what you tested and what works.
+
+If it doesn't work as you expect, then let the developers know - say what you tested and what didn't work, and put the notes you made earlier in the report.
+
+The developers will thank you, and down the track the users will thank you, and the end result of this is a much pleasanter user experience for all.
+
+### If you really dig this stuff...
+
+For those of you who want a more proscribed approach, here are the steps I follow when I decide to beta test a new release.
+
+Download the iso and generate and check the md5sum/SHA1. Note any area of particular concern to the developers that they would like tested.
+
+Install to bare metal:
+
+* core
+* check all sub-systems
+* check my most used applications (I am most familiar with them and can note changes/problems quickly)
+* check other important applications (important in the sense that a lot of people use them, or important in the sense that they have been upgraded in this release and need checking)
+* prepare a report
+
+Repeat for 32bit basic and full with these added steps:
+
+* check/install appropriate graphics drivers
+* check basic desktop functionality - copy/paste, open/close, delete/trash etc.
+* check my most used applications.
+* work through the menu of applications as supplied with a view to checking that they all work.
+* try any "distro specific" tools (codec installer, Sourcery or Gslapt for Salix)
+* prepare a report
+
+TIP: [REALITY CHECK] Generally, if it works in a core install, it will work in a basic or full install as it is the same package - where you may get problems is when it interacts with extra bits put in by a basic or full install. That is why I say to test it again in the later installs. 
+
+Repeat all of the above for 64 bit.
+
+Repeat all of the above for virtual machine installs.
+
+Submit your reports as you see fit, but sooner rather than later. Don't forget to specifically mention any areas that the developers wanted tested and what you found for that particular area.
+
+Remember, Beta Testing is important, but it doesn't have to be formal, proscribed or daunting. Just download, install and use, and report any problems - and if you don't get any problems, report that too!

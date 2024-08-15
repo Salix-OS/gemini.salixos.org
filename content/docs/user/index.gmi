@@ -1,0 +1,43 @@
+# User Documentation
+
+Welcome to the documentation section for Salix users. This section is designed to help you get the most out of your Salix experience, with guides and tutorials on how to install, configure, and use Salix. Whether you’re new to Salix or just looking for help with a specific task, this is the place to look first for the information you need to get started.
+
+In case you don't find what you're looking for here, you can always visit our forums or reach us in our IRC channel.
+
+=> https://forum.salixos.org/ forums
+=> https://salixos.org/chat.html IRC channel
+
+
+=> /docs/user/access-server-in-virtualbox How to Access a Server Running in a VirtualBox Guest
+=> /docs/user/bluetooth Bluetooth
+=> /docs/user/boot-into-existing-installation Boot Into Existing Installation on Hard Disk Using Installation CD
+=> /docs/user/broadcom How to Install b43 Firmware for Broadcom Wireless Cards
+=> /docs/user/configure-own-dns-server How to Configure Your Own DNS Server With a Static IP
+=> /docs/user/enable-horizontal-scrolling-3-button-mouse How to Enable Horizontal Scrolling With a 3-Button Mouse
+=> /docs/user/fix-unknown-filetypes-in-browser Fix Unknown Filetypes in Browser
+=> /docs/user/greek-polytonic-on-openbox Greek Polytonic on Openbox
+=> /docs/user/how-to-beta-test How to Beta Test
+=> /docs/user/how-to-create-a-video-DVD-from-the-CLI How to Create a Video DVD from the CLI
+=> /docs/user/install-different-kernel How to Install a Different Kernel
+=> /docs/user/install-from-usb Install Salix from a USB stick
+=> /docs/user/install-guest-additions-in-virtualbox-guest How to Install the Virtualbox Guest Additions in a Salix Guest
+=> /docs/user/install-kernel-from-current Install Kernel From Current
+=> /docs/user/install-nvidia How to Install the Proprietary NVIDIA Driver
+=> /docs/user/kernel-compilation How to Compile the Linux Kernel
+=> /docs/user/lilo LILO
+=> /docs/user/multilib How to Install Multilib
+=> /docs/user/rebuild-slackware-kernel How to Rebuild the Slackware Kernel
+=> /docs/user/remove-unnecessary-xorg-packages How to Remove Unnecessary Xorg Packages
+=> /docs/user/repository-mirrors Repository Mirrors
+=> /docs/user/restore-fluxbox-menu Restore Fluxbox Menu
+=> /docs/user/salixlive How to Install Salix Live on a USB Key?
+=> /docs/user/sbopkg How to Use Sbopkg with Salix
+=> /docs/user/setup-alpine-with-gmail How to Setup Alpine With a Gmail Account
+=> /docs/user/setup-basic-firewall Setup Basic Firewall
+=> /docs/user/slackbuilds-in-salix-repos Slackbuilds in Salix Repositories
+=> /docs/user/ssh-without-password How to Login with SSH Without a Password
+=> /docs/user/start-wm-from-login-screen Start Your Window Manager from the Login Screen Menu
+=> /docs/user/tune-ssd How to Tune an SSD
+=> /docs/user/upgrading Upgrading Between Releases
+=> /docs/user/virtualbox-host-devices How to Access Host USB Devices in a Guest OS Running in VirtualBox PUEL
+=> /docs/user/xorg-on-core How to Install Xorg on Salix Core

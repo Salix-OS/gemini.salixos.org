@@ -1,0 +1,101 @@
+# How to Upgrade Salix 13.0 to 13.1
+
+## Preparing for the upgrade
+
+You first need to change the default repositories to the ones for Slackware and Salix 13.1. Open file /etc/slapt-get/slapt-getrc and change all "13.0" instances to "13.1". Also make sure the Slackware repositories have an OFFICIAL priority. Example setups are show below:
+
+### i486 architecture
+
+```
+SOURCE=http://salix.enialis.net/i486/slackware-13.1/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/slackware-13.1/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/13.1/:PREFERRED
+```
+
+### x86_64 architecture
+
+```
+SOURCE=http://salix.enialis.net/x86_64/slackware-13.1/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/slackware-13.1/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/13.1/:PREFERRED
+```
+
+After you make the changes, run
+
+```
+slapt-get -u
+```
+
+## Upgrading packages
+
+It's always safer to upgrade your glibc package first:
+
+```
+slapt-get -i glibc
+```
+
+And then upgrade all other packages to their new versions:
+
+```
+slapt-get --upgrade
+```
+
+DO NOT use:
+
+```
+slapt-get --dist-upgrade
+```
+
+in any case. Although it might seem to be the best option for upgrading to a different version, it really isn't.
+
+Upgrade your udev package, it's locked for upgrades in /etc/slapt-get/slapt-getrc so you have to ask for it explicitly:
+
+```
+slapt-get -i udev
+```
+
+## Obsolete packages
+
+Some packages have been obsoleted and should be removed. Some have been replaced by new packages. You can do this automatically with:
+
+```
+slapt-get --remove-obsolete --remove
+```
+
+Careful, because this will also remove all personal packages that you might have installed, if any. If you want a complete list of the obsolete packages, read the Slackware and Salix changelogs and look for entries marked with "Removed":
+
+## Upgrading the kernel
+
+You don't need to upgrade your kernel, especially if your hardware is running with no problems with the old kernel. If you want to, be advised that there might be complications if your system includes ATA hard drives. If you system includes SATA hard drives only, you'll have no such problems.
+
+If you do have ATA hard drives, make sure your read the "LIBATA SWITCHOVER" section in the Slackware CHANGES_AND_HINTS.TXT file in any Slackware 13.1 repository, or you're likely to have your system not booting after the upgrade.
+
+=> http://slackware.uk/slackware/slackware-13.1/CHANGES_AND_HINTS.TXT CHANGES_AND_HINTS.TXT
+
+If you don't have any ATA hard drives, run a:
+
+```
+ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed and do a slapt-get -i for each one of them.
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting you upgraded system. If you're still using the default kernel-huge package, an initrd is not needed anyway and you needn't be concerned about it.
+
+After upgrading the packages, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+lilo -v
+```
+
+to inform the bootloader about the kernel upgrade.
+
+## Configuration files
+
+After doing all the upgrades, run:
+
+```
+dotnew
+```
+
+to accept or reject new configuration files. Make sure that you DO NOT replace your /etc/passwd, /etc/shadow or /etc/group files. If you do, you will lose all users/groups/passwords you have in your system. However, even if you do, you can get the old files back, they will be kept in the same locations, with an .orig suffix.

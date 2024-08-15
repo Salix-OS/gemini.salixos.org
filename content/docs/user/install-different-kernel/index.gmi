@@ -1,0 +1,42 @@
+# How to Install a Different Kernel
+
+If you have hardware that is not supported by the kernel that ships with Salix, you can compile your own. In most cases though, it is sufficient to install the latest kernel from the repositories. This page contains instructions for this straightforward procedure, and also for installing the kernel manually. In some cases, if there is a regression, meaning hardware that used to be supported doesn't work any more, you might actually need to downgrade to an older kernel, but in most cases the solution will be a more recent one. This is probably the first thing to try before embarking on building the kernel yourself, which can be quite time-consuming, though it is not really that difficult.
+
+=> /docs/user/kernel-compilation compile your own
+
+It is very important to reinstall the bootloader before you reboot, unless your bootloader is controlled by a Linux installation in another partition. # Installing directly from the repositories
+
+As a general principle, you should stay with the same kernel series, for example, in Salix 14.2, the 4.4 series; it is preferable to install the latest one from the repositories, ensuring as described below that you include all needed packages, and update the bootloader (see "Final steps" below). This is also the most straightforward way of upgrading the kernel. For example:
+
+```
+sudo slapt-get -i kernel-huge kernel-modules kernel-headers kernel-firmware
+sudo eliloconfig  # or lilo -v if not booting with UEFI
+```
+
+This should be all you ever need to do unless you have a specific reason for needing a different kernel. In that case, the latest one from current may be a good choice, but make sure there are no major incompatibilities first.
+
+=> /docs/user/install-kernel-from-current the latest one from current
+
+# Final steps - UEFI boot
+
+Run eliloconfig rather than lilo. This will copy the new kernel and if applicable the initrd.gz to the correct subdirectory in /boot/efi
+
+```
+sudo eliloconfig
+```
+
+First it will ask if you wish to "Install ELILO on the EFI System Partition". This will ensure you boot the correct, new kernel.
+
+Then it asks if you want to "install a boot menu entry". If you just want to boot into Salix, it is ok to choose yes for this, but if you are using rEFInd or grub to multi-boot, select no; the existing configuration should continue to work, giving you the same options as before. For grub, it may be necessary to update grub to register the new kernel. rEFInd just needs it to be in the directory where eliloconfig put it.
+
+You can always use guefi (find it in the System menu) to recover lost boot options, should you find they have disappeared.
+
+# Final steps before rebooting - legacy
+
+After upgrading the packages, and creating the new initrd if needed, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+sudo lilo -v
+```
+
+to inform the bootloader about the kernel upgrade; or use the tool of your choice to update and reinstall the bootloader.

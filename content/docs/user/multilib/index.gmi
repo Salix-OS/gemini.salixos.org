@@ -1,0 +1,68 @@
+# How to Install Multilib
+
+WARNING: Multilib is not officially supported in Salix and it is not recommended. Follow these instructions at your own risk. 
+
+=> http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:multilib Original Source
+
+In this guide we will discuss how to install multilib support for 32bit apps on a 64bit Salix. It is based on a 'full' version of Salix. The source guide is more in-depth, this guide is only the minimal steps required for Salix. If you are using a more recent Salix version, adjust '15.0' accordingly.
+
+## Obtain/Install multilib Packages
+
+The multilib-enabled packages and scripts are available for download from AlienBob's multilib repository
+
+=> http://connie.slackware.com/~alien/multilib/ AlienBob's multilib repository
+
+All the required packages can be downloaded into your home>download with the following command:
+
+```
+cd ~/Download/
+wget -r -l1 --no-parent http://connie.slackware.com/~alien/multilib/15.0/
+```
+
+To install the packages, we will run the terminal within the '15.0' directory downloaded above, then install:
+
+```
+cd ~/Download/connie.slackware.com/~alien/multilib/15.0/
+su
+upgradepkg --reinstall --install-new *.t?z
+```
+
+## Obtain/Install 32-Bit Slackware Package Tree
+
+The instructions on the source page require you to setup a package tree and then convert the packages to suit.
+
+Alternatively, the essential and already converted packages can be downloaded and installed with the following commands:
+
+```
+cd ~/Download/
+wget -r --no-parent http://connie.slackware.com/~alien/multilib/15.0/slackware64-compat32/
+cd ~/Download/connie.slackware.com/~alien/multilib/15.0/slackware64-compat32/
+su
+installpkg *-compat32/*.t?z
+```
+
+## Using 32-Bit Software
+
+Pre-compiled software can be installed and run as-is. If the software you are running requires a library that is not available, follow  these instructions to install it.
+
+=> http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:multilib#running_32-bit_programs these instructions
+
+If you are installing software from souce, first you must run the following command to configure the terminal to use the 32-bit packages (The effect will last until you logout from your shell!):
+
+```
+. /etc/profile.d/32dev.sh
+```
+
+If you are installing software from a SlackBuild or similar, please consider these additional instructions.
+
+=> http://alien.slackbook.org/dokuwiki/doku.php?id=slackware:multilib#compiling_32-bit_programs additional instructions
+
+## Alternatively...
+
+A script to do it all for you may be found in the forums
+
+=> http://forum.salixos.org/viewtopic.php?f=20&amp;t=4910&amp;p=31878&amp;hilit=multilib#p31878 in the forums
+
+## Finally
+
+Whichever method you use, you need to add gcc* and glibc* to the excludes in /etc/slapt-get/slapt-getrc, whether directly or through the GSlapt interface; otherwise when you do a package upgrade, the new multilib packages will be downgraded to their original, standard versions in the repositories.

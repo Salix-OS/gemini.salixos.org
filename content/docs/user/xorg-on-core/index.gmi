@@ -1,0 +1,93 @@
+# How to Install Xorg on Salix Core
+
+## Installing Xorg
+
+The easiest way to install Xorg on top of Salix Core is to install everything under the /x repository directory. To do that, first update your package database
+
+```
+slapt-get -u
+```
+
+and then run:
+
+```
+slapt-get --install-set x
+```
+
+That will install every package that is in the /x directory and will give you a working Xorg. It would be a good idea to install some icon themes, or many apps won't display properly:
+
+```
+slapt-get -i icon-naming-utils hicolor-icon-theme tango-icon-theme
+```
+
+## Install a Window Manager
+
+Most people would want something other than TWM, so you can install a minimal window manager, like icewm or fluxbox:
+
+```
+slapt-get -i icewm
+```
+
+or
+
+```
+slapt-get -i fluxbox
+```
+
+or similar for the one you want to install.
+
+To make that window manager the default for your user, do
+
+```
+cp /etc/X11/xinit/xinit.icewm ~/.xinitrc
+```
+
+for icewm, or
+
+```
+cp /etc/X11/xinit/xinit.fluxbox ~/.xinitrc
+```
+
+for fluxbox, or similar for any other window manager, you get the point.
+
+You can now test your favourite minimal window manager with:
+
+```
+startx
+```
+
+## Graphical login
+
+If you want to have a graphical login screen, you have to install lightdm:
+
+```
+slapt-get -i lightdm
+```
+
+Perhaps it's a good idea to test lightdm before you set it as default. Start the graphical login manager with:
+
+```
+init 4
+```
+
+If it works you can edit /etc/inittab and replace the following lines
+
+```
+# Default runlevel. (Do not set to 0 or 6)
+id:3:initdefault:
+```
+
+with
+
+```
+# Default runlevel. (Do not set to 0 or 6)
+id:4:initdefault:
+```
+
+## Additional software
+
+You can then add any graphical apps you might be needing with slapt-get.
+
+You can of course remove any unnecessary Xorg packages that you may not need.
+
+=> /docs/user/remove-unnecessary-xorg-packages remove any unnecessary Xorg packages

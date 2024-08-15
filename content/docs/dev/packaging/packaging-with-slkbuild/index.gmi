@@ -1,0 +1,215 @@
+# Building Packages with slkbuild
+
+slkbuild is a script which makes package creation much easier. It parses a meta file called a SLKBUILD and creates a conventional build-name.sh script and then optionally runs it. It is inspired by the arch build system and greatly simplifies the build process. It is available in the repositories and it is a good idea to have it installed when going through this tutorial. Note that this is not a substitute for knowing how to compile. You still need to know how to compile, you just won't need to know much more than that to package as this tool generally takes care of the mundane and obscure packaging rules.
+
+## Features
+
+These are things automatically taken care of by the build script that slkbuild creates not mentioned below.
+
+* Put custom files in /usr/src/$pkgname-$pkgver - Copy source files that
+
+don't contain a URL
+
+* Untars source tarballs - this is explained below in build() somewhat, but
+
+it untars any source tarballs so all you have to do is cd into the untarred directory and do what you need to do to get it into the DESTDIR. See below build() in HOWTO.
+
+* Cleans old build - sometimes you need to build something more than once
+
+and before the build script runs it cleans out all the old stuff
+
+* Auto downloads source - if you provide the source as a url, the build
+
+script is written to automatically download that url if the file is not in the directory already.
+
+* Sets permissions - makes sure all the standard permissions are set.
+* checks for menu compliance - it makes sure that any Icon= variables in
+
+.desktop files don't have extensions.
+
+* Strips binaries - finds all the binaries and strips them of symbols
+* Deals with man and info pages - it checks to see if they were installed
+
+in /usr/share and if so moves them to /usr so --mandir=/usr/man is no longer necessary and gzips them.
+
+* Copies over the build script - copies the build-$pkgname.sh script that
+
+is created by slkbuild, and the respective SLKBUILD.
+
+* Creates the package - does the makepkg and calculates the md5sum.
+* Copy .desktop file - copy the .desktop file to usr/share/applications.
+
+## HOWTO SLKBUILD
+
+The first thing you must do is create a proper SLKBUILD and put it in an empty directory. Here is an example (obviously not a real one) with explanations. See man SLKBUILD for explanations or look below.
+
+```
+#Maintainer: Alfred Zomtec <email@address.com>
+#Former Maintainer(s): Thorsten Vlahavas <email@address.com>
+
+#Mandatory
+pkgname=libdv
+pkgver=1.0.0
+pkgrel=1az
+arch=i586
+source=("http://project-xy.net/dl/$pkgname/$pkgname-$pkgver.tar.gz" \
+        "thing.desktop" \
+        "anyothersourcestuff")
+sourcetemplate=http://my-server.net/packages/$pkgname/
+#Optional
+docs=('authors' 'copying' 'changelog' 'install' 'news' 'readme')
+url="http://libdv.sourceforge.net/"
+dotnew=('etc/thing' 'etc/foo' 'etc/bar')
+options=('noautodotnew')
+CFLAGS="-03 -funrolloops"
+CXXFLAGS="-03 -funrolloops"
+
+slackdesc=\
+(
+#|-----handy-ruler------------------------------------------------------|
+"libdv (software codec for DV video)"
+"The Quasar  DV codec (libdv) is a software codec for DV video, the"
+"encoding format used by most digital camcorders, typically those that"
+"support the IEEE 1394 (a.k.a. FireWire or i.Link) interface. Libdv was"
+"developed according to the official standards for DV video: IEC 61834"
+"and SMPTE 314M"
+)
+
+build() {
+    cd $startdir/src/$pkgname-$pkgver
+    	./configure \
+    	--prefix=/usr \
+    	--libdir=/usr/lib${LIBDIRSUFFIX} \
+    	--localstatedir=/var \
+    	--sysconfdir=/etc \
+    	--mandir=/usr/man
+    make || return 1
+    make DESTDIR=$startdir/pkg install
+}
+
+doinst() {
+  # commands run after installation
+}
+```
+
+### Mandatory
+
+* pkgname - package name, the name of the software:
+
+libdv-1.0.0-i586-1az.tgz
+
+* pkgver - package version, the version of the software:
+
+libdv-1.0.0-i586-1az.tgz
+
+* pkgrel - package release, this is that number at the end of the tgz,
+
+including the initials of the packager: libdv-1.0.0-i586-1az.tgz
+
+* arch - the architecture of the build, usually i586 or noarch, on some
+
+occasions i686: libdv-1.0.0-i486-1az.tgz. This is not mandatory and will default to your system's architecture. You'll still need to use it for "noarch" packages.
+
+* source - these are all the files that will be used in the build. You can
+
+either put a url which will be downloaded if it isn't found in the directory. Or you can just put the file like the commented out one below it. If you have more than one file like a patch or an icon just add it to the array like this: source=("thing.tar.gz" "foo.patch" "bar.icon"). If you don't specify a url for a file, that file will be copied inside the package, in a /usr/src/$pkgname-$pkgver directory.
+
+* slackdesc - These are the lines for the slack-desc in the package. Make
+
+sure each line is under 70 characters, you can ensure that by following the commented out ruler. Use the general rules for this, the first line has the name and a short description. The lines under it have a longer description. Don't worry about skipping line 2, the slkbuild does that automatically. Put quotes around each line and make sure you don't have more than ten lines. All of these rules are checked by the script to make sure they are compliant so don't be too worried, it will tell you.
+
+* build() - This is the function that actually creates the package. To
+
+understand this, you need to know what the build script does before it runs it. The build script first assigns "pwd" to $startdir. It then creates $startdir/src. It then copies everything in the source=() array into $startdir/src and untars any tarballs. After that it creates $startdir/pkg. Your jobs in build() is to do whatever you need to do in $startdir/src to get $startdir/pkg setup as a DESTDIR.  Remember that it automatically untars tarballs, so here what happens is I change into the untarred directory compile and then install into $startdir/pkg. Don't worry about gzipping and stripping and all of that stuff, it is handled by the build script. Also try to do "make || return 1" so that the build script stops if the compile fails.
+
+### Optional
+
+* sourcetemplate - url location where SLKBUILD and build-name.sh can be
+
+downloaded. Furthermore all files from source without url must be available at this location.
+
+* docs - put any of the docs that need to be copied over, readme install
+
+changelog, etc. are common ones. Don't worry about case or path, it does a recursive case insensitive search for them and moves them over when it finds it.
+
+* options - this is an array which allows you to control certain behaviors
+
+of the build script that is generated. The options it takes are 'noextract' which prevents the script from automatically extracting tarballs, this is useful in dealing with tarbombs and some other instances. If you use this, it is necessary to untar any tarballs yourself in build(). The 'nostrip' option prevents the execution of the stripping function, can be useful in some applications, that break if they are stripped. 'noautodotnew' is used to remove the automatic dotnew handling in all files in etc. 'tgz', 'tbz' and 'tlz' set the compression format for the resulting package, the default is txz. If you set more than one of 'tgz', 'tbz' and 'tlz',  only the first one will be used. whichever is that.
+
+* url - Homepage or some other information url about the software.
+* dotnew - These are generally configuration files. They will be renamed
+
+with a .new extension and the appropriate addition will be made to the doinst.sh to move them over if appropriate to do so during install.
+
+* doinst() - These are any of the commands (note dotnew stuff is taken care
+
+of so don't put that here) that you want run right after install that won't be added automatically by makepkg.
+
+* CXXFLAGS/CFLAGS - You can set these to override the default flags which
+
+on 32bits are:
+
+```
+-02 -march=$arch -mtune=i686
+```
+
+on 64bits they are:
+
+```
+-O2 -fPIC" on x86_64,
+```
+
+on arm they are:
+
+```
+-O2 -march=armv5te
+```
+
+and in other cases they are:
+
+```
+-O2 -march=$arch
+```
+
+where $arch is the variable you set in SLKBUILD. Note that if you override it, you need to put all the flags. Like if you just want to change -02 to -03, you would need to put
+
+```
+CFLAGS="-03 -march=$arch -mtune=i686"
+```
+
+and not just
+
+```
+CFLAGS="-03"
+```
+
+## How to run slkbuild
+
+It's strongly recommended that you use fakeroot together with slkbuild. This will save your system from possible trouble. See the fakeroot man page how it works. You cd into the directory with the SLKBUILD and all the source files if any and you can do one of the following:
+
+* slkbuild - run with no arguments it creates a conventional
+
+build-$pkgname.sh file which you can inspect and then run.
+
+* slkbuild -c - Remove pkg and src directories
+* slkbuild -x - does the same as slkbuild with no arguments except it
+
+executes the build script it creates therefore allowing for all in one packaging.
+
+* slkbuild -X - Combines -x and -c together
+* slkbuild -g[prototype] - copies a SLKBUILD prototype from /etc/slkbuild
+
+into the current directory. It optionally takes a prototype argument which allows you to store multiple prototypes. The prototype argument is actually the extension of the name of the SLKBUILD prototype in /etc/slkbuild. So if you did slkbuild -gpython, it would copy over /etc/slkbuild/SLKBUILD.python. Or if you did slkbuild -gfoo, it would copy over /etc/slkbuild/SLKBUILD.foo. When run with no arguments, just slkbuild -g, it copies over /etc/slkbuild/SLKBUILD.
+
+* slkbuild -v - print version
+
+## Man Pages
+
+For some different and perhaps more in depth information there are two man pages:
+
+* man SLKBUILD
+* man slkbuild
+
+## Building packages from git or svn sources
+
+=> /docs/dev/packaging/git-svn-sources-with-slkbuild/ Getting git or svn sources for use with slkbuild

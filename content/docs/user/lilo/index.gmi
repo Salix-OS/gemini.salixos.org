@@ -1,0 +1,95 @@
+# LILO
+
+LILO (the LInux LOader) is the default bootloader for Salix for systems that use a BIOS, instead of an EFI implementation to boot. This page provides some tips with respect to LILO usage.
+
+### LILO is loading slowly
+
+Sometimes LILO is booting very slowly showing lines of dots on the screen. To fix this just add a line containing "compact" (without quotes) at the top inside the global section of /etc/lilo.conf by editing it through a text editor or LiloSetup; then reinstall LILO.
+
+### Chainload another system or bootloader
+
+With the two simple lines below you're able to chainload - which is much like redirection - another bootloader (or system) that is able to continue the boot process by itself:
+
+```
+other = /dev/partition
+label = Name
+```
+
+where partition stands for i.e. sda1, sda5, etc.
+
+Most often this is used to boot Windows by chainloading its own native bootloader:
+
+```
+other = /dev/sda1
+label = Windows
+```
+
+However it also allows to chainload another LILO or GRUB instance if either was not installed in the MBR but on a separate partition. For example assume Fedora installed its bootloader on partition sda5 and Salix in MBR (sda). In such case we can load Fedora`s bootloader with:
+
+```
+other = /dev/sda5
+label = Fedora
+```
+
+Just add these two lines below the global section of /etc/lilo.conf among other entries for Linux.
+
+### Custom bitmap for LILO
+
+This is quite easy with GIMP:
+
+1. Take an image
+2. Scale it to 640x480
+3. Choose Image-&gt;Mode-&gt;Indexed
+4. Generate optimum palette (255 colors, you may want to experiment with dithering to gain quality)
+5. Save as name.bmp (Windows BMP Image)
+6. enable Run-Length Encoded during saving
+
+Copy the new image to the /boot directory and specify its name in /etc/lilo.conf by finding and modifying the line:
+
+```
+bitmap = /boot/name.bmp
+```
+
+Reinstall LILO:
+
+```
+sudo lilo -v
+```
+
+If it complains about the bitmap then one of the steps above must have gone wrong. Here you find an example colored LILO bitmap for Salix
+
+=> /docs/images/lilo-color-salix.bmp example colored LILO
+bitmap for Salix
+
+### Adding Memtest
+
+Memtest is a useful tool that allows testing memory for errors. It is easy to add it to LILO menu:
+
+1. Download memtest as Pre-Compiled Bootable Binary (.gzip or .zip)
+2. extract it into /boot directory
+3. rename to memtest to simplify LILO entry
+4. add the two lines as below to /etc/lilo.conf below the global section among other entries for Linux and reinstall LILO
+
+=> http://www.memtest.org/#downiso Download memtest
+
+```
+image=/boot/memtest
+label=Memtest
+```
+
+### Restrict passing parameters
+
+Passing parameters to the kernel with LILO is not restricted by default, so anybody can type ' init 1' and boot into single user mode. If you want to protect parameters with a password, add these two lines at the top inside the global section of /etc/lilo.conf :
+
+```
+password=define_your_password_here
+restricted
+```
+
+Your system will boot as usual but it will ask for the password when someone wants to add a parameter to the kernel. Since the password is not hidden make sure lilo.conf is only readable by root:
+
+```
+chmod 600 /etc/lilo.conf
+```
+
+WARNING: This doesn't prevent a person who really wants to bypass this limitation from doing so. Such a person can still change data (e.g. root password or LILO password) by booting from another media (e.g. Salix LiveCD) unless BIOS booting sequence doesn`t allow it or by attaching the hard drive to another computer if he has physical access to it. 

@@ -1,0 +1,11 @@
+# How to Get Notifications for Package Updates
+
+If you have selected the FULL set of packages when you installed Salix, you don't need to do anything at all. You will receive notifications in your system tray when they are available.
+
+If not, you can just install salix-update-notifier with gslapt or using slapt-get:
+
+```
+sudo slapt-get -i salix-update-notifier
+```
+
+That will run a service that will check every now and then for package updates in the background and will display a system tray notification icon when there are package updates available in the repositories. By clicking on it, gslapt will be launched directly in upgrade mode where you can review the package upgrades and agree to apply them or not.

@@ -1,0 +1,222 @@
+# How to Upgrade Salix 13.37 to 14.0
+
+## Preparing for the upgrade
+
+You first need to change the default repositories to the ones for Slackware and Salix 14.0. Open file /etc/slapt-get/slapt-getrc and change all "13.37" instances to "14.0". Also make sure the Slackware repositories have an OFFICIAL priority. Example setups are show below:
+
+### i486 architecture
+
+```
+SOURCE=http://salix.enialis.net/i486/slackware-14.0/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/slackware-14.0/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/14.0/:PREFERRED
+```
+
+### x86_64 architecture
+
+```
+SOURCE=http://salix.enialis.net/x86_64/slackware-14.0/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/slackware-14.0/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/14.0/:PREFERRED
+```
+
+WARNING: On occasion, you might find that enialis' download speeds leave things desired. If you find yourself in such a scenario, feel free to experiment with the other [[Repository mirrors|repositories provided here]]. N.B: It is perfectly safe to stop the process while a package is in the process of being downloaded. On resume/restart, the download starts off where it last left. But,  do not stop the process, if a package is in the process of being installed. 
+
+After you make the changes, run:
+
+```
+slapt-get -u
+```
+
+### slapt-src
+
+Although slapt-src has nothing to do with the upgrade process itself, better make sure its repos are pointing to 14.0 so that they work correctly after the installation. Open your /etc/slapt-get/slapt-srcrc and change the SOURCE lines to these ones:
+
+```
+SOURCE=http://salix.enialis.net/slkbuild/14.0/
+SOURCE=http://salix.enialis.net/sbo/14.0/
+```
+
+## Upgrading packages
+
+First upgrade spkg, glibc and make sure you install the new kmod package and openssl-solibs (it also has the old 0.9.8x openssl libraries included). Also you can make sure mtdev is installed:
+
+```
+slapt-get -i spkg glibc kmod openssl-solibs mtdev
+```
+
+Then upgrade slapt-get itself (along with its dependencies):
+
+```
+slapt-get -i slapt-get
+```
+
+And then upgrade all other packages to their new versions:
+
+```
+slapt-get --upgrade
+```
+
+DO NOT use:
+
+```
+slapt-get --dist-upgrade
+```
+
+in any case. Although it might seem to be the best option for upgrading to a different version, it really isn't.
+
+Upgrade your udev package, it's locked for upgrades in /etc/slapt-get/slapt-getrc so you have to ask for it explicitly:
+
+```
+slapt-get -i udev
+```
+
+Also udisks is new to 14.0 so you will need to install both udisks and udisks2:
+
+```
+slapt-get -i udisks udisks2
+```
+
+After the upgrade you can also update the previously installed glibc-solibs package:
+
+```
+slapt-get -i glibc-solibs
+```
+
+### Xfce
+
+One of the major changes in 14.0 is the replacement of the single xfce package with many individual packages. If you're using xfce, to install a full xfce envirnment, run
+
+```
+slapt-get --install-set xfce
+```
+
+### MATE
+
+Do all the above, and continue below for the kernel and other updates. Finally, add one extra package for retaining the correct look and feel and retain the same look and feel from 13.37. Otherwise, your DE/GUI wil break.
+
+```
+slapt-get -i clearlooks-phenix
+```
+
+### ratpoison
+
+These two additional packages must be installed. If these are omitted/not installed, the vimprobable2 browser completely stops working. Do all the above steps followed by this, and continue below for the kernel and other updates.
+
+```
+slapt-get -i glib-networking  gsettings-desktop-schemas
+```
+
+## Obsolete packages
+
+Some packages have been obsoleted and should be removed. Some have been replaced by new packages. You can do this automatically with:
+
+```
+slapt-get --remove-obsolete --remove
+```
+
+Careful, because this will also remove all personal packages that you might have installed, if any. It will also remove any packages that used to be part of the Slackware or Salix repos in 13.37, but are not anymore in 14.0. And it's never a bad idea to have a look at the Slackware CHANGES_AND_HINTS.TXT file:
+
+* Changes and Hints File for i486
+* Changes and Hints File for x864_64
+
+=> https://slackware.uk/slackware/slackware-14.0/CHANGES_AND_HINTS.TXT Changes and Hints File for i486
+=> https://slackware.uk/slackware/slackware64-14.0/CHANGES_AND_HINTS.TXT Changes and Hints File for x864_64
+
+Packages that have been removed from Slackware according to the ChangeLog (use this list at your own risk):
+
+```
+hal
+hal-info
+wv2
+jre
+raptor (reinstall raptor2 afterwards)
+jdk
+module-init-tools
+ntfsprogs
+iwlwifi*
+rt2860-firmware
+rt2870-firmware
+rt61-firmware
+rt71w-firmware
+radeon_ucode
+scripts
+xaw3d
+xf86-video-radeonhd
+xf86-video-sisusb
+xf86-video-tseng
+xf86-video-xgi
+```
+
+And this NOTE: After upgrading, the following obsolete KDE packages should be removed:
+
+```
+kdeaccessibility kdebase kdebase-runtime
+kdebase-workspace kdebindings kdeedu
+kdegraphics kdeutils koffice konq-plugins
+kopete-cryptography polkit-kde-1 koffice-l10n-*
+```
+
+## Upgrading the kernel
+
+Run:
+
+```
+ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed and do a slapt-get -i  for each one of them. (Do not include the package version in ).
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting you upgraded system. If you're still using the default kernel-huge package, an initrd is not needed anyway and you needn't be concerned about it.
+
+After upgrading the packages, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+lilo -v
+```
+
+to inform the bootloader about the kernel upgrade.
+
+On similar note, users running multi-boot systems on GRUB2 must log into the distro that controls the bootloader and re-run
+
+```
+update-grub
+```
+
+to inform the bootloader about the kernel upgrade.
+
+## Update caches
+
+You'll also need to run this command:
+
+```
+update-all
+```
+
+This updates icon caches, font indexes, desktop and mime databases, pango files, glib schemas etc. You'll need to run this, or you'll probably won't be able to start a graphical environment and even if you do, you'll probably see garbage instead of readable characters.
+
+## Configuration files
+
+After doing all the upgrades, run:
+
+```
+dotnew
+```
+
+to accept or reject new configuration files. Make sure that you DO NOT replace your /etc/passwd, /etc/shadow or /etc/group files. If you do, you will lose all users/groups/passwords you have in your system. However, even if you do, you can get the old files back, they will be kept in the same locations, with an .orig suffix.
+
+If you are starting your system in init 3 (console), instead of init 4 (graphics) and you start the GUI by running 'startx', you'd better refresh the xinitrc file in your home directory by running (while in init 3):
+
+```
+xwmconfig
+```
+
+and selecting your preferred Desktop Environment.
+
+Edit /etc/slackware-version file to fill in:
+
+```
+Slackware 14.0
+```
+
+This is not required but this is used by some apps to show your version (for example grub).

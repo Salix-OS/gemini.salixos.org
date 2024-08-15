@@ -1,0 +1,51 @@
+# How to Install the Kernel Source
+
+The kernel-source package is by default locked in gslapt, just like all other kernel related packages. This is to prevent users from unknowingly upgrading the kernel; it's easy to miss that kernel packages are about to be upgraded, when a multitude of other packages are going to be upgraded at the same time.
+
+### Salix 14.1 and newer
+
+To install the kernel-source package, in Salix 14.1 and newer use sudo . Open a terminal window and run:
+
+```none
+sudo slapt-get -u
+```
+
+and request to install the kernel-source package explicitly with slapt-get:
+
+```none
+sudo slapt-get -i kernel-source
+```
+
+That's it, the kernel-source package should be downloaded and installed when the download is finished.
+
+Make sure the kernel-source package you are installing matches your current kernel. You can check the currently installed kernel packages with:
+
+```
+ls /var/log/packages/kernel-*
+```
+
+If the kernel-source package version does not match your current kernel, you need to upgrade your kernel packages first. See How to install a different kernel for how to do this.
+
+=> /docs/user/install-different-kernel How to install a different kernel
+
+### Salix 14.0 and earlier
+
+In order to install the kernel-source package, open a terminal window, run
+
+```
+su
+```
+
+and provide your root password to become root. Update your package database (just to be sure):
+
+```none
+slapt-get -u
+```
+
+and request to install the kernel-source package explicitly with slapt-get:
+
+```none
+slapt-get -i kernel-source
+```
+
+That's it, the kernel-source package should be downloaded and installed when the download is finished.

@@ -1,0 +1,62 @@
+# Getting git or svn sources for use with slkbuild
+
+If the source only exists in a git or svn repository, then you will have to create a source tarball yourselves and upload it somewhere. You have to add the created source tarballs to the source variable in the SLKBUILD file. Also make sure that you upload the source tarball to your sourcetemplate location. Example:
+
+```
+source=("http://some-domain.org/packages/xap/$pkgname/$pkgname-$pkgver.src.tar.gz")
+```
+
+## git
+
+This script gets latest git sources, creates a source tarball named after the current date and updates the $pkgver variable in the SLKBUILD file.
+
+```
+#!/bin/bash
+pkgname=amarok
+
+# set pkgver to current date
+pkgver=$(date +%Y%m%d)
+if [ -d $pkgname ]; then
+    (
+    cd $pkgname
+    git pull --depth 1
+    )
+else
+    git clone --depth 1 git://gitorious.org/amarok/amarok.git
+fi
+
+# create the source archive
+tar czf $pkgname-$pkgver.src.tar.gz amarok
+
+# change the SLKBUILD
+sed -i 's#^pkgver=.*#pkgver='$pkgver'#' SLKBUILD
+```
+
+## svn
+
+This script gets latest svn sources, creates a source tarball named after the svn revision and updates the $pkgver variable in the SLKBUILD file. It also can retrieve a svn revision specified on command line:
+
+```
+#!/bin/bash
+pkgname=taglib
+
+# retrieve revision given on command line - else latest revision
+svn_rev=${1:-""}
+# svn url
+svn_dir=${pkgname}
+svn_url=svn://anonsvn.kde.org/home/kde/trunk/kdesupport/${svn_dir}
+
+# let's rock!
+svn_cmd=" co"
+# if revision is set by command line, then get this revision
+[ ! -z $svn_rev ] && svn_cmd="$svn_cmd -r $svn_rev"
+# set pkgver to the downloaded revision
+cur_rev=$(svn $svn_cmd $svn_url $svn_dir 2>svn_err.log | tail -1 |tr -c -d "[:digit:]")
+pkgver="r${cur_rev}"
+
+# create the source archive
+tar czf $pkgname-$pkgver.src.tar.gz $svn_dir
+
+# change the SLKBUILD
+sed -i 's#^pkgver=.*#pkgver='$pkgver'#' SLKBUILD
+```

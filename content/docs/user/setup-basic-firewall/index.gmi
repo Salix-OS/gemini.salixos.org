@@ -1,0 +1,48 @@
+# Setup Basic Firewall
+
+You can setup a secure basic firewall using the "Uncomplicated Firewall or UFW".
+
+```
+sudo slapt-get -i gufw
+```
+
+then
+
+```
+sudo gufw
+```
+
+click status to "on".  This will setup a deny all incoming and allow all outgoing firewall.
+
+Alternatively, you can
+
+```
+sudo slapt-get -i ufw
+sudo ufw enable
+sudo ufw default deny
+sudo ufw deny ssh
+```
+
+This method will deny all incoming connections and allow outgoing but also deny ssh connections to further protect your system.
+
+Note: if you require ssh connections then of course do not block it, if you are not sure what ssh (Secure Shell) is, then block it as it will make the system more secure.
+
+For both methods make sure you copy, open /etc/rc.d/rc.local with your favourite editor (for example vi):
+
+```
+sudo vi /etc/rc.d/rc.local
+```
+
+and paste the following into it. This will allow the firewall to start with each boot.
+
+```
+if [ -x /lib/ufw/ufw-init ]; then
+  /lib/ufw/ufw-init start
+fi
+```
+
+If you want to check the status of your firewall at any time
+
+```
+sudo ufw status verbose
+```

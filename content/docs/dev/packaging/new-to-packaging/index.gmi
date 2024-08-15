@@ -1,0 +1,65 @@
+# New to Packaging
+
+## Packaging 101
+
+Helping out a FOSS project is a great way to say "thank you" to the core team for all their hard work. Helping out with packaging programs for use in the Distribution is a "twofer" in that you get to know the range of software available for the Distro, and you get to learn how it all hangs together, which is really helpful when things go "belly-up" - which happens to us all at some time or another!
+
+So, what's involved in being a packager? Generally, you must know how to compile programs, how to fix broken compiles, how to write the "build" code, have some idea of the FHS and how it is interpreted under your chosen distro, and some idea of the different architectures out there that run Linux.
+
+=> https://www.pathname.com/fhs/ FHS
+
+If you have those skills, then let's take a look at packaging programs for Salix.
+
+Read the following. Don't worry, I'll wait.
+
+* Submitting packages for inclusion in the Salix repository The technical details of submission.
+* Packaging Rules The do's and don'ts of packaging according to Salix.
+* Building Packages with slkbuild Slkbuild is the Salix tool which automates a lot of the package making and necessary ancillary files.
+* Package Categories Classifying the packages you build for Salix.
+
+=> /docs/dev/packaging/submitting-packages Submitting packages for inclusion in the Salix repository
+=> /docs/dev/packaging/packaging-rules Packaging Rules
+=> /docs/dev/packaging/packaging-with-slkbuild Building Packages with slkbuild
+=> /docs/dev/packaging/package-categories Package Categories
+
+Ah, you're back.
+
+Confused? I was (probably still a bit hazy on the finer points, too!)
+
+Hopefully these next sections will help you make sense of the docs you have just read.
+
+## What you need to know
+
+Salix is a slackware based distribution. Not only that, its packages are backward compatible with a standard Slackware install. And it has several different ways in which you can contribute to the number of packages available to Salix users.
+
+1. You can submit packages you make to the official repository on Sourceforge
+
+through the Sourceforge tracker as described in the package submission guidelines linked to above. 2. You can submit a SLKBUILD script to the official repository on Sourceforge (along with a complete package) 3. You can "roll your own" packages and announce them on the Forum page for "Contributions" 4. You can put Slackbuild scripts onto Slackbuilds.org, which, while not Salix specific can be used by Salix as well as the rest of the Slackware users.
+
+You might find this confusing - I did, and I am still getting tripped up on 1 & 2!
+
+To help you sort this out, you need to know that Salix is a "stable" distribution - by that, I mean that it is released when Slackware is released and it shares a release number with Slackware so there is no confusion. At the time of writing the "stable" slackware release is 14.0, and the "stable" Salix release is 14.0. What this basically means is that the release is "frozen" in that no new packages are added and no version updates are allowed  (security and bug fixes are allowed, naturally!).
+
+As a user, you can keep up to date by judicious use of the -current branch of the Slackware repositories, but you can also break things badly by doing so. That's the reason  the repositories are frozen between releases - to provide as stable a system as possible. Doing so is neither advised or supported by Salix.
+
+Around the time that the next release of Slackware is imminent, (the Release Candidate 1 or RC1 scenario) a current repository will be up on the Salix servers (synced to Slackware -current). Any packages submitted at that point will be considered for inclusion in the binary repositories, after they have been tested. Be aware that your package may, instead, be added to the SLKBUILD repository - it all depends on the workload of the packagers at the time.
+
+After the release of the new version, the current repository is taken off-line and no new packages (except those required for an edition release like the LXDE or KDE versions of Salix) are added to the binary repositories. Instead, packages will end up in the SLKBUILD repository. The SLKBUILD repository is usually very small in size. The reason for that is that in order for a package to enter the SLKBUILD repository, it should not be present in the Slackware binary repositories, the Salix binary repositories or the slackbuilds.org repository. Naturally, that doesn't leave much software that is not already there in one form or another.
+
+It should now be evident that Salix draws upon most of the available Slackware friendly repositories and adds to them with their SLKBUILD repos which contain all the ingredients necessary for compiling a working, tested package from source. Admittedly, not as convenient as a pre-compiled package, but with the Sourcery tool its a pretty painless way to add that hard to get program to your system.
+
+## Summary
+
+If you are going to package something for any of these end-results, try to make it a program that is not on SlackBuilds.org, isn't already in the Salix binary repository, isn't in the SLKBUILDs repo and is not included in the Slackware release.
+
+If it is a version bump for a third party program, forget putting it on Salix's sourceforge system unless the version bump broke something and you have fixed it.
+
+If it is a security fix for a third party program and nobody else has fixed it upstream, you should aim for a SlackBuild.org friendly package to help out as many people as possible.
+
+If it's something you want to see the latest version of, then package it for yourself and announce it on the Forum (in the "Contributed Packages" section - see 3 above) so all Salixers can take advantage of it.
+
+If it's an obscure library or a set of programs for a specific interest like music mixing, astro-photography, physics simulations etc, then by all means package them up and announce them on the Contributed Package forum. You might like to consider making SlackBuild friendly scripts for Slackbuilds.org also.
+
+If you are looking to take on some of the work of maintaining the builds of core packages, you should really start with producing several packages yourself and announcing them on the forum in the "Contributed Packages" section. This will help the core team decide if and where to slot you into the system - sort of like a C.V. or a practical test.
+
+Also, you should decide just how much time and resource you can put in to the job of packager because coming up to release time packagers are under real pressure…

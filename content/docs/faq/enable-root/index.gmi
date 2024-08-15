@@ -1,0 +1,17 @@
+# How to Enable the root User
+
+Since the 14.1 release the root user is disabled by default and the use of sudo is needed to perform administrative tasks. If you want to enable the root user, all you have to do is log in as a user that has sudo privileges (any user that is a member of the wheel group) and run the following command:
+
+```
+sudo passwd root
+```
+
+and provide a new password for the root user. After that you will be able to run:
+
+```
+su
+```
+
+to open a root user session.
+
+If you want to have all graphical dialogs ask for the root password instead of the user password, you need to remove the gnsu package and install the ktsuss package.

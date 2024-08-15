@@ -1,0 +1,20 @@
+# Frequently Asked Questions
+
+Got a question about Salix? You're not alone. This FAQ section answers some of the most common questions we receive from users, covering everything from basic concepts to troubleshooting and more. Browse through the questions and answers below to see if we've already addressed your concern.
+
+
+=> /docs/faq/3rd-party-repos Can I Use Third Party Repositories?
+=> /docs/faq/enable-root How to Enable the root User
+=> /docs/faq/extra-console How to Get an Extra Console in the Salix Installer
+=> /docs/faq/hostname How Do I Change the Default System Hostname?
+=> /docs/faq/icons-missing-in-xfce Icons Missing in the Xfce Menu
+=> /docs/faq/kernel-source How to Install the Kernel Source
+=> /docs/faq/multimedia How to Play Multimedia Files
+=> /docs/faq/package-manager-wants-to-downgrade-packages Package Manager Wants to Downgrade Packages
+=> /docs/faq/package-update-notifications How to Get Notifications for Package Updates
+=> /docs/faq/packages-different-from-slackware Packages that are Different from Slackware
+=> /docs/faq/salix-man-page How to Read the Salix Man Page
+=> /docs/faq/salixlive-passwords SalixLive Passwords
+=> /docs/faq/slackpkg Can I Use slackpkg in Salix?
+=> /docs/faq/space How Much Disk Space Does Salix Need
+=> /docs/faq/why-was-salix-created Why Was Salix Created?

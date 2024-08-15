@@ -1,0 +1,167 @@
+# Greek Polytonic on Openbox
+
+Writing greek polytonic,monotonic and ancient, modern spell checking on LibreOffice and Openbox.
+
+## set the key
+
+Open the file ~/.config/openbox/rc.xml with a text editor. e.g. geany ~/.config/openbox/rc.xml
+
+go to line 294 last row with /keybind and add the lines bellow
+
+```
+ <keybind key="C-1">
+      <action name="Execute">
+        <command>sh ~/.polytonic</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Polytonic/Monotonic</name>
+        </startupnotify>
+      </action>
+    </keybind> 
+```
+
+Save the file
+
+## Create the polytonic file
+
+Create the file ~/.polytonic
+
+```
+geany ~/.polytonic
+```
+
+and paste the lines
+
+```
+#!/bin/sh
+# Dimitris Tzemos <djemos@slackel.gr>
+# Αρχείο για αλλαγή μονοτονικού πολυτονικού πληκτρολογίου
+# για συγγραφή αρχαίων κειμένων
+# File to change from greek monotonic to greek polytonic keyboard
+# to type ancient greek documents.
+#
+check=$(setxkbmap -print | grep 'extended')
+if [ -z "$check" ];then
+       setxkbmap us,el -variant ,extended
+       zenity --info --timeout 1 --text 'Μονοτονικό πληκτρολόγιο ενεργό' 1
+else
+       setxkbmap us,el -variant ,polytonic
+       zenity --info --timeout 1 --text 'Πολυτονικό πληκτρολόγιο ενεργό' 1
+fi
+if [ -r /etc/X11/Xmodmap ];then xmodmap /etc/X11/Xmodmap;fi
+if [ -r "$HOME"/.Xmodmap ];then xmodmap "$HOME"/.Xmodmap;fi
+```
+
+Save the file
+
+## Messages
+
+```
+Μονοτονικό πληκτρολόγιο ενεργό = Monotonic keyboard active  
+Πολυτονικό πληκτρολόγιο ενεργό = Polytonic keyboard active
+```
+
+you can change greek messages with english ones above if you like.
+
+Now every time you press Ctrl+1 change between monotonic to polytonic and polytonic to monotonic
+
+## Libreoffice
+
+For greek spelling modern and/or ancient greek download these files and install them from libreoffice tools->extensions
+
+### modern greek
+
+=> http://sourceforge.net/projects/aoo-extensions/files/1411/2/el_gr_v110.oxt/download http://sourceforge.net/projects/aoo-extensions/files/1411/2/el_gr_v110.oxt/download
+
+### ancient greek
+
+=> http://sourceforge.net/projects/aoo-extensions/files/2313/1/grc.oxt/download http://sourceforge.net/projects/aoo-extensions/files/2313/1/grc.oxt/download
+
+Thats it!!! Now can write greek modern or polytonic in libreoffice and also have spell checking.
+
+To write greek polytonic press alt-shift to change keyboard and then press ctrl+1 to go to polytonic.
+
+## Keyboard typing for polytonic characters on LINUX
+
+```
+ά= τόνος + γράμμα (γιὰ ὁξεῖα)
+ὰ=εἰσαγωγικά + γράμμα (γιὰ βαρεῖα)
+ἁ=shift+εἰσαγωγικά+γράμμα
+ἀ=shift+τόνος+γράμμα
+ᾶ=ἀγκύλη ἀριστερή+γράμμα
+ᾳ=ἀγκύλη δεξιά+γράμμα
+ᾷ+αγκύλη δεξιά+ἀγκύλη ἀριστερή + γράμμα
+ἆ=ἀγκύλη ἀριστερή+shift τόνος+γράμμα
+ἇ=ἀγκύλη ἀριστερή+shift εἰσαγωγικά
+ἄ=τόνος+shift τόνος+γράμμα
+ἅ=shift εἰσαγωγικά+τόνος+γράμμα
+ΐ=Alt Gr+τόνος σε μη πολυτονική γραμματοσειρά
+```
+
+### Accents
+
+```
+; acute accent (ὀξεῖα)
+' grave accent (βαρεῖα)
+[ circumflex (περισπωμένη)
+```
+
+```
+;a ά
+'a ὰ
+[a ᾶ
+```
+
+### Breathing
+
+```
+: smooth breathing (ψιλὸν πνεῦμα)
+" rough breathing (δασὺ πνεῦμα)
+```
+
+```
+:a ἀ
+"a ἁ
+```
+
+### Diaresis
+
+```
+{ diaresis (διαλυτικά)
+
+ {i  ϊ
+```
+
+### Combining: Accent before breathing
+
+```
+[:a ἆ
+]:a ᾀ
+][:a ᾆ
+]"a ᾀ
+["a ἆ
+;:a ἄ
+'"a ἃ
+':a ἅ
+":a ἂ
+```
+
+Here is some sample text:
+
+```
+Μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος
+οὐλομένην, ἣ μυρί᾿ Ἀχαιοῖς ἄλγε᾿ ἔθηκε,
+πολλὰς δ᾿ ἰφθίμους ψυχὰς Ἄϊδι προΐαψεν
+ἡρώων, αὐτοὺς δὲ ἑλώρια τεῦχε κύνεσσιν
+οἰωνοῖσί τε πᾶσι· Διὸς δ᾿ ἐτελείετο βουλή,        
+ἐξ οὗ δὴ τὰ πρῶτα διαστήτην ἐρίσαντε
+Ἀτρεΐδης τε ἄναξ ἀνδρῶν καὶ δῖος Ἀχιλλεύς.
+
+Ψάλλε θεά, τον τρομερό θυμόν του Αχιλλέως
+Πώς έγινε στους Αχαιούς αρχή πολλών δακρύων.
+Που ανδράγαθες ροβόλησε πολλές ψυχές στον Άδη
+ηρώων, κι έδωκεν αυτούς αρπάγματα των σκύλων
+και των ορνέων – και η βουλή γενόταν του Κρονίδη,
+απ’ ότ’, εφιλονίκησαν κι εχωρισθήκαν πρώτα
+ο Ατρείδης, άρχος των ανδρών, και ο θείος Αχιλλέας.
+```

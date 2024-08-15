@@ -1,0 +1,13 @@
+# Slackbuilds in Salix Repositories
+
+Salix integrates dependency management for packages in its own repositories and those built from slackbuilds.org, whose package list is mirrored by Salix, using slapt-src.
+
+=> https://slackbuilds.org slackbuilds.org
+
+Where a package is available from both sources, the Salix package is always preferred, even if it is a less recent version. Should you wish to replace it with a build from source, you will need to do so manually from the slackbuilds.org website, and exclude the package in /etc/slapt-getrc to prevent it being automatically downgraded when you do a general package upgrade.
+
+However, that means if Salix in future offers an even newer version of the package in question, you will need to remove the exclude in order to get it.
+
+An alternative would be to change the source line in /etc/slapt-srcrc, but this is not recommended as it means slapt-src/Sourcery would ignore the presence of a package in the Salix repositories by default, but the user would still need to add an exclude to /etc/slapt-getrc, so would need to know. If there is a reason to prefer building from source in a specific case, the user has full control over that option.
+
+Furthermore, switching to the sbo repository would mean losing the benefit of Salix's dependency management for slackbuilds.

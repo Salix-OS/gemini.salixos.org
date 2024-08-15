@@ -1,0 +1,78 @@
+# How to Setup Alpine With a Gmail Account
+
+Alpine is basically the same application as Pine, which used to be widely used on university computer sytems around the world. It is a text-based console email client which is very easy to learn and use, and many people prefer it to webmail or graphical email clients. There must be hundreds of quick guides to using Alpine with Gmail. This is simply one way of doing it, with the merit that it actually works for Salix.
+
+First, make sure your Gmail account is set to use IMAP. Almost certainly, it is already.
+
+Alpine's configuration file is ~/.pinerc. You can use Alpine's menus to change the configuration, but it may be easier to edit the file directly. Back it up first.
+
+Assuming your account is your.name@gmail.com, change these settings from their defaults as follows:
+
+```no
+personal-name=your.name
+user-domain=gmail.com
+smtp-server=smtp.gmail.com/novalidate-cert/tls/user=your.name@gmail.com
+inbox-path={imap.gmail.com/novalidate-cert/ssl/user=your.name@gmail.com}inbox
+```
+
+Many guides tell you to specify the ports:
+
+```no
+smtp-server=smtp.gmail.com:587/novalidate-cert/tls/user=your.name@gmail.com
+inbox-path={imap.gmail.com:993/novalidate-cert/ssl/user=your.name@gmail.com}inbox
+```
+
+but this doesn't seem to be necessary. There is a problem with certificate authentication, and if 'novalidate-cert' isn't there, Alpine keeps asking you whether you mind. If you do mind, maybe a solution can be developed along these lines.
+
+=> http://www.madboa.com/geek/pine-ssl/ these lines
+
+Make sure the feature-list includes the following items as set:
+
+```no
+enable-incoming-folders
+enable-incoming-folders-checking
+```
+
+... and that's basically it. Alpine is highly configurable. Here are a few more features I use:
+
+```no
+continue-tab-without-confirm    # the next few eliminate tedious confirmation requests
+expunge-without-confirm
+quit-without-confirm
+no-check-newmail-when-quitting
+enable-search-and-replace
+enable-alternate-editor-implicitly
+```
+
+This last one means you get the editor of your choice instead of Alpine's default, but you must also specify it:
+
+```no
+editor=pyroom   # substitute your favourite text editor
+```
+
+Similarly:
+
+```no
+image-viewer=viewnior
+url-viewers=/usr/bin/firefox #substitute your favourite browser
+```
+
+to enable spawning these applications when needed. One annoyance is that you can't get back to your email client until you close the window and possibly the application. A way round this is to create a script in /usr/local, e.g. vimbrobable2-launch:
+
+```
+#!/bin/sh
+
+/usr/bin/vimprobable2 "$@" 2> /dev/null &
+```
+
+and make it executable. Then put this in ~/.pinerc:
+
+```no
+url-viewers=/usr/local/bin/vimprobable2-launch
+```
+
+Depending on the specific application, focus may move to the new window or not. With Vimprobable, it does.
+
+The .pinerc file is long and extensively commented. If necessary, use search to find the lines you need to change. Everything in bold comes from the file.
+
+Finally, note that deleting an email has the same effect as archiving it when using the web interface. There's probably a fix for this, but it is actually in line with the way many people use their Gmail accounts anyway.

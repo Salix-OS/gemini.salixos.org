@@ -1,0 +1,149 @@
+# How to Upgrade Salix 13.1 to 13.37
+
+## Preparing for the upgrade
+
+You first need to change the default repositories to the ones for Slackware and Salix 13.37. Open file /etc/slapt-get/slapt-getrc and change all "13.1" instances to "13.37". Also make sure the Slackware repositories have an OFFICIAL priority. Example setups are show below:
+
+### i486 architecture
+
+```
+SOURCE=http://salix.enialis.net/i486/slackware-13.37/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/slackware-13.37/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/i486/13.37/:PREFERRED
+```
+
+### x86_64 architecture
+
+```
+SOURCE=http://salix.enialis.net/x86_64/slackware-13.37/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/slackware-13.37/extra/:OFFICIAL
+SOURCE=http://salix.enialis.net/x86_64/13.37/:PREFERRED
+```
+
+After you make the changes, run:
+
+```
+slapt-get -u
+```
+
+## Upgrading packages
+
+The combined spkg-pkgtools package has been removed in Salix 13.37. The original Slackware pkgtools are being used, along with a separate spkg package. So, you'll need to replace the spkg-pkgtools package with spkg + pkgtools:
+
+```
+slapt-get -i spkg pkgtools
+spkg -d spkg-pkgtools
+```
+
+Upgrade your glibc package:
+
+```
+slapt-get -i glibc
+```
+
+The upgrade slapt-get itself (along with its dependencies):
+
+```
+slapt-get -i slapt-get
+```
+
+Install the new util-linux package:
+
+```
+slapt-get -i util-linux
+spkg -d util-linux-ng
+```
+
+And then upgrade all other packages to their new versions:
+
+```
+slapt-get --upgrade
+```
+
+DO NOT use:
+
+```
+slapt-get --dist-upgrade
+```
+
+in any case. Although it might seem to be the best option for upgrading to a different version, it really isn't.
+
+Upgrade your udev package, it's locked for upgrades in /etc/slapt-get/slapt-getrc so you have to ask for it explicitly:
+
+```
+slapt-get -i udev
+```
+
+## Obsolete packages
+
+Some packages have been obsoleted and should be removed. Some have been replaced by new packages. You can do this automatically with:
+
+```
+slapt-get --remove-obsolete --remove
+```
+
+Careful, because this will also remove all personal packages that you might have installed, if any. It will also remove any packages that used to be part of the Slackware or Salix repos in 13.1, but are not anymore in 13.37. And it's never a bad idea to have a look at the Slackware CHANGES_AND_HINTS.TXT file:
+
+* Changes and Hints File for i486
+* Changes and Hints file for x86_64
+
+=> https://slackware.uk/slackware/slackware-13.37/CHANGES_AND_HINTS.TXT Changes and Hints File for i486
+=> https://slackware.uk/slackware/slackware64-13.37/CHANGES_AND_HINTS.TXT Changes and Hints file for x86_64
+
+One of the major changes in 13.37 is the replacement of the OpenOffice.org office suite with LibreOffice. By running the above mentioned command, OpenOffice.org along with any respective langpacks will be removed. So, in order to get the new LibreOffice package, you'll need to run:
+
+```
+slapt-get -i libreoffice
+```
+
+and if you have a langpack installed, also run:
+
+```
+slapt-get -i libreoffice-l10n-YOURLOCALE
+```
+
+replacing 'YOURLOCALE' with the respective language code (e.g. fr for French, el for Greek, de for German etc.)
+
+One other new package that you might want to install is user-settings-xfce. That package now includes default configuration for newly created users, so if you want new users created after the upgrade to have the default Salix user settings (desktop settings, artwork etc), you should run:
+
+```
+slapt-get -i user-settings-xfce
+```
+
+## Upgrading the kernel
+
+Run:
+
+```
+ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed and do a slapt-get -i for each one of them.
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting you upgraded system. If you're still using the default kernel-huge package, an initrd is not needed anyway and you needn't be concerned about it.
+
+After upgrading the packages, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+lilo -v
+```
+
+to inform the bootloader about the kernel upgrade.
+
+## Configuration files
+
+After doing all the upgrades, run:
+
+```
+dotnew
+```
+
+to accept or reject new configuration files. Make sure that you DO NOT replace your /etc/passwd, /etc/shadow or /etc/group files. If you do, you will lose all users/groups/passwords you have in your system. However, even if you do, you can get the old files back, they will be kept in the same locations, with an .orig suffix.
+
+If you are starting your system in init 3 (console), instead of init 4 (graphics) and you start the GUI by running 'startx', you'd better refresh the xinitrc file in your home directory by running (while in init 3):
+
+```
+xwmconfig
+```
+
+and selecting your preferred Desktop Environment.

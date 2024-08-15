@@ -1,0 +1,32 @@
+# Install Salix from a USB stick
+
+This page is about using the standard installation images, not the live images. If you want to install SalixLive on your USB drive, follow these instructions instead: How to install salix live on a USB key
+
+=> /docs/user/salixlive How to install salix live on a USB key
+
+## dd
+
+This is the recommended method to create a Salix installation bootable USB stick. It will destroy all previous contents in it, so make sure you make a backup of any data you want to keep.
+
+Open a terminal in the same directory the iso image you want to write is located and run:
+
+```none
+dd if=your-salix-iso-image.iso of=/dev/sdb
+```
+
+replacing your-salix-iso-mage.iso with the actual iso name and /dev/sdb with the actual device node of your USB stick
+
+WARNING: Make absolutely sure you get the device node right. In this example it's /dev/sdb, but it could be something entirely different in your system as it depends on the number of hard drives or other external mediums you have connected at any time.
+
+## Unetbootin
+
+Unetbootin should also work, most of the times, but in some cases in may fail. Your mileage may vary...
+
+1. Create your USB stick with UNetbootin (available on many distributions and for Windows on their website).
+2. If you're using the 32-bit version and have an smp CPU (most probably you do), when booting the USB stick, make sure you are using the hugesmp.s kernel, not the huge.s kernel, which doesn't support smp.
+
+=> http://unetbootin.sourceforge.net/ website
+
+## Installation
+
+During installation, when prompted for the installation medium choose "Install from a Salix USB stick". That should do it...

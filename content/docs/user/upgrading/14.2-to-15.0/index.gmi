@@ -1,0 +1,305 @@
+# How to Upgrade Salix 14.2 to 15.0
+
+## Preparing for the upgrade
+
+You first need to change the default repositories to the ones for Slackware and Salix 15.0. Open file /etc/slapt-get/slapt-getrc and change all "14.2" instances to "15.0". Also make sure the Slackware repositories have an OFFICIAL priority. Example setups are shown below:
+
+### i486 architecture
+
+```
+SOURCE=http://slackware.uk/salix/i486/slackware-15.0/:OFFICIAL
+SOURCE=http://slackware.uk/salix/i486/slackware-15.0/extra/:OFFICIAL
+SOURCE=http://slackware.uk/salix/i486/15.0/:PREFERRED
+SOURCE=http://slackware.uk/salix/i486/extra-15.0/:OFFICIAL
+```
+
+### x86_64 architecture
+
+```
+SOURCE=http://slackware.uk/salix/x86_64/slackware-15.0/:OFFICIAL
+SOURCE=http://slackware.uk/salix/x86_64/slackware-15.0/extra/:OFFICIAL
+SOURCE=http://slackware.uk/salix/x86_64/15.0/:PREFERRED
+SOURCE=http://slackware.uk/salix/x86_64/extra-15.0/:OFFICIAL
+```
+
+### slapt-srcrc
+
+Also edit your /etc/slapt-get/slapt-srcrc file to point to 15.0 instead of 14.2:
+
+```
+BUILDDIR=/usr/src/slapt-src
+PKGEXT=txz
+SOURCE=http://slackware.uk/salix/slkbuild/15.0/
+SOURCE=http://slackware.uk/salix/sbo/15.0/
+```
+
+### Switch to root user
+
+Every command listed below should be executed with root privileges. So run:
+
+```
+sudo su
+```
+
+or alternatively, if you have the root user enabled:
+
+```
+su
+```
+
+to open a root terminal.
+
+#### Changing your mirrors
+
+Feel free to try other [[Repository mirrors|repositoriy mirrors]] that might be faster for you. N.B: It is perfectly safe to stop the process while a package is in the process of being downloaded. On resume/restart, the download starts off where it last left. But, do not stop the process, if a package is in the process of being installed.
+
+After you make the changes, run:
+
+```
+slapt-get -u
+```
+
+### slapt-src
+
+Although slapt-src has nothing to do with the upgrade process itself, better make sure its repos are pointing to 15.0 so that they work correctly after the installation. Open your /etc/slapt-get/slapt-srcrc and change the SOURCE lines to these ones:
+
+```
+SOURCE=http://slackware.uk/salix/slkbuild/15.0/
+SOURCE=http://slackware.uk/salix/sbo/15.0/
+```
+
+## Upgrade base package manager tools
+
+Upgrade pkgtools and spkg first as a newer version is needed for proper installation of several packages:
+
+```
+slapt-get -i pkgtools spkg aaa_base
+```
+
+## Upgrading packages
+
+Open a root terminal again first:
+
+```
+sudo su
+```
+
+Now you need to upgrade glibc and related packages:
+
+```
+slapt-get -i glibc glibc-zoneinfo glibc-i18n aaa_glibc-solibs
+```
+
+Then upgrade slapt-get itself (along with its dependencies):
+
+```
+slapt-get -i aaa_libraries openssl curl libunistring slapt-get
+```
+
+Fix some missing symlinks. On 64 bit systems run:
+
+```
+ln -sf /lib64/libssl.so.1.1 /lib64/libssl.so.1
+ln -sf /lib64/libcrypto.so.1.1 /lib64/libcrypto.so.1
+ln -sf /usr/lib64/libldap-2.4.so.2.11.7 /usr/lib64/libldap-2.4.so.2
+ln -sf /usr/lib64/liblber-2.4.so.2.11.7 /usr/lib64/liblber-2.4.so.2
+```
+
+and on 32-bit systems run:
+
+```
+ln -sf /lib/libssl.so.1.1 /lib/libssl.so.1
+ln -sf /lib/libcrypto.so.1.1 /lib/libcrypto.so.1
+ln -sf /usr/lib/libldap-2.4.so.2.11.7 /usr/lib/libldap-2.4.so.2
+ln -sf /usr/lib/liblber-2.4.so.2.11.7 /usr/lib/liblber-2.4.so.2
+```
+
+Install basic system packages. On 64-bit systems, run:
+
+```
+slapt-get --install-set slackware64/a
+```
+
+and on 32-bit systems, run:
+
+```
+slapt-get --install-set slackware/a
+```
+
+You'll need to create some symlink again... On 64-bit systems:
+
+```
+ln -sf /lib64/libssl.so.1.1 /lib64/libssl.so.1
+ln -sf /lib64/libcrypto.so.1.1 /lib64/libcrypto.so.1
+```
+
+and on 32-bit systems:
+
+```
+ln -sf /lib/libssl.so.1.1 /lib/libssl.so.1
+ln -sf /lib/libcrypto.so.1.1 /lib/libcrypto.so.1
+```
+
+GDM has been replaced by lightdm in the default installation, so if you want to do that, run:
+
+```
+slapt-get -i lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+spkg -d gdm
+```
+
+otherwise gdm will be upgraded later and pull almost all of GNOME with it...
+
+Install some necessary packages that have been renamed:
+
+```
+slapt-get -i man-db python2
+```
+
+And some that are required for the system to be working properly:
+
+```
+slapt-get -i salix-polkit-settings polkit-gnome mozjs78
+```
+
+And then upgrade all other packages to their new versions:
+
+```
+slapt-get --upgrade
+```
+
+DO NOT use:
+
+```
+slapt-get --dist-upgrade
+```
+
+in any case. Although it might seem to be the best option for upgrading to a newer release, it really isn't.
+
+## Upgrading the kernel
+
+Lets upgrade the kernel packages next.
+
+Run:
+
+```
+ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed and do a slapt-get -i  for each one of them. (Do not include the package version in ).
+
+You will also need to upgrade your lilo, elilo or grub packages at this point. So, for example:
+
+```
+slapt-get -i elilo
+```
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting you upgraded system. If you're still using the default kernel-huge package, an initrd is not needed anyway and you needn't be concerned about it.
+
+After upgrading the packages, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+lilo -v
+```
+
+to inform the bootloader about the kernel upgrade. If there is no /etc/lilo.conf file, just run:
+
+```
+liloconfig
+```
+
+On similar note, users running multi-boot systems on GRUB2 must log into the distro that controls the bootloader and re-run
+
+```
+update-grub
+```
+
+to inform the bootloader about the kernel upgrade.
+
+For those using elilo, you need to simply run
+
+```
+eliloconfig
+```
+
+If you are using the generic kernel, also copy the initrd to appropriate directory in the ESP, for example:
+
+```
+cp /boot/vmlinuz /boot/efi/EFI/Salix-Xfce-14.2/vmlinuz
+cp /boot/initrd.gz /boot/efi/EFI/Salix-Xfce-14.2/initrd
+```
+
+## Obsolete packages
+
+Some packages have been obsoleted and should be removed. Some have been replaced by new packages. You can remove all obsolete packages automatically with:
+
+```
+slapt-get --remove-obsolete --remove
+```
+
+Careful, because this will also remove all personal packages that you might have installed, if any. It will also remove any packages that used to be part of the Slackware or Salix repos in 14.2, but are not anymore in 15.0. Take a careful look at the list of packages to be removed and if you recognise anything that you want to keep, make a note. It might have been renamed to something slightly different. And it's never a bad idea to have a look at the Slackware CHANGES_AND_HINTS.TXT file:
+
+* Changes and Hints File for i486
+* Changes and Hints File for x864_64
+
+=> https://slackware.uk/slackware/slackware-15.0/CHANGES_AND_HINTS.TXT Changes and Hints File for i486
+=> https://slackware.uk/slackware/slackware64-15.0/CHANGES_AND_HINTS.TXT Changes and Hints File for x864_64
+
+## Update caches
+
+You'll also need to run this command:
+
+```
+update-all
+```
+
+This updates icon caches, font indexes, desktop and mime databases, pango files, glib schemas etc. You'll need to run this, or you'll probably won't be able to start a graphical environment and even if you do, you'll probably see garbage instead of readable characters.
+
+## Configuration files
+
+After doing all the upgrades, run:
+
+```
+dotnew
+```
+
+to accept or reject new configuration files. Make sure that you DO NOT replace your /etc/passwd, /etc/shadow or /etc/group files. If you do, you will lose all users/groups/passwords you have in your system. However, even if you do, you can get the old files back, they will be kept in the same locations, with an .orig suffix.
+
+If you are starting your system in init 3 (console), instead of init 4 (graphics) and you start the GUI by running 'startx', you'd better refresh the xinitrc file in your home directory by running (while in init 3):
+
+```
+xwmconfig
+```
+
+and selecting your preferred Desktop Environment.
+
+Edit /etc/slackware-version file to fill in:
+
+```
+Slackware 15.0
+```
+
+This is not required but this is used by some apps to show your version (for example grub).
+
+## Optional packages
+
+There are several new packages in 15.0 that you might care about or not.
+
+You may want to use flatpak for some of your software needs:
+
+```
+slapt-get -i flatpak flatpak-tools
+```
+
+And if you want your system to look like the default in 15.0:
+
+```
+slapt-get -i qogir-icon-theme salix-gtk-theme salix-xfwm4-theme
+```
+
+(and change the respective settings in Xfce)
+
+And if you want to get rid of annoying Client Side Decorations in GTK+3 applications:
+
+```
+slapt-get -i gtk3-nocsd
+```

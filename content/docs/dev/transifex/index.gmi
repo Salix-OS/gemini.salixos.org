@@ -1,0 +1,105 @@
+# How to Work with Transifex
+
+## Install the Transifex client
+
+First you need to install the transifex-client package, so:
+
+```
+slapt-get -i transifex-client
+```
+
+## How to map local translation files to a Transifex project
+
+You should only do this once for each application you have in Transifex. If you're using several PCs, you should do it once in every PC.
+
+Navigate to your project's directory (the one that includes the po directory with all the *.po files)
+
+```
+cd myproject
+```
+
+Initialize the transifex project locally:
+
+```
+tx init
+```
+
+this will create a .tx directory inside the project's directory. Don't add this directory to the VCS. The first time you run it in your system, it will also ask you for your Transifex username and password and it will store them in a ~/.transifexrc file.
+
+You need to map the transifex resource to this local project. The generic command to use in order to do this, inside your projects directory, is:
+
+```
+tx set --auto-local -r **myproject**.**myapp** --source-language=en --source-file 'po/**myapp**.pot' 'po/<lang>.po'
+```
+
+You should replace "myproject" and "myapp" with the correct names. myproject is the Transifex project name and this is usually "salix". myapp is the resource name for each application inside the "salix" project at Transifex.
+
+So, for example, for "liveclone", that command should be:
+
+```
+tx set --auto-local -r **salix**.**liveclone** --source-language=en --source-file 'po/**liveclone**.pot' 'po/<lang>.po'
+```
+
+The "" part always stays as it is. Run this command and check the output for errors. This is just a dry run, only to see if there are any errors, it won't do anything yet. To actually make it work, add "--execute" to the end of the command line:
+
+```
+tx set --auto-local -r **salix**.**liveclone** --source-language=en --source-file 'po/**liveclone**.pot' 'po/<lang>.po' --execute
+```
+
+Check the output for errors too. This should map the local translation files with the ones from Transifex, so from now on, you can push/pull files to/from Transifex.
+
+## How to pull translation files from Transifex
+
+In order to update the local *.po files with the ones from Transifex, you just need to run this inside the project's directory:
+
+```
+tx pull
+```
+
+WARNING: Be careful, if the local translations are newer than the ones in Transifex, these will be replaced by their respective versions in Transifex. if you also want to download new translations, if there are any, add the -a switch: 
+
+```
+tx pull -a
+```
+
+Check the output of the command for the po filenames that are new and didn't exist before. You should not forget to add these new po files to svn:
+
+```
+svn add po/newlang.po
+```
+
+Check that the new or updated translation is well-formatted:
+
+```
+msgfmt -c po/newlang.po
+```
+
+And finally upload the updated/new translations to svn:
+
+```
+svn commit
+```
+
+## How to push translation files to Transifex
+
+If you want to inform Transifex about changes in the pot file, you should run:
+
+```
+tx push -s
+```
+
+This will also update the po files stored in Transifex with the new entries. However, Transifex can also be set to check svn for updates in the pot file and it will auto update all po files with the new entries in the pot file, if any. So, if you have setup Transifex to autoupdate from the pot file, you can skip this.
+
+If you want to push the local *.po files to Transifex, run:
+
+```
+tx push -t
+```
+
+To push only one language (here french), run:
+
+```
+tx push -t -l fr
+```
+
+WARNING: If the files stored on Transifex are newer than the ones stored locally, they will be replaced. If you're receiving translations only from Transifex, you should never do this anyway. This should be done, only if you have updated some translations locally and want to upload them to transifex too. 

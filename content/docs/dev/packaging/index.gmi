@@ -1,0 +1,15 @@
+# Packaging Documentation
+
+Welcome to the packaging section, where you'll find everything you need to create and maintain your own software packages for Salix. Whether you're looking to package software for personal use or to share with the wider Salix community, this section provides detailed guides, tutorials, and best practices to help you get started and ensure your packages meet the high standards of the Salix repository.
+
+
+=> /docs/dev/packaging/gconf GConf and Packaging
+=> /docs/dev/packaging/packaging-rules Packaging rules
+=> /docs/dev/packaging/submitting-packages Submitting Packages
+=> /docs/dev/packaging/packaging-with-slkbuild Building Packages with slkbuild
+=> /docs/dev/packaging/git-svn-sources-with-slkbuild Getting git or svn sources for use with slkbuild
+=> /docs/dev/packaging/uid-gid UIDs and GIDs to use with slkbuild
+=> /docs/dev/packaging/mimetypes Installing Mimetypes with a Package
+=> /docs/dev/packaging/mateconf MATEConf Schemas and Packaging
+=> /docs/dev/packaging/package-categories Package Categories
+=> /docs/dev/packaging/scrollkeeper Scrollkeeper and Packaging

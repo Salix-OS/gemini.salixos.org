@@ -1,0 +1,77 @@
+# How to Install b43 Firmware for Broadcom Wireless Cards
+
+The Broadcom wireless chip needs proprietary software (called "firmware") that runs on the wireless chip itself to work properly. This firmware is copyrighted by Broadcom and must be extracted from Broadcom's proprietary drivers. To get such firmware on your system, you must download the driver from a legal distribution point, extract it, and install it.
+http://linuxwireless.org/en/users/Drivers/b43
+
+=> http://linuxwireless.org/en/users/Drivers/b43 http://linuxwireless.org/en/users/Drivers/b43
+
+Here is a short guide on how to create a b43(legacy) firmware package for your system.
+
+## Supported devices
+
+First you need to find out which firmware you require for your device. You can use the lspci command to display the Chip-ID of the wireless card which can then be compared against the Supported devices list at http://linuxwireless.org.
+
+=> http://linuxwireless.org/en/users/Drivers/b43#Supported_devices Supported
+devices
+=> http://linuxwireless.org http://linuxwireless.org
+
+```
+sudo lspci -vnn | grep 14e4
+0001:01:01.0 Network controller [0280]: Broadcom Corporation BCM4318 [AirForce One 54g] 802.11g Wireless LAN Controller [14e4:4318] (rev 02)
+```
+
+The Chip-ID from the example above is [14e4:4318], using this information you should discover this card requires the b43 (as opposed to b43legacy) kernel module using version 4.150.10.5 of the firmware.
+
+## Salix 14.1 and newer
+
+With the addition of dependency resolution in Sourcery and slapt-src all you need to do is to installed the b43-firmware package. Sourcery /slapt-src will recognize the need to install the b43-fwcutter package and do it automatically for you.
+
+```
+sudo slapt-src -u
+sudo slapt-src -i b43-firmware
+```
+
+That's it, now reboot
+
+## Salix 14.0
+
+First you need to install the b43-fwcutter package from the Slackbuid repository using slapt-src or it's graphical equivalent, Sourcery. Then follow this by installing the b43-firmware package also available in the Slackbuild repository
+
+```
+slapt-src -u
+slapt-src -i b43-fwcutter
+slapt-src -i b43-firmware
+```
+
+That's it, now reboot
+
+## Post-installation
+
+Once the firmware has been installed you can load the b43 (or b43legacy) kernel module with the modprobe command. If the module doesn't load automatically on startup then you may want to add the command to /etc/rc.d/rc.local.
+
+```
+modprobe b43
+```
+
+If you have installed Broadcom's Hybrid Linux Driver then you will need to unload the wl module first.
+
+```
+modprobe -r wl
+```
+
+To perminently blacklist the wl module use the following command. This way you can easily delete /etc/modprobe.d/blacklist-wl.conf to remove the blacklist at a later date.
+
+```
+echo "blacklist wl" > /etc/modprobe.d/blacklist-wl.conf
+```
+
+## Troubleshooting
+
+There may be times when your target system doesn't have any access to the internet other than via a wireless connection which creates a "chicken and egg" situation when it comes to upgrading or changing the installed operating system.
+
+Since this situation has been raised on the forum many times here are a few helpful hints.
+
+* The firmware has no architecture so the packages can be created on either version of Salix (32bit or 64bit) and installed on the other version.
+* The system you use to extract the firmware does not require a Broadcom wireless card to be connected to it.
+* Solution A: Install Salix inside a virtual machine before installing to your hard drive so you can create the firmware package while you still have a working internet connection.
+* Solution B: Use a Salix Live CD to create the firmware package on another system with a working internet connection.

@@ -1,0 +1,105 @@
+# How to Create a Video DVD from the CLI
+
+It is very easy to create a video DVD out of your existing video files, using only command line tools.
+
+## Universal solution using ffmpeg
+
+The original video files can be in any format that ffmpeg supports, so that includes just about everything.
+
+The tools you will need for this are ffmpeg and dvdauthor, so make sure you have them first (run as root):
+
+```
+slapt-get -i ffmpeg dvdauthor
+```
+
+Using ffmpeg you can convert any video file to an mpg file, that dvdauthor can use later:
+
+```
+ffmpeg -i video.avi -aspect 16:9 -target pal-dvd dvd.mpg
+```
+
+You might want to change the aspect ratio to 4:3 or the target to ntsc-dvd, depending on your preferences and region.  If you need to define video bitrate use the -b bitrate option:
+
+```
+ffmpeg -i video.avi -aspect 16:9 -target pal-dvd  -b 1800000 dvd.mpg
+```
+
+I'm not sure what units are used but the above example gives bitrate ca. 2300kbits/s which is usually enough for typical avi. Bigger bitrate gives better quality but a larger file. Just test the output and adjust the bitrate according to your needs.
+
+Now add the mpg file to your project using dvdauthor:
+
+```
+dvdauthor -o dvd/ -t dvd.mpg
+```
+
+You can convert and add any number of files this way. After you've added all of them, run:
+
+```
+export VIDEO_FORMAT=PAL 
+dvdauthor -o dvd/ -T
+```
+
+You might want to set VIDEO_FORMAT=NTSC instead.
+
+And then you can create an iso with mkisofs:
+
+```
+mkisofs -dvd-video -o dvd.iso dvd/
+```
+
+which you can burn to a DVD disc with any DVD burning software. cdrecord from the command line will do just fine.
+
+## Advanced usage of dvdauthor
+
+One can generate an XML file in order to define loops, pauses or create chapters, once the file is ready the usage is as follows:
+
+```
+export VIDEO_FORMAT=PAL 
+dvdauthor -x dvd.xml -o dvd/
+```
+
+Examples of the XML are here
+
+=> http://dvdauthor.sourceforge.net/doc/x35.html here
+
+## Mencoder as alternative to ffmpeg
+
+If ffmpeg fails to convert properly one can use mencoder (PAL version example)
+
+```
+ mencoder -oac lavc -ovc lavc -of mpeg -mpegopts format=dvd \
+ -vf scale=720:576,harddup -srate 48000 -af lavcresample=48000 \
+ -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=2400:keyint=15:aspect=16/9:acodec=ac3:abitrate=192 \
+ -ofps 25 -o output-filename source-filename
+```
+
+What can be adjusted here is:
+
+```
+#vbitrate - up to 9800 (the bigger bitrate the better quality but the larger the file)
+#aspect - 16/9 or 4/3
+```
+
+=> http://www.mplayerhq.hu/DOCS/HTML/en/menc-feat-vcd-dvd.html Detailed description of DVD authoring with mencoder
+
+one can use all filters available for mplayer, i.e. deinterlace (several methods for this) by modifying the -vf section :
+
+```
+-vf pullup,softskip,scale=720:576,harddup
+```
+
+another method
+
+```
+-vf pp=fd,scale=720:576,harddup 
+```
+
+one can crop the image by modifying the line
+
+```
+-vf crop=720:470:0:50,scale=720:576,harddup
+```
+
+Mplayer manual gives detailed description of available filters The usage may not be very straightforward but once learnt allows many operations on the image and sound.
+
+=> http://www.mplayerhq.hu/DOCS/man/en/mplayer.1.txt Mplayer manual gives detailed description of available filters

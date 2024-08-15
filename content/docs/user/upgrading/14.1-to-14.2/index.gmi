@@ -1,0 +1,217 @@
+# How to Upgrade Salix 14.1 to 14.2
+
+## Preparing for the upgrade
+
+You first need to change the default repositories to the ones for Slackware and Salix 14.2. Open file /etc/slapt-get/slapt-getrc and change all "14.1" instances to "14.2". Also make sure the Slackware repositories have an OFFICIAL priority. Make sure you add the new extra repository, with an OFFICIAL priority too. Example setups are shown below:
+
+### i486 architecture
+
+```
+SOURCE=http://slackware.uk/salix/i486/slackware-14.2/:OFFICIAL
+SOURCE=http://slackware.uk/salix/i486/slackware-14.2/extra/:OFFICIAL
+SOURCE=http://slackware.uk/salix/i486/14.2/:PREFERRED
+SOURCE=http://slackware.uk/salix/i486/extra-14.2/:OFFICIAL
+```
+
+### x86_64 architecture
+
+```
+SOURCE=http://slackware.uk/salix/x86_64/slackware-14.2/:OFFICIAL
+SOURCE=http://slackware.uk/salix/x86_64/slackware-14.2/extra/:OFFICIAL
+SOURCE=http://slackware.uk/salix/x86_64/14.2/:PREFERRED
+SOURCE=http://slackware.uk/salix/x86_64/extra-14.2/:OFFICIAL
+```
+
+### slapt-srcrc
+
+Also edit your /etc/slapt-get/slapt-srcrc file to point to 14.2 instead of 14.1:
+
+```
+BUILDDIR=/usr/src/slapt-src
+PKGEXT=txz
+SOURCE=http://slackware.uk/salix/slkbuild/14.2/
+SOURCE=http://slackware.uk/salix/sbo/14.2/
+```
+
+### Switch to root user
+
+Every command listed below should be executed with root privileges. So run:
+
+```
+sudo su
+```
+
+or alternatively, if you have the root user enabled:
+
+```
+su
+```
+
+to open a root terminal.
+
+#### Changing your mirrors
+
+Feel free to try other repositoriy mirrors that might be faster for you. N.B: It is perfectly safe to stop the process while a package is in the process of being downloaded. On resume/restart, the download starts off where it last left. But, do not stop the process, if a package is in the process of being installed.
+
+=> /docs/user/repository-mirrors repositoriy mirrors
+
+After you make the changes, run
+
+```
+slapt-get -u
+```
+
+### slapt-src
+
+Although slapt-src has nothing to do with the upgrade process itself, better make sure its repos are pointing to 14.2 so that they work correctly after the installation. Open your /etc/slapt-get/slapt-srcrc and change the SOURCE lines to these ones:
+
+```
+SOURCE=http://slackware.uk/salix/slkbuild/14.2/
+SOURCE=http://slackware.uk/salix/sbo/14.2/
+```
+
+## Upgrading packages
+
+First you need to upgrade glibc. glibc-zoneinfo and glibc-i18n have been split off from the main glibc package in 14.2, so as well as upgrading the main package, you'll have to install those too:
+
+```
+slapt-get -i glibc glibc-zoneinfo glibc-i18n
+```
+
+Then upgrade slapt-get itself (along with its dependencies):
+
+```
+slapt-get -i slapt-get
+```
+
+And then upgrade all other packages to their new versions:
+
+```
+slapt-get --upgrade
+```
+
+DO NOT use:
+
+```
+slapt-get --dist-upgrade
+```
+
+in any case. Although it might seem to be the best option for upgrading to a different version, it really isn't.
+
+The procps and ConsoleKit packages have been replaced by alternative implementations, so you'll need to install them:
+
+```
+slapt-get -i procps-ng ConsoleKit2
+```
+
+If you have a printer installed, you'll probably need the new cups-filters package:
+
+```
+slapt-get -i cups-filters
+```
+
+Since the default audio output has been switched to PulseAudio with this release, you probably need a volume controller for it:
+
+```
+slapt-get -i pavucontrol
+```
+
+If you had engrampa and atril installed (the default archive manager and pdf viewer in most editions, respectively), the package names have changed, so you will need to install the packages with the new names:
+
+```
+slapt-get -i engrampa
+slapt-get -i atril
+```
+
+## Obsolete packages
+
+Some packages have been obsoleted and should be removed. Some have been replaced by new packages. One of them is udev and you'll have to remove it separately:
+
+```
+spkg -d udev
+```
+
+You can remove all the rest obsolete packages automatically with:
+
+```
+slapt-get --remove-obsolete --remove
+```
+
+Careful, because this will also remove all personal packages that you might have installed, if any. It will also remove any packages that used to be part of the Slackware or Salix repos in 14.1, but are not anymore in 14.2. Take a careful look at the list of packages to be removed and if you recognise anything that you want to keep, make a note. It might have been renamed to something slightly different or it may be available as a binary package in the new release, so you might have to build it using a SlackBuild (with spi, slapt-src or sourcery) later. And it's never a bad idea to have a look at the Slackware CHANGES_AND_HINTS.TXT file:
+
+* Changes and Hints File for i486
+* Changes and Hints File for x864_64
+
+=> https://slackware.uk/slackware/slackware-14.2/CHANGES_AND_HINTS.TXT Changes and Hints File for i486
+=> https://slackware.uk/slackware/slackware64-14.2/CHANGES_AND_HINTS.TXT Changes and Hints File for x864_64
+
+## Upgrading the kernel
+
+Run:
+
+```
+ls /var/log/packages/kernel*
+```
+
+to see which kernel packages you have installed and do a slapt-get -i  for each one of them. (Do not include the package version in ).
+
+If you have switched to the kernel-generic package instead of the default kernel-huge package, don't forget to recreate the initrd.gz file which will be needed for booting you upgraded system. If you're still using the default kernel-huge package, an initrd is not needed anyway and you needn't be concerned about it.
+
+After upgrading the packages, don't forget to edit your /etc/lilo.conf file accordingly and run:
+
+```
+lilo -v
+```
+
+to inform the bootloader about the kernel upgrade.
+
+On similar note, users running multi-boot systems on GRUB2 must log into the distro that controls the bootloader and re-run
+
+```
+update-grub
+```
+
+to inform the bootloader about the kernel upgrade.
+
+For those using elilo, you just need to copy the new kernel and initrd (if using kernel-generic) to appropriate directory in the ESP:
+
+```
+cp /boot/vmlinuz /boot/efi/EFI/Salix/vmlinuz
+cp /boot/initrd.gz /boot/efi/EFI/Salix/initrd
+```
+
+## Update caches
+
+You'll also need to run this command:
+
+```
+update-all
+```
+
+This updates icon caches, font indexes, desktop and mime databases, pango files, glib schemas etc. You'll need to run this, or you'll probably won't be able to start a graphical environment and even if you do, you'll probably see garbage instead of readable characters.
+
+## Configuration files
+
+After doing all the upgrades, run:
+
+```
+dotnew
+```
+
+to accept or reject new configuration files. Make sure that you DO NOT replace your /etc/passwd, /etc/shadow or /etc/group files. If you do, you will lose all users/groups/passwords you have in your system. However, even if you do, you can get the old files back, they will be kept in the same locations, with an .orig suffix.
+
+If you are starting your system in init 3 (console), instead of init 4 (graphics) and you start the GUI by running 'startx', you'd better refresh the xinitrc file in your home directory by running (while in init 3):
+
+```
+xwmconfig
+```
+
+and selecting your preferred Desktop Environment.
+
+Edit /etc/slackware-version file to fill in:
+
+```
+Slackware 14.2
+```
+
+This is not required but this is used by some apps to show your version (for example grub).

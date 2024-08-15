@@ -52,6 +52,7 @@ Salix is developed by an open community of volunteers and contributors all over 
 ## Find Out More
 
 => ./download Download
+=> ./docs Documentation
 => ./team Team
 => ./chat IRC Channel
 => ./screenshots Screenshots

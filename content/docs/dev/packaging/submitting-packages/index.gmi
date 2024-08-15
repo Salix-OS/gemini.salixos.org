@@ -1,0 +1,76 @@
+# Submitting Packages
+
+## What you should do before submitting packages
+
+You should register in the Salix-main mailing list. All development discussions are taking place there.
+
+=> https://lists.sourceforge.net/lists/listinfo/salix-main Salix-main mailing list
+
+## What packages to submit
+
+Feel free to submit packages for any open source software you like. Replacing Slackware packages is generally not accepted, unless there is a really important reason.
+
+You can also package proprietary software, provided re-distribution of that software is allowed (like for example the opera web browser).
+
+## When to submit packages
+
+When preparing for the next Salix release, a "current" repository will be available in the Salix servers, which will be in sync with Slackware's own "current" repository. A Salix "current" repository generally appears around the time Slackware's current repository reaches RC1 state. Any packages you submit at that point will be considered for inclusion in the Salix binary repositories. However, there might be cases where the packages will be added to the Salix slkbuild repository instead, depending on the Salix developers' workload.
+
+After a new Salix release is made, the "current" repository will be taken offline and new packages will no longer be accepted in the Salix binary repositories. Any packages you submit at that point, will only be considered for inclusion in the Salix slkbuild repository. The exclusion to that rule, is if a package is needed for a Salix edition release and it's not already part of the binary repositories; these packages will be considered for inclusion in the Salix binary repositories anyway. You should make sure that any package you submit for inclusion in the Salix slkbuild repository is not already available through slackbuilds.org. If it is, it will only be accepted if there is a really important reason to replace the slackbuilds.org package.
+
+## Where to submit packages
+
+If you would like to submit a package for inclusion in the Salix repository, please create a new ticket in our [http://sourceforge.net/p/salix/packages/ SourceForge ticket system.] You will need to have a SourceForge account before you can login and submit a new ticket, or you can use [http://openid.net/ openid] to log in to SourceForge instead.
+
+When submitting a package, please specify the submission type:
+
+* New: if
+
+the package was not previously present at all in the repos
+
+* Upgrade: if
+
+an older version of the package is already part of the repos (or the previous version repos) and you want to submit a new version * "Rebuild": if the package currently in the repos is not working and you want to submit a rebuild of the same version
+
+* Transfer: if the package should be simply
+
+transferred from the previous Salix version repos. This can only be used in the case that a new upstream version is not available and the package in the previous Salix version works as it is, with no changes, in the new Salix version. You should test it yourself first if it does. In any case, you'll probably have to recalculate dependencies for the new Salix version.
+
+You must also specify the Salix version(s) this package is aimed at by typing in the appropriate field.
+
+## What to include in the bug report
+
+When submitting a new package in the bugtracker, please include the following:
+
+* a link to the project's homepage
+* link to "txz" package
+* link to "md5" checksum
+* link to "dep" file that includes dependency info, if
+
+there are any dependencies (you can create one with depfinder). You can skip this file if the package you are submitting has no external dependencies.
+
+* links to all source files you used to create the package. That includes a
+
+link to the source tarball(s) you have used as well as links to your Slackbuild, buildscript or SLKBUILD you might have used and generally everything that needs to be present in someone's system so he can recreate the package. Alternatively you can submit an "src" file that includes links to all of the above mentioned source files. Such an src file will be created when using slkbuild  and you have specified the "sourcetemplate" variable
+
+* link to a package build log. If you're using slkbuild
+
+one will be created automatically for you. If you're using a Slackbuild/buildscript, then you can create one when building your package with:
+
+```
+./foo.Slackbuild 2>&1 | tee build-foo.log
+```
+
+If the package you are submitting requires any dependencies that are not yet present in the Salix or Slackware repositories, then you will need to submit those dependencies in the same ticket as well.
+
+If you would like a more automated way to create the bugreports for submitting packages, have a look at Shador's script at the forums
+
+=> https://www.salixos.org/forum/viewtopic.php?p=1062#p1062 Shador's script at the forums
+
+You will of course need to have some web space to upload all those files. If you don't, you can subscribe in the Salix-main mailing list and make a request. You will get an ftp account which you can use to upload your packages.
+
+## When will my package be included in the repository?
+
+As soon as it gets tested and found to comply with our packaging rules, it will be included in the Salix repository.
+
+=> /docs/dev/packaging/packaging-rules packaging rules

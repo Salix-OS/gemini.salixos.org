@@ -1,0 +1,240 @@
+# How to Internationalize Shell Scripts
+
+## Modification of the original script
+
+(We shall take excerpts from the script keyboardsetup as an example.)
+
+Add the following lines after the usual introductory comments but before your actual code starts:
+
+```
+# Gettext internationalization
+export TEXTDOMAIN="name_of_the_program"
+export TEXTDOMAINDIR="destination_path_to_the_compiled_translations"
+. gettext.sh
+```
+
+### Example
+
+Before modification:
+
+```
+# Version 4.3 - 28/07/2009
+#  * replaced xorg.conf by fdi policy rule
+# Take a look at "Xdialog" and use it instead of "dialog" in case X is running
+if [[ "$DISPLAY" && "$(which Xdialog 2>&1 | grep -v "which: no")" ]]; then
+```
+
+After modification:
+
+```
+# Version 4.3 - 28/07/2009
+#  * replaced xorg.conf by fdi policy rule
+# Gettext internationalization
+export TEXTDOMAIN="keyboardsetup"
+export TEXTDOMAINDIR="/usr/share/locale"
+. gettext.sh
+# Take a look at "Xdialog" and use it instead of "dialog" in case X is running
+if [[ "$DISPLAY" && "$(which Xdialog 2>&1 | grep -v "which: no")" ]]; then
+```
+
+Put the following tags around the strings that need to be translated:
+
+```
+`eval_gettext 'string_to_be_translated'`
+```
+
+### Example
+
+Before modification:
+
+```
+if [ "$xflag" = "yes" ] ; then
+    answer="$(eval $dialog \
+    --stdout \
+    --title \"Keyboard configuration\" \
+    --default-item \"$currentpathkeymap\" \
+    --cancel-label \"Exit\" \
+    --icon \"keyboardsetup\" \
+    --check \"numlock\" \"on\" \
+    --menu \
+    \"\\n        Please select your prefered keyboard map:\" 20 75 11 "$list" )"
+else
+```
+
+After Modification:
+
+```
+if [ "$xflag" = "yes" ] ; then
+    answer="$(eval $dialog \
+    --stdout \
+    --title \"`eval_gettext 'Keyboard configuration'`\" \
+    --default-item \"$currentpathkeymap\" \
+    --cancel-label \"`eval_gettext 'Exit'`\" \
+    --icon \"keyboardsetup\" \
+    --check \"numlock\" \"on\" \
+    --menu \
+    \"\\n        `eval_gettext 'Please select your prefered keyboard map:'`\" 20 75 11 "$list" )"
+else
+```
+
+## Translation process
+
+We first need to extract the strings to be translated from the shell script to a model file that will be distributed to the translators. To do this, run the following command from the working directory where the shell script is located:
+
+```
+xgettext --from-code=utf-8 -L shell -o name_of_shell_script.pot name_of_shell_script
+```
+
+### Example
+
+```
+xgettext --from-code=utf-8 -L shell -o keyboardsetup.pot keyboardsetup
+```
+
+Each translator will use the model file to generate his own translation work file by running the following command from the directory where the .pot file (our translation model) is located. It is assumed that the environment locale of his operating system is the same as the locale he wants to translate into (or else he should consult the man page of msginit):
+
+```
+msginit -i name_of_shell_script.pot -o name_of_shell_script-name_of_locale.po
+```
+
+### Example
+
+```
+msginit -i keyboardsetup.pot -o keyboardsetup-fr.po
+```
+
+## Translate using PoEdit
+
+The easiest way to localize a gettext software is to install poedit from the repositories.
+
+If there is already a .po file for your language and you just want to update/correct it, you can open the .po file directly with poedit.
+
+If a .po file for your language doesn't exist yet, you can create one easily with poedit, just select "New catalog from .POT file" from the file menu, add your details and start translating!
+
+Remember to save the .po file you created like this:
+
+```
+softname-langcode.po
+```
+
+### Example
+
+```
+keyboardsetup-de.po (for German)
+```
+
+## Translate without PoEdit
+
+If there is no .po file for your language yet, you can create one from the .pot file with a command like this:
+
+```
+msginit -i name_of_shell_script.pot -o name_of_shell_script-name_of_locale.po
+```
+
+### Example
+
+```
+msginit -i keyboardsetup.pot -o keyboardsetup-fr.po
+```
+
+When you create a .po file, or if one is already there, you can start editing it directly. Looking into the file is self explanatory, using a text editor of his choice each translator translate the strings in his language .po file.
+
+### Example
+
+Before:
+
+```
+#: keyboardsetup:93 keyboardsetup:103
+#, sh-format
+msgid "Keyboard configuration"
+msgstr **
+```
+
+After:
+
+```
+#: keyboardsetup:93 keyboardsetup:103
+#, sh-format
+msgid "Keyboard configuration"
+msgstr "Configuration du clavier"
+```
+
+## Testing your translations
+
+If you want to test your translation, you need to create a .mo file from the .po file, like this:
+
+```
+msgfmt name_of_shell_script-name_of_locale.po -o name_of_shell_script.mo
+```
+
+### Example
+
+```
+msgfmt keyboardsetup-fr.po -o keyboardsetup.mo
+```
+
+The .mo filename should be exactly the same as the tool you are translating.
+
+You can then place the .mo file you generated into its appropriate locale directory:
+
+```
+/usr/share/locale/name_of_locale/LC_MESSAGES/
+```
+
+### Example
+
+```
+/usr/share/locale/fr/LC_MESSAGES/
+```
+
+## Sending your translations
+
+You can send your .po files to the salix-main mailing list (or the software author email) and they will be included in future versions of salixtools or other software. If it's a salixtools, just send an email to [mailto:salix-main@lists.sourceforge.net] attaching your .po files.
+
+## Extending the translations to the shell script
+
+When the maintainer of the shell script receives back a completed .po file from a translator, he first compiles it by running the following command (from the working directory where the translated po file is located):
+
+```
+msgfmt name_of_shell_script-name_of_locale.po -o name_of_shell_script.mo
+```
+
+### Example
+
+```
+msgfmt keyboardsetup-fr.po -o keyboardsetup.mo
+```
+
+Then he places the .mo file he generated into its appropriate locale directory:
+
+```
+/usr/share/locale/name_of_locale/LC_MESSAGES/
+```
+
+### Example
+
+```
+/usr/share/locale/fr/LC_MESSAGES/
+```
+
+That's all!
+
+## Maintenance
+
+Maintenance of the shell script & future translations:
+
+If later on, the shell script is modified, its maintainer will issue a new .pot (model) file which he can send back to the translators.
+
+Each translator will then have to run the following command in order to generate a new .po file for their language that will include their previous translation work as well as the new strings net yet translated. Both the new .pot file & the last translated .po file should be located in the directory where this command is issued.
+
+```
+msgmerge -U name_of_shell_script-name_of_locale.po name_of_shell_script.pot
+```
+
+### Example
+
+```
+msgmerge -U keyboardsetup-fr.po keyboardsetup.pot
+```
+
+And then redo the missing translations.

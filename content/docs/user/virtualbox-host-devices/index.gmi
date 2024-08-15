@@ -1,0 +1,27 @@
+# How to Access Host USB Devices in a Guest OS Running in VirtualBox PUEL
+
+If you want to access usb devices in a guest OS running in VirtualBox PUEL, you will have to:
+
+* Edit your /etc/rc.d/rc.S file in the host OS. Find the line that reads:
+
+```
+/sbin/mount -v usbfs /proc/bus/usb -t usbfs
+```
+
+and change it to:
+
+```
+/sbin/mount -v usbfs /proc/bus/usb -t usbfs -o devgid=10,devmode=0664
+```
+
+* Add your user to the wheel group.
+* You need to remount /proc/bus/usb. A reboot will do it too.
+* In VirtualBox, select the virtual machine you want to use and hit the
+
+settings button. Go to the USB page and make sure you have the Enable USB controller checkbox selected. If you want support for USB 2.0 check the Enable USB 2.0 checkbox too.
+
+* In the same page, add a filter for the device you want to use. Easier if you
+
+already have your device connected and use the Add filter from device button.
+
+You should be able to access your USB device in your guest OS now. Be aware that the device will be inaccessible to your host OS when your guest OS is using it.

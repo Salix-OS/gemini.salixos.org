@@ -1,0 +1,66 @@
+# GConf and Packaging
+
+## What is gconf?
+
+GConf is a configuration scheme currently used by the GNOME desktop. Programs which use it setup default values in a $NAME.schemasfile which is installed under /etc/gconf/schemas/$NAME.schemas. These defaults are then registered with the gconf daemon which monitors the configuration values and alerts applications when values the applications are interested in change. The schema files also provide documentation about what each value in the configuration system means (which gets displayed when you browse the database in the gconf-editor program).
+
+For packaging purposes, we have to disable schema installation during build, or these will get installed in the packager's system instead of put in the package itself. They can then be created and placed in the package manually.
+
+## Disabling schemas installation
+
+When a package requires the installation of gconf schemas, there is usually a --disable-schemas-install configure option that can be used to not let the makefile install any schemas to the system. You can check if the configure script provides such an option with configure --help.
+
+Sometimes the configure script accepts a --with-gconf-source option. This should be used together with --disable-schemas-install like this, in order to set where and how the app should store its settings in gconf:
+
+```
+./configure other_configure_options --disable-schemas-install --with-gconf-source="xml::/etc/gconf/gconf.xml.defaults"
+```
+
+However, the --disable-schemas-install option might not be working properly, or it might not even be available. In that case a GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL variable must be declared when running make install, like this:
+
+```
+GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 make install DESTDIR=$startdir/pkg
+```
+
+where $startdir/pkg is your packaging directory (as used by SLKBUILD).
+
+Be careful not to do:
+
+```
+export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+```
+
+at any point in your buildscript as pointed in some other sites about using gconf in other distributions, because the setting will stick and you won't be allowed to install the schemas manually later on in your buildscript.
+
+## Installing schemas in the package
+
+Files with the .schemas extension will be created under the $startdir/pkg directory after running make install as specified above. Now, we need to manually register those schemas within the packaging directory. This can be achieved by putting something like this in your buildscript somewhere after the make install line:
+
+```
+# gconf stuff
+export GCONF_CONFIG_SOURCE="xml::$startdir/pkg/etc/gconf/gconf.xml.defaults"\
+if [ -d $startdir/pkg/etc/gconf/schemas ]; then\
+    install -v -d -m755 $startdir/pkg/etc/gconf/gconf.xml.defaults\
+    SCHEMAS=$startdir/pkg/etc/gconf/schemas\
+    for schema in $SCHEMAS/*.schemas; do\
+        gconftool-2 --makefile-install-rule $schema\
+    done\
+    # Reset / Verify correct permissions\
+    ( cd $startdir/pkg/etc/gconf ; find . -type d -exec chmod 755 {} \; )\
+    ( cd $startdir/pkg/etc/gconf ; find . -type f -exec chmod 644 {} \; )\
+fi
+```
+
+where, as before, $startdir/pkg is your packaging directory. This will register any .schemas files present in $startdir/pkg/etc/gconf/schemas and put their default settings inside the package.
+
+## SLKBUILD and gconf schemas files
+
+If you are using SLKBUILD to create your packages, the default behaviour is to make every file under /etc a .new file automatically. A .new file does not replace any older versions of the same file, this happens only after the user explicitly allows it to overwrite the older (already installed by a previous version of the package) file. While this is the recommended setting for most settings files that are placed in /etc, this is not the case for gconf settings files. Gconf settings files, just provide reasonable defaults for applications, which are tweaked, in an automated way, inside the users home directory. New gconf settings files should always replace previously installed files, because in many cases, they include changes that are necessary for the newer version of the software to work properly.
+
+So, when you are installing gconf schemas in your package, make sure you add the noautodotnew option in your SLKBUILD:
+
+```
+options=('noautodotnew')
+```
+
+and add any other files that you want to be .new'd in the dotnew=() array (see the SLKBUILD manpage for details)

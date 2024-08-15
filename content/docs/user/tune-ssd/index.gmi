@@ -1,0 +1,136 @@
+# How to Tune an SSD
+
+The biggest single upgrade you can make to a PC's performance is to add a Solid-State-Drive or SSD. Doing so will shorten your boot times, dramatically increase your write-to-disk speed and prolong battery life on a laptop.
+
+When adding the SSD, three factors need balancing:
+
+* System performance
+* SSD longevity
+* Data Safety
+
+## Background
+
+SSDs are NAND memory, organised into PAGES, which are organised into BLOCKS. The controller takes care of all the low level details for us, but knowing something about how the controller works can help us get the best out of our new drive.
+
+Specifically, a write operation is done on a page, while a delete operation is done on a block, which is not really important until we face a situation where the drive starts to run out of blank pages. Then the drive controller needs to recover some of the deleted pages. And to do so, it first needs to copy into its cache any data on the pages in the block that are not marked for deletion. Once in the cache it needs to update the ones that are marked for deletion, then blank the "real" block, then write the cache copy into the "real" block. As you can imagine, that takes much more time than just writing data to an empty page. This leads to a situation known as "write amplification", where unnecessary page writes are happening most of the time. And since the number of erase/write cycles has a maximum for each SSD, this situation accelerates us towards that limit.
+
+Another factor that comes into play is "wear levelling", a process that the controller uses to ensure that pages (or their component cells) are used evenly across the drive. Because if your Operating System is continually writing data to the same pages on the SSD, they will quickly reach their erase/write limit and effectively be "dead" and so will your data.
+
+Wear levelling needs free cells to work with, and once your drive fills up, wear levelling doesn't happen and can lead to a "dead" drive. Again.
+
+The good news is that these are known problems and newer SSD controllers are built to handle these situations - with a little help from us.
+
+## System Performance
+
+### Move volatile data off the drive
+
+* Log files are useful, but only if you read them - generally, logs are
+
+consulted when a problem arises. Therefore keeping reams and reams of logs on a desktop machine is probably not necessary, as long as you can read the logs for your current session. So move the logs to another drive, or better yet, into memory by moving '/var/log' into RAM.Note that if you do move the logs into RAM, Gslapt and Sourcery will not "see" any installed packages after a reboot.
+
+* Lots of programs use the '/tmp' directory for intermediate files and data
+
+while working. Most of it is relevant only to your current session - that's why '/tmp' is cleared on reboot. Move it into RAM. Same for '/var/tmp/'.
+
+* Programs that use on-disk caches like web browsers can write thousands of
+
+files to your drive in a short web browsing session. If at all possible, move their caches into RAM. I can't find a way to do this with midori, but it is possible with Firefox. You will of course lose your cache upon a reboot, so take that into account before doing this.
+
+### Reduce 'metadata' writes
+
+* There is a lot of updating of metadata involved in a file read or write
+
+operation. The access time, the modification time, the extents used, etc, etc. The biggest problem here is the atime or access time parameter - it ensures that for every read from the disk, we do a write. (Don't ask!). Mount your SSD filesystems with the 'noatime' mount directive and you will get a performance boost as well as prolonging the life of your SSD.
+
+### Using a different scheduler for your SSD
+
+* Without going into too much detail, you can set a different scheduling
+
+algorithm for each drive - rotational as well as SSD. Depending on the underlying hardware, a change of scheduler may provide a performance boost. The "deadline" scheduler is the system default (at the moment), but the "noop" scheduler may provide better performance for your circumstances. You can experiment using the following snippet of code:
+
+```
+echo "noop" > /sys/block/sdb/queue/scheduler
+```
+
+(where '/dev/sdb' is your SSD )
+
+WARNING: Don't try this without a backup - while it didn't harm my system, I was working on an almost empty drive, and making backups before trying this stuff is just plain common sense, right? 
+
+## SSD Longevity
+
+Use a filesystem that supports the TRIM command. The TRIM command is a command to the SSD controller to mark a page as invalid when the OS has deleted the files' data in that page. At some point in the future, the drives garbage collection routines will reclaim the page to the free pool. As far as I am aware, all the latest SSDs support the TRIM command.
+
+File systems known to support the TRIM command:
+
+* EXT4
+* Btrfs
+* GFS2
+* XFS
+
+Some user space programs exist to initiate a TRIM command on a drive that supports it, should you be using a file system that does not. See recent versions of hdparm, but beware that its use (for this purpose) will destroy your data.
+
+When first partitioning your SSD, make sure it is "aligned" - meaning that the block size of your filesystem will align with the block size of your partiton. For this to happen, start your first partition 1MB from the start of the drive. This will ensure that data doesn't cross page boundaries.
+
+It is highly unlikely that a TRIM-enabled SSD used with a TRIM enabled filesystem with the TRIM mount option active, on a desktop machine used for ordinary proposes will become unusable due to "wearing out" the memory in a less than reasonable time. Personally, I consider 3 years to be the maximum life of any drive and experience of running many mail servers, web servers and file stores for a large user-base reinforces that figure for me. So if my new SSD lasts 3 years, I will consider that a reasonable time - your mileage may vary, but anything above 3 years I consider a bonus :-)
+
+## Data Safety
+
+If you use a journalling file system, you may have options about what is actually journaled, and when. In EXT4, we have:
+
+* data=writeback mode - no data journalling, but metadata is journalled. A
+
+crash/recovery cycle can cause incorrect data to be in files updated shortly before the crash. Best performing of all journalling modes, and less writes=longer SSD longevity.
+
+* data=ordered mode - journals metadata, but "orders" metadata changes with the
+
+data blocks into "transactions". When a write is done, the associated data blocks are written first. This is the default in Linux EXT4, and is a good compromise between performance and data safety.
+
+* data=journal - all data and metadata is journalled. Sloooow, except when both
+
+reading and writing specific data, when it is the best performing of all.
+
+If using data=writeback, the "nobh" option will not associate buffer heads with data pages, speeding things up a bit. The "bh" option is on by default.
+
+The "barrier" option (also on by default) enforces on-disk ordering of commits, adding a safety factor to volatile disk write caches. If you have a battery backed drive (only ones I have seen are on RAID controllers) you may get a performance boost by using the "nobarrier" mount option.
+
+The commit option tells EXT4 to sync its data and metadata every n seconds. The default is 5 seconds. If your disk crashes you will have lost a maximum of 5 seconds of changes, but your file system will be undamaged due to the journal. Very large numbers can give a performance boost, but will increase the amount of changes lost on a crash.
+
+## So, what's best for me?
+
+Taking all these factors into consideration, and knowing your own work patterns, you should be able to make an informed decision on what needs to be done with your new SSD.
+
+As my laptop is used for web browsing, email, and writing, I chose a middle road. I partitioned the disk so that it was aligned, and here is my '/etc/fstab' file for my new SSD:
+
+```
+/dev/sda2        swap             swap        defaults         0   0
+/dev/sda3        /                ext4        defaults,noatime,discard          1   1
+/dev/sda1        /boot            ext2        defaults,noatime         1   2
+#/dev/cdrom      /mnt/cdrom       auto        noauto,owner,ro,comment=x-gvfs-show 0   0
+/dev/fd0         /mnt/floppy      auto        noauto,users,rw,umask=00 0   0
+devpts           /dev/pts         devpts      gid=5,mode=620   0   0
+proc             /proc            proc        defaults         0   0
+tmpfs            /dev/shm         tmpfs       defaults         0   0
+
+tmpfs	/tmp  	tmpfs 	defaults,noatime,mode=1777	0 0
+tmpfs	/var/tmp	tmpfs	defaults,noatime,mode=1777	0 0
+```
+
+The root partition is mounted with the 'noatime' and 'discard' mount options, signifying no access time update after a file read, and initiating the TRIM command. Note that 'discard' is not used on the '/boot' partition because it is ext2, and the TRIM command is not supported by the ext2 filesystem. Also, note the use of 'tmpfs' for '/tmp', '/var/tmp' and '/var/log' - and all of these are mounted with the noatime directive, but I am fairly sure that its use on a tmpfs is irrelevant - in any event, writes to memory are very fast, so we are not losing much if the "noatime" option does nothing. (more research needed)
+
+I left the scheduler at "deadline" after noting no real performance gain from the "noop" scheduler, and I did not change the journaling mode from the default, as I am not too happy about data inconsistencies.
+
+Overall, my 5 year old laptop is now performing better than when it was new.
+
+Any inaccuracies are down to me (Shanek54).
+
+## Further reading
+
+* EXT4 Spec
+* EXT4 Wiki
+* Wear Levellling
+* Excellent (but dated) overview of the "Why buy an SSD?" type
+
+=> https://www.kernel.org/doc/Documentation/filesystems/ext4.txt EXT4 Spec
+=> https://ext4.wiki.kernel.org/index.php/Main_Page EXT4 Wiki
+=> http://en.wikipedia.org/wiki/Wear_leveling Wear Levellling
+=> http://www.hardwarecanucks.com/forum/storage/39762-so-you-wanna-buy-ssd-read-first.html Excellent (but dated) overview of the "Why buy an SSD?" type

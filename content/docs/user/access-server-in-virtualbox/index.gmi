@@ -1,0 +1,37 @@
+# How to Access a Server Running in a VirtualBox Guest
+
+VirtualBox guests are usually set up with NAT networking. That way, there is no way to directly access a server running in a VirtualBox guest from the host system or from anywhere in the network. In order to do that, you'll have to inform VirtualBox to forward packets from a host port to a port in the guest system. This guide will show you how to access an ssh server running in a VirtualBox guest, but the procedure is similar for any kind of server that you may want to run (ftp, apache http etc).
+
+First of all, here's how to get a list of the Virtual Machines you have set up, including VM names and UUIDs:
+
+```
+VBoxManage list vms
+```
+
+Assuming the ssh server is running on port 22 in the guest system and you want to forward port 2222 from the host machine to the VirtualBox guest, you'll need to run:
+
+```
+VBoxManage setextradata <guestname> "VBoxInternal/Devices/pcnet/0/LUN#0/Config/ssh/HostPort" 2222
+VBoxManage setextradata <guestname> "VBoxInternal/Devices/pcnet/0/LUN#0/Config/ssh/GuestPort" 22
+VBoxManage setextradata <guestname> "VBoxInternal/Devices/pcnet/0/LUN#0/Config/ssh/Protocol" TCP
+```
+
+The guestname needs to be in quotes if it has any spaces in it. You'll need to shutdown the VM if it's already running and start it again (a reboot won't do). Then you'll be able to access the VM using ssh from the host system with:
+
+```
+ssh -p 2222 username@localhost
+```
+
+or by any other PC in the network, by replacing "localhost" with the host systems IP address or hostname/domain.
+
+You can check the settings for any VM, by running:
+
+```
+VBoxManage getextradata <guestname> enumerate
+```
+
+If you want to remove a setting, you just need to set it to no value, for example, to remove the GuestPort setting:
+
+```
+VBoxManage setextradata <guestname> "VBoxInternal/Devices/pcnet/0/LUN#0/Config/ssh/GuestPort"
+```

@@ -1,0 +1,32 @@
+# Fix Unknown Filetypes in Browser
+
+## Symptom
+
+Sometimes when you download a file, you get prompted to open or save it (at least in Firefox in the default mode) and the only choice you get to open the file is not the right one (often a text editor). But sometimes it's ok, for the same file type. Why?
+
+The reason is that when it fails to propose the right choice, the file type is unknown to the browser. This is usually the server fault as it normally needs to send the correct file type in the header for the browser to propose the right solution.
+
+What can we do to fix it on the desktop side? Well, in Windows, the file extension could be used to guess the file type and propose the correct application to open it. It's often not reliable, mainly if the file has no extension at all. In Linux world, the mimetype is used. This a database that checks inside the file for chunk of data to determine the mimetype/file type. And this is quite reliable. But there is a problem, the browser offer you to open the file…that it will download. So there is no way before downloading it for the browser to know and help you. The solution is to rely on xdg-open binary that read the mimetype of the file, the user default application for that mimetype and then open the file with it.
+
+## Solution
+
+So let's do open unknown file type with xdg-open. First, create a file named xdg-open in ~/.local/share/applications/ containing:
+
+```
+[Destkop Entry]
+Type=Application
+Version=1.0
+Name=xdg-open
+Exec=xdg-open %f
+Terminal=false
+```
+
+Then edit your ~/.local/share/applications/mimeapps.list file and modify any line containing application/octet-stream with:
+
+```
+application/octet-stream=xdg-open.desktop
+```
+
+You're done!
+
+Now in Firefox, for example, the default application "xdg-open" is proposed and when hitting ok, it will download the file to a temporary location and open it with the right application.

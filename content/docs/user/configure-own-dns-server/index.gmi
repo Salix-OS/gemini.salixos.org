@@ -1,0 +1,160 @@
+# How to Configure Your Own DNS Server With a Static IP
+
+Because a friend had to setup his own dns server using the static ip and installed the ubuntu on the server, so I set up the dns server. The instructions below are for any possible need to do the same. The domain here is my-domain.gr you replace it with your own.
+
+The instructions are simple and not in the correct technical vocabulary to be understand from all. The following instructrions work and of course someone else may use different settings.
+
+It is assumed that on the registrar, we maintain our domain name, we have created a nameserver e.g. ns0.my-domain.gr giving it a static ip x1.x2.x3.x4. We can define a second with the same static ip ns1.my-domain.gr Then in the domain name that we enshrine in the example my-domain.gr put as Domain Name Servers (nameservers) the ns0.my-domain.gr and ns1.my-domain.gr
+
+And also a few hours to 48 hours may need for the nameservers to be updated with the ip corresponding to our ns0.my-domain.gr. So if you change the nameservers of your domain, the transition to the new hosting server will be completed in about 3 to 48 hours, depending on the company that provides you connect the Internet. So making a dig from any pc you will not find the domain if you do not first the nameservers around the world updated.
+
+The following we do in our own server if you run from home and have static ip or do after login to the server we have in such a company, using ssh. Here as an example we use the domain my-domain.gr. You put your own which you have first-register. The static ip is x1.x2.x3.x4. x1.x2.x3.x4 replace it with your static ip The ip of the company's nameservers are k1.k2.k3.k4 m1.m2.m3.m4
+
+Below where is x1, x2, x3, x4, K1, K2, K3, K4, m1, m2, m3, m4 will put the corresponding numbers.
+
+### /etc/named.conf
+
+```
+zone "my-domain.gr." IN {
+  type master;
+  file "/etc/bind/db.my-domain.gr"; // for slackware "/var/named/caching-example/db.my-domain.gr"
+};`
+
+zone "x4.x3.x2.in-addr.arpa" {
+ type master;
+ file "/etc/bind/rev.x4.x3.x2.in-addr.arpa"; // for slackware "/var/named/caching-example/rev.x4.x3.x2.in-addr. arpa "
+};`
+
+options {
+  directory "/var/cache/bind"; // for slackware directory "/var/named";
+  notify no;
+  forward only;
+  forwarders {k1.k2.k3.k4; m1.m2.m3.m4;}; // here we put our name servers that has given the company that runs the server.
+};`
+```
+
+### /etc/resolv.conf
+
+```
+search my-domain.gr 
+nameserver x1.x2.x3.x4
+nameserver k1.k2.k3.k4
+nameserver m1.m2.m3.m4
+```
+
+### /var/named/caching-example/db.my-domain.gr
+
+```
+;
+$ TTL 604800
+@ IN SOA ns0.my-domain.gr. my-domain.gr. (
+                    2006081401
+                    28800
+                    3600
+                    604800
+                    38400
+)
+IN NS ns0
+IN NS ns1
+my-domain.gr. IN A x1.x2.x3.x4
+my-domain.gr. IN MX 10 mail.my-domain.gr.
+ns0 IN A x1.x2.x3.x4
+ns1 IN A x1.x2.x3.x4
+www IN A x1.x2.x3.x4
+mail IN A x1.x2.x3.x4
+```
+
+### /var/named/caching-example/rev.x4.x3.x2.in-addr.arpa
+
+```
+$ TTL 1D 
+@ IN SOA ns0.my-domain.gr. admin.my-domain.gr. (
+                    2006081401 ;
+                    28800 ;
+                    604800 ;
+                    604800 ;
+                    86400
+)
+IN NS ns0.my-domain.gr.
+x4 IN PTR my-domain.gr`
+```
+
+x4 is the same as the last number of the static ip (x1.x2.x3.x4)
+
+### Test the server
+
+/var/named/caching- example/rev.x4.x3.x2.in-addr.arpa
+
+```
+  OUTPUT:
+   loading "x4.x3.x2.in-addr.arpa" from "/etc/bind/rev.x4.x3.x2.in-addr.arpa" class "IN"
+   zone x4.x3.x2.in-addr.arpa/IN: loaded serial 2006081401
+  OK`
+```
+
+/var/named/caching-example/db.my-domain.gr
+
+```
+  OUTPUT:
+  loading "my-domain.gr" from "/etc/bind/db.my-domain.gr" class "IN"
+  zone my-domain.gr/IN: loaded serial 2006081401
+  OK`
+```
+
+### restart the bind
+
+We restart the bind:
+
+```
+sudo service restart bind
+```
+
+Thefollowing commands from the ssh shell should give us (instead of x1.x2.x3.x4 put the numbers of your static ip.
+
+```
+$ nslookup my-domain.gr
+
+  Server: 192.168.1.254
+  Address: 192.168.1.254 # 53
+  Non-authoritative answer:
+  Name: my-domain.gr
+  Address: x1.x2.x3.x4`
+
+$ nslookup www.my-domain.gr
+
+  Server: 192.168.1.254
+  Address: 192.168.1.254 # 53
+  Non-authoritative answer:
+  Name: www.my-domain.gr
+  Address: x1.x2.x3.x4`
+
+$ nslookup mail.my-domain.gr
+
+  Server: 192.168.1.254
+  Address: 192.168.1.254 # 53
+  Non-authoritative answer:
+  Name: mail.my-domain.gr
+  Address: x1.x2.x3.x4`
+
+$ dig www.my-domain.gr
+
+   ; << >> DiG 9.7.0-P1 << >> www.my-domain.gr
+   ;; Global options: + cmd
+   ;; Got answer:
+   ;; - >> HEADER << - opcode: QUERY, status: NOERROR, id: 29213
+   ;; Flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 2
+   ;; QUESTION SECTION:
+   ; Www.my-domain.gr. IN A
+   ;; ANSWER SECTION:
+   www.my-domain.gr. 604800 IN A x1.x2.x3.x4
+   ;; AUTHORITY SECTION:
+   my-domain.gr. 604800 IN NS ns0.my-domain.gr.
+   my-domain.gr. 604800 IN NS ns1.my-domain.gr.
+  ;; ADDITIONAL SECTION:
+  ns0.my-domain.gr. 604800 IN A x1.x2.x3.x4
+  ns1.my-domain.gr. 604800 IN A x1.x2.x3.x4
+  ;; Query time: 8 msec
+  ;; SERVER: x1.x2.x3.x4 # 53 (x1.x2.x3.x4)
+  ;; WHEN: Fri Jun 1 09:46:43 2012
+  ;; MSG SIZE rcvd: 120`
+```

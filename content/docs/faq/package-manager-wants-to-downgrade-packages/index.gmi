@@ -1,0 +1,13 @@
+# Package Manager Wants to Downgrade Packages
+
+If you install packages from third party mirrors or from Slackbuilds you should not wonder if gslapt/slapt-get wants to "upgrade" these packages to an older version again. This is normal behaviour because the package manager actually doesn't care about the version number. It just wants to bring the same version to your computer that is available in the Salix repositories. Also sometimes it is intended to downgrade packages.
+
+If you want to keep your third party package you have to blacklist it in gslapt/slapt-get.
+
+The reasoning behind this behavior is that a piece of software/code will never be reliable at detecting which version is an actual upgrade and which is not. That is because there exists no algorithm that will do that. Actually nobody can do that reliably, not for all software anyway.
+
+NOTE: Quick question: which version of firefox is the newer one, 52.6.0esr or 55.0.3? If your answer is the latter, you're wrong, 55.0.3 is actually about 6 months older than 52.6.0esr and has several security issues that are fixed in 52.6.0esr. 
+
+Besides, even if there were a magical solution that will detect package upgrades properly, several times it is actually needed to downgrade to a previous version. Think of what would happen if a new version of a package came out, it was uploaded to the repositories, everybody upgraded to it and then a severe security issue was found with it. A lot of cases like this have happened already and in several the proposed short term solution was to downgrade to a previous version that was not affected by the security issue. How would a system that only accepts upgrades force the downgrade?
+
+So, what happens is that the package management system decides that whatever version of a package is available in the repositories, is the preferred one (not necessarily the newer one) and it will prompt the user to upgrade to it.

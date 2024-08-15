@@ -1,0 +1,48 @@
+# Scrollkeeper and Packaging
+
+## What is scrollkeeper?
+
+ScrollKeeper is a cataloging system for documentation on open systems. It manages documentation metadata and provides a simple API to allow help browsers to find, sort, and search the document catalog.
+
+AFAIK nothing beyond the Gnome and KDE help browsers does anything usefull with it.
+
+## How does it work?
+
+Scrollkeeper reads files with meta data (provided in the packages of programs that use this) and templates (provided by the scrollkeeper package). It combines these into a database. This database can in turn be read by the help browsers.
+
+## What does this mean for package builders?
+
+Packages for programs that provide information through scrollkeeper should contain *.omf files and put these in a directory under ${DEST}/usr/share/omf. If this directory is created, but does not contain any files, then there probably went something wrong in the build process.
+
+The make install process for some programs generates a scrollkeeper database under ${DEST}/var/lib/scrollkeeper or ${DEST}/var/scrollkeeper. Since the scrollkeeper database is a system wide resource and system specific, these files should not end up in the package. So the build scripts for programs that do this should contain some command to remove this redundant database.
+
+The database on the system where the package will be installed does not update automatically when new files appear under /usr/share/omf. So the doinst.sh script must take care of updating the scrollkeeper database.
+
+## Example from the gnome-desktop package
+
+configure should be run with the --disable-scrollkeeper option
+
+```
+./configure other-configure-options --disable-scrollkeeper
+```
+
+Sometimes --disable-scrollkeeper doesn't work right and files end up in var/scrollkeeper into your packaging directory anyway ($startdir/pkg if you using [[SLKBUILD]]), so in that case you'll have to remove them manually. In the build script somewhere between (the last) make install and makepkg add:
+
+```
+# redundant scrollkeeper
+if [ -d $startdir/pkg/var/scrollkeeper ]; then
+    rm -r $startdir/pkg/var/scrollkeeper
+fi
+if [ -d $startdir/pkg/var/lib/scrollkeeper ]; then
+    rm -r $startdir/pkg/var/lib/scrollkeeper
+fi
+```
+
+The scrollkeeper updating should happen when the package is being installed, so this has to be added in your doinst.sh script:
+
+```
+# Update the scrollkeeper database (Remove stale pieces)
+if [ -x usr/bin/scrollkeeper-update ]; then
+  usr/bin/scrollkeeper-update > /dev/null 2>&1
+fi
+```

@@ -1,0 +1,26 @@
+# How to Create a Public Salix Mirror
+
+These are rather generic instructions to create a public Salix mirror. You should be familiar with rsync and cron jobs to get things working. At first some basic things:
+
+* It's up to you if you want to create a ftp or a http mirror
+* Of course you have to adjust the output dirs, that are used in the rsync commands
+* Syncing once a day may be a good idea
+
+## Salix mirror
+
+Let's get things started. If you want to sync the complete Salix repository you can just use:
+
+```
+rsync -a --del slackware.org.uk::salix salix
+```
+
+That will create a "salix" directory with everything in the salix repository in it and you have to do nothing else. Just make sure that this command is run regularly, so your mirror is kept up to date.
+
+If you want to only mirror some parts of the repository, you can still do that. For example if you only want to mirror the repositories for version 13.0, individually for the i486 and x86_64 repositories, you can do that with:
+
+```
+rsync -a --del slackware.org.uk::salix/i486/13.0/ i486/13.0/
+rsync -a --del slackware.org.uk::salix/x86_64/13.0/ x86_64/13.0/
+```
+
+respectively.

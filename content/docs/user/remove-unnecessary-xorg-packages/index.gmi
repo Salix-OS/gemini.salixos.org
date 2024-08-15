@@ -1,0 +1,32 @@
+# How to Remove Unnecessary Xorg Packages
+
+Salix basic and full installation modes install several xorg packages that are not all needed in any given PC, but are included so Salix works in every possible hardware setup. For example, you don't need ati or nvidia video drivers if you have an intel video card.
+
+## Video drivers
+
+You probably have only one video card in your PC so you can remove drivers for all video cards you don't have. To get a list of all installed video drivers, run:
+
+```
+ls /var/log/packages/xf86-video-*
+```
+
+Find the one that matches your video card and you can remove all except that one! Keeping xf86-video-vesa might be a good idea though, just to have a working fallback driver in any case.
+
+## Input drivers
+
+You also probably don't need all input drivers. To get a list of them, run:
+
+```
+ls /var/log/packages/xf86-input-*
+```
+
+You'll certainly need xf86-input-keyboard, xf86-input-mouse and xf86-input-evdev. Look in the list for any other hardware you might have and you can remove the rest.
+
+## IBus
+
+If you're not using IBus and anthy to input characters in your native language, then you can remove them with:
+
+```
+spkg -d /var/log/packages/ibus-*
+spkg -d anthy fcitx-anthy ibus-anthy
+```
