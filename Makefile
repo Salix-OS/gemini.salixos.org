@@ -10,7 +10,7 @@ update-posts:
 		NAME=$$( echo $$i ); \
 		BASENAME=$$( echo $$NAME | sed "s/\.md$$//" ); \
 		if [ ! -d content/post/$$BASENAME ]; then \
-				mkdir content/post/$$BASENAME; \
+			mkdir content/post/$$BASENAME; \
 			if echo $$NAME | grep -q '.md$$'; then \
 				TITLE=$$( head -n 10 $(BLOG_DIR)/$$NAME | grep "^title:" | sed "s/^title: \"\(.*\)\"/\1/" ); \
 				DATE=$$( head -n 10 $(BLOG_DIR)/$$NAME | grep "^date:" | sed "s/^date: //" | cut -d'T' -f1 ); \
