@@ -74,6 +74,7 @@ upload:
 		-avz \
 		--exclude dates-and-titles.txt \
 		--exclude page.md5 \
+		--exclude page.locked \
 		--delete ./content/ $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR)
 
 .PHONY: serve
