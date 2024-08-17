@@ -6,6 +6,7 @@ Here is a list of packages, present in both Salix and Slackware repositories and
 
 * elilo: Minor tweaks to eliloconfig.
 * lilo: Salix artwork. Minor tweaks to liloconfig.
+* meson: Newer version so that updated versions of other packages can be built.
 * mozilla-firefox: Using the latest ESR version.
 * sysvinit-scripts: Tweaked for boot speedup. Colorized boot messages. Autostart feature for every executable file in /etc/rc.d/.
 * xfce packages: We offer repositories for Xfce 4.18:
