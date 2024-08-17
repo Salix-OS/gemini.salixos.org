@@ -1,4 +1,4 @@
-# Is Flatpak Available in Salix
+# Is Flatpak Available in Salix?
 
 Flatpak is installed by default on Salix since version 15.0, no setup required!
 

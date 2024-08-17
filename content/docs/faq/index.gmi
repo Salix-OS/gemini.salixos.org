@@ -6,7 +6,7 @@ Got a question about Salix? You're not alone. This FAQ section answers some of t
 => /docs/faq/3rd-party-repos Can I Use Third Party Repositories?
 => /docs/faq/enable-root How to Enable the root User
 => /docs/faq/extra-console How to Get an Extra Console in the Salix Installer
-=> /docs/faq/flatpak Is Flatpak Available in Salix
+=> /docs/faq/flatpak Is Flatpak Available in Salix?
 => /docs/faq/hostname How Do I Change the Default System Hostname?
 => /docs/faq/icons-missing-in-xfce Icons Missing in the Xfce Menu
 => /docs/faq/kernel-source How to Install the Kernel Source
