@@ -1,0 +1,26 @@
+# How Do I Upgrade to Xfce 4.18?
+
+Salix 15.0 comes with Xfce 4.16 by default. Xfce 4.18 was released a few months after Salix 15.0 was released and we added an extra repository for it soon after.
+
+So, if you want to upgrade your Xfce to version 4.18, all you have to do is add that repository to your slapt-get package manager configuration in the /etc/slapt-get/slapt-getrc file.
+
+For 64-bit systems, you can add this line:
+
+```
+SOURCE=https://download.salixos.org/x86_64/xfce4.18-15.0/:PREFERRED
+```
+
+while for 32-bit systems, you can add this line:
+
+```
+SOURCE=https://download.salixos.org/i486/xfce4.18-15.0/:PREFERRED
+```
+
+and then just upgrade your system:
+
+```
+sudo slapt-get --update
+sudo slapt-get --upgrade
+```
+
+You'll probably want to log out of Xfce and back in after that. You will then be greeted with the shiny new Xfce 4.18 environment!
