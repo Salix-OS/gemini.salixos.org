@@ -6,7 +6,7 @@ While technically they are very similar, txz and tgz files are in fact tar.xz an
 
 To confuse matters more, some people create source tarballs and name them with a txz or tgz extension, instead of the more usual tar.xz and tar.gz extensions.
 
-The format that Salix uses for its packages comes from Slackware. A Slackware package (txz or tgz) is created with a specific version of tar and follows a particular directory structure. It includes binary files that are organized according to your system's hierarchy, such as binaries in /usr/bin and manpages in /usr/man. On the other hand, a source tarball usually contains only the source code.
+The format that Salix uses for its packages comes from Slackware. A Slackware package (txz or tgz) is created with a specific version of tar and follows a particular directory structure. It includes files that are organized according to your system's hierarchy, such as binaries in /usr/bin and manpages in /usr/man. On the other hand, a source tarball usually contains only the source code.
 
 There are some easy ways to figure out if a file is indeed a package file and not just a general purpose tarball. First, you can look at the filename. Packages follow a certain naming convention, they should look something like this:
 
