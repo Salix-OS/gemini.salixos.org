@@ -9,6 +9,7 @@ Got a question about Salix? You're not alone. This FAQ section answers some of t
 => /docs/faq/flatpak Is Flatpak Available in Salix?
 => /docs/faq/hostname How Do I Change the Default System Hostname?
 => /docs/faq/icons-missing-in-xfce Icons Missing in the Xfce Menu
+=> /docs/faq/install-txz-found-online How Do I Install a txz/tgz File I Found Online?
 => /docs/faq/kernel-source How to Install the Kernel Source
 => /docs/faq/multimedia How to Play Multimedia Files
 => /docs/faq/package-manager-wants-to-downgrade-packages Package Manager Wants to Downgrade Packages
