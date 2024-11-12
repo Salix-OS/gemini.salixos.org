@@ -38,3 +38,9 @@ install/slack-desc
 If you have that, then chances are this is indeed a valid Slackware package.
 
 But even then, you should be very cautious about installing it in your system. As a rule of thumb, never blindly trust binaries that you download online. It could also be the case that whoever created the package had no malicious intentions, yet it could still break your system. This could happen by replacing a key system library, which may have worked in the package creator's system, but not on yours. After all, the package may have been intended for a different Slackware (and therefore Salix) release or for a different architecture than yours.
+
+If what is indeed a package and you really want to install it, then you can just run spkg like this example:
+
+```
+sudo spkg salixtools-gtk-2.5.7-noarch-1gv.txz
+```
