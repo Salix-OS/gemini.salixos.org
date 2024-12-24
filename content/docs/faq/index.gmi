@@ -20,4 +20,5 @@ Got a question about Salix? You're not alone. This FAQ section answers some of t
 => /docs/faq/slackpkg Can I Use slackpkg in Salix?
 => /docs/faq/space How Much Disk Space Does Salix Need
 => /docs/faq/upgrade-xfce-to-4.18 How Do I Upgrade to Xfce 4.18?
+=> /docs/faq/upgrade-xfce-to-4.20 How Do I Upgrade to Xfce 4.20?
 => /docs/faq/why-was-salix-created Why Was Salix Created?
