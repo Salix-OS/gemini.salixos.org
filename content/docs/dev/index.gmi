@@ -4,9 +4,9 @@ Welcome to the Documentation section for Salix developers and packagers. Whether
 
 
 => /docs/dev/create-public-mirror How to Create a Public Salix Mirror
-=> /docs/dev/work-with-sourceforge How to Work with Sourceforge
-=> /docs/dev/transifex How to Work with Transifex
 => /docs/dev/internationalize-shell-scripts How to Internationalize Shell Scripts
+=> /docs/dev/transifex How to Work with Transifex
+=> /docs/dev/work-with-sourceforge How to Work with Sourceforge
 
 If you're interested in packaging software for Salix, you may also want to explore our dedicated packaging section, which provides detailed information on creating and maintaining packages for Salix.
 

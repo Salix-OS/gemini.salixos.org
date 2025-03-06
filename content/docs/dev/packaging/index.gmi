@@ -4,12 +4,12 @@ Welcome to the packaging section, where you'll find everything you need to creat
 
 
 => /docs/dev/packaging/gconf GConf and Packaging
-=> /docs/dev/packaging/packaging-rules Packaging rules
-=> /docs/dev/packaging/submitting-packages Submitting Packages
-=> /docs/dev/packaging/packaging-with-slkbuild Building Packages with slkbuild
 => /docs/dev/packaging/git-svn-sources-with-slkbuild Getting git or svn sources for use with slkbuild
-=> /docs/dev/packaging/uid-gid UIDs and GIDs to use with slkbuild
-=> /docs/dev/packaging/mimetypes Installing Mimetypes with a Package
 => /docs/dev/packaging/mateconf MATEConf Schemas and Packaging
+=> /docs/dev/packaging/mimetypes Installing Mimetypes with a Package
 => /docs/dev/packaging/package-categories Package Categories
+=> /docs/dev/packaging/packaging-rules Packaging rules
+=> /docs/dev/packaging/packaging-with-slkbuild Building Packages with slkbuild
 => /docs/dev/packaging/scrollkeeper Scrollkeeper and Packaging
+=> /docs/dev/packaging/submitting-packages Submitting Packages
+=> /docs/dev/packaging/uid-gid UIDs and GIDs to use with slkbuild
