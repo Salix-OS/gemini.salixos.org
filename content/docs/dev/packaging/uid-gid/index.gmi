@@ -2,9 +2,9 @@
 
 ## Recommended UID/GIDs
 
-The recommended UID/GIDs for use with SLKBUILD scripts are the same as [the ones for slackbuilds.org](https://slackbuilds.org/uid_gid.txt Defaults Slackware UID/GIDs) in order to avoid conflicts with packages build from SBo.
+The recommended UID/GIDs for use with SLKBUILD scripts are the same as the ones for slackbuilds.org (Default Slackware UID/GIDs) in order to avoid conflicts with packages build from SBo.
 
-=> https://slackbuilds.org/uid_gid.txt https://slackbuilds.org/uid_gid.txt
+=> https://slackbuilds.org/uid_gid.txt the ones for slackbuilds.org
 
 ## Extra
 
