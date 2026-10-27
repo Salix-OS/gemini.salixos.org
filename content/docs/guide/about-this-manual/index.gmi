@@ -1,0 +1,29 @@
+# About this Manual
+
+The purpose of this manual is to enable you to take full advantage of the many features of Salix. The latest version of this document is available from our website.
+
+=> https://salixos.org our website
+
+The Salix start up guide is released under the CC-BY-SA 3.0 license.
+
+=> http://creativecommons.org/licenses/by-sa/3.0/ CC-BY-SA 3.0
+
+*Your contribution is important!*
+
+We would like to improve the quality of the manual and to provide more documents translated in your mother tongue. Your help is always welcome.
+
+For any comments and submission of articles to be included in the start-up guide, please contact us through the Salix mailing list.
+
+=> https://salixos.org/mailinglists.html Salix mailing list
+
+*Acknowledgement*
+
+My sincere thanks to all the people who have contributed to and worked on this start-up guide, especially *mimosa*, who did a lot of work rewriting big parts of this guide and helped cleaning it up.
+
+Many thanks also to *tsuren, jrd, akuna, and maximus* for all their hard work in the previous versions of this guide.
+
+The section on partitioning with cfdisk is adapted from the guide for Absolute Linux, with thanks to Paul Sherman.
+
+=> http://absolutelinux.org Absolute Linux
+
+~gapan

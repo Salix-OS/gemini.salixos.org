@@ -35,3 +35,7 @@ If you completed a FULL mode Salix installation, the default hostname is set to 
 ```
 mypc.salixos.org
 ```
+
+See also the Hostnames section of the Salix Startup Guide.
+
+=> /docs/guide/your-salix/#hostnames Hostnames

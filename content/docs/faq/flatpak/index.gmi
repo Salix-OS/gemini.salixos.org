@@ -5,3 +5,7 @@ Flatpak is installed by default on Salix since version 15.0, no setup required!
 Flatpak comes preconfigured with the Flathub repository and desktop integration tools are included to allow 1-click install from Flathub. All you have to do is install some apps!
 
 => https://flathub.org/ install some apps
+
+See also the flatpak section of the Salix Startup Guide.
+
+=> /docs/guide/your-salix/#flatpak flatpak

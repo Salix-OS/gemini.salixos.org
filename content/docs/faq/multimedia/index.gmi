@@ -13,3 +13,7 @@ or from a terminal, run:
 ```
 sudo salix-codecs-installer
 ```
+
+See also the Salix Codecs Installer section of the Salix Startup Guide.
+
+=> /docs/guide/your-salix/#salix-codecs-installer Salix Codecs Installer

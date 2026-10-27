@@ -2,8 +2,9 @@
 
 Welcome to the Salix Documentation project! This is the place for tutorials, guides and frequently asked questions for both Salix users and developers.
 
-Documentation is generally split into three sections:
+Documentation is generally split into four sections:
 
+=> /docs/guide Salix Startup Guide, for your first steps with Salix
 => /docs/faq Frequently Asked Questions
 => /docs/user User Documentation
 => /docs/dev Developer Documentation
@@ -20,6 +21,3 @@ If you would like to edit existing documentation or add new articles, you can do
 
 => https://github.com/Salix-OS/docs.salixos.org git repository
 
-TIP: In addition to this documentation, the Salix Startup Guide is also available to guide you with your first steps with Salix. 
-
-=> https://guide.salixos.org Salix Startup Guide

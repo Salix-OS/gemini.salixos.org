@@ -21,12 +21,3 @@ ls /var/log/packages/xf86-input-*
 ```
 
 You'll certainly need xf86-input-keyboard, xf86-input-mouse and xf86-input-evdev. Look in the list for any other hardware you might have and you can remove the rest.
-
-## IBus
-
-If you're not using IBus and anthy to input characters in your native language, then you can remove them with:
-
-```
-spkg -d /var/log/packages/ibus-*
-spkg -d anthy fcitx-anthy ibus-anthy
-```

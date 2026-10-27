@@ -19,13 +19,13 @@ In case you don't find what you're looking for here, you can always visit our fo
 => /docs/user/how-to-beta-test How to Beta Test
 => /docs/user/how-to-create-a-video-DVD-from-the-CLI How to Create a Video DVD from the CLI
 => /docs/user/install-different-kernel How to Install a Different Kernel
-=> /docs/user/install-from-usb Install Salix from a USB stick
 => /docs/user/install-guest-additions-in-virtualbox-guest How to Install the Virtualbox Guest Additions in a Salix Guest
 => /docs/user/install-kernel-from-current Install Kernel From Current
 => /docs/user/install-nvidia How to Install the Proprietary NVIDIA Driver
 => /docs/user/kernel-compilation How to Compile the Linux Kernel
 => /docs/user/lilo LILO
 => /docs/user/multilib How to Install Multilib
+=> /docs/user/partitioning-with-cfdisk Partitioning with cfdisk
 => /docs/user/rebuild-slackware-kernel How to Rebuild the Slackware Kernel
 => /docs/user/remove-unnecessary-xorg-packages How to Remove Unnecessary Xorg Packages
 => /docs/user/repository-mirrors Repository Mirrors

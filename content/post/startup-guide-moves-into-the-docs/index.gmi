@@ -1,0 +1,52 @@
+# The Startup Guide Moves into the Documentation
+
+Published 2026-10-27
+
+The Salix Startup Guide is now part of our documentation site. You can find it at docs.salixos.org/guide[1], as the first section in the documentation menu.
+
+=> https://docs.salixos.org/guide/ 1: https://docs.salixos.org/guide/
+
+A bit of history first. Back in 2014, we had to rewrite the guide in a new format, because Publican, the tool we were using before, would not work on Salix anymore. I wrote about it in a previous blog post[2]. We switched to txt2tags[3], which could produce HTML, as well as LaTeX for a PDF version, from the same source files. The HTML output was then split into separate pages with htmldoc[4], and a long list of `sed` commands was used to add the styling, the navigation links and the note and warning boxes. The ebook versions, EPUB and MOBI, were created with Calibre[5], from the same HTML output.
+
+=> /post/new-startup-guide/ 2: /post/new-startup-guide/
+=> https://txt2tags.org/ 3: https://txt2tags.org/
+=> https://www.msweet.org/htmldoc/ 4: https://www.msweet.org/htmldoc/
+=> https://calibre-ebook.com/ 5: https://calibre-ebook.com/
+
+This setup served us for more than ten years. But a few things about it have been bothering me for a while.
+
+The first is that we had two separate documentation projects. The guide had its own git repository, its own build process, its own way of publishing and its own look. And then there was the documentation site[6], which was written in Markdown with Hugo, just like this blog. Salix is a small project with a small number of people working on it, and maintaining two of everything is a lot of overhead for us.
+
+=> /post/new-docs-site/ 6: /post/new-docs-site/
+
+The second is the toolchain itself. txt2tags and htmldoc are not widely used anymore, and the post-processing with `sed` was fragile. Small changes in the output of either tool could break the formatting. This is not theoretical by the way. Upgrading txt2tags to the latest version already broke our workflow and we chose to stay with an older txt2tags version. Anyone who wanted to fix a typo in the guide would first have to figure out how all of that worked if they wanted to preview their changes. In the documentation site, every page has an edit button that takes you to the page's Markdown source on GitHub, where you can make your changes right in your browser. Now the guide works the same way.
+
+The third is that the two projects were covering some of the same topics, without knowing about each other. For example, both had instructions for installing Salix from a USB stick, and these were not always in sync. Users had to know that both sites existed, and search on the documentation site could not find anything in the guide.
+
+There was one thing that made me hesitate though. The guide is meant to be read from start to finish. It takes you from downloading Salix, to installing it, to managing software and configuring your system, in that order. The rest of the documentation is a collection of separate pages that you look up when you need them. I didn't want the guide to become just a few more pages in the menu.
+
+So, the guide has its own section and its chapters are listed in order. On the guide's pages only, there are arrows at the top of the page that take you to the previous or next chapter, and each chapter shows which chapter it is and how many there are in total. If you prefer to read the whole guide in one go, the print button on the guide's main page shows all chapters on a single page.
+
+The PDF, EPUB and MOBI versions of the guide are gone. We published them when the guide was first released, but they haven't been updated for a few years, because updating them was difficult and I'm not sure anyone cared. After removing them, certainly nobody complained. The single page view of the guide covers most of what they were used for, and your browser can save it as a PDF if you need one.
+
+The old address, guide.salixos.org, now redirects to the guide's new location. This includes links to individual pages of the old guide, which take you to the start of the new one. The redirect will stay in place for a few years, after which the guide.salixos.org subdomain will be retired. If you have bookmarked the old guide, you should update your bookmark to docs.salixos.org/guide[7].
+
+=> https://docs.salixos.org/guide/ 7: https://docs.salixos.org/guide/
+
+Merging the two meant going through the content of both, and some things were moved around in the process:
+
+* The duplicate page about installing from a USB stick was removed from the documentation, since the guide already covers it.
+* The detailed reference on partitioning with *cfdisk* was moved out of the guide and into its own page in the user documentation[8]. The guide still includes a short walkthrough for partitioning during installation. The new page now also explains how NVMe drives and SD cards are named, which was missing.
+* Sections of the guide now link to related FAQ entries and documentation pages, and some FAQ entries link back to the guide.
+* Links to our old wiki and forum addresses were updated, and some obsolete content was removed.
+* Some more minor tidying up.
+
+=> https://docs.salixos.org/user/partitioning-with-cfdisk/ 8: https://docs.salixos.org/user/partitioning-with-cfdisk/
+
+When we moved from MediaWiki to the current documentation site, converting the content was the hardest part. This time it was a lot easier, because txt2tags can output Markdown directly. A small script took care of the rest, like converting the note and warning boxes and fixing links between chapters, and only a few things needed fixing by hand afterwards.
+
+If you find anything in the guide that needs updating, you can use the edit button on any page, or send your changes to the mailing list[9], just like with the rest of the documentation.
+
+=> https://salixos.org/mailinglists.html 9: https://salixos.org/mailinglists.html
+
+I hope that this move will make it easier for everyone to find the information they're looking for in our documentation.
